@@ -1,4 +1,4 @@
-# AU Digital Signage System
+# Digital Signage System
 This is a digital signage manager designed to replace Concerto.
 
 ## Installation
