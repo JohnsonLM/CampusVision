@@ -1,0 +1,46 @@
+html {
+    font-size: 100%;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.btn-primary, .side-nav {
+    color: white;
+    background-color: #3e1952;
+    border: none;
+}
+
+.btn-primary:hover, .side-nav:hover, nav-link.active {
+    color: black;
+    background-color: #e3bf42;
+    border: none;
+}
+
+.side-nav.active {
+        color: black !important;
+        background-color: #e3bf42 !important;
+        border: none !important;
+}
+
+.slide-nav {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.btn-outline-primary {
+    color: #3e1952;
+    border-color: #3e1952;
+}
+
+.btn-outline-primary:hover {
+    color: black;
+    background-color: #e3bf42;
+    border-color: #e3bf42;
+}
+
+.badge-info {
+    background-color: grey;
+}

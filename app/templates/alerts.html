@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method = "POST" enctype = "multipart/form-data">
+    <br>
+    <div class="textbox sign-up-textbox">
+        <label for="alert_text">Alert Content</label>
+        <br>
+        <input type="text" id="alert_text" name="alert_text">
+    </div>
+    <br>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="alert_status" id="Enable" value="Enable"/>
+      <label class="form-check-label" for="Enable">Enable</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="alert_status" id="Disable" value="Disable"/>
+      <label class="form-check-label" for="Disable">Disable</label>
+    </div>
+    <br>
+    <button class="btn btn-primary" type="submit" onclick="validateForm()" name="submit" style="background-color: crimson;">Change</button>
+    <br><br>
+    <strong>WARNING: alerts override all campus signage and should only be used in emergencies</strong>
+</form>
+{% endblock %}

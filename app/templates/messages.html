@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method = "POST" enctype = "multipart/form-data">
+    <br>
+    <h3>Submit a Message</h3>
+    <div class="textbox sign-up-textbox">
+        <label for="message_text">Message Contents</label>
+        <br>
+        <input type="text" id="message_text" name="message_text">
+    </div>
+    <br>
+    <div class="textbox sign-up-textbox">
+         <label for="time_start">Start Date: </label>
+         <input type="date" id="time_start" name="time_start" required>
+      </div>
+    <br>
+    <div class="textbox sign-up-textbox">
+         <label for="time_end">End Date: </label>
+         <input type="date" id="time_end" name="time_end" required>
+      </div>
+    <br>
+    <button class="btn btn-primary" type="submit" onclick="validateForm()" name="submit">Submit</button>
+</form>
+<br>
+<h3>Manage Messages</h3>
+<br>
+<table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Message</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+          <th>Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for message in messages %}
+        <tr>
+            <td>{{ message.id }}</td>
+            <td>{{ message.text }}</td>
+            <td>{{ message.time_start }}</td>
+            <td>{{ message.time_end }}</td>
+            <td>
+                <form action = "/mod" method = "POST" enctype = "multipart/form-data">
+                  <input type="hidden" name="slide_id" value="{{ message.id }}"/>
+                  <!-- <i class="fa fa-trash fa-lg"></i> -->
+                </form>
+            </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

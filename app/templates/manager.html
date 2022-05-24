@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {% if request.path == '/manager' %}active{% endif %}" aria-current="page" href="/manager">All</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if request.path == '/manager/approved' %}active{% endif %}" href="/manager/approved">Approved</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if request.path == '/manager/waiting' %}active{% endif %}" href="/manager/waiting">Waiting Review</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if request.path == '/manager/denied' %}active{% endif %}" href="/manager/denied">Denied</a>
+  </li>
+</ul>
+<br>
+<table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Slide Name</th>
+        <th>File Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Feeds</th>
+        <th>Image</th>
+        <th>Submitted By</th>
+        <th>Approval Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        {% if user.approval in filter %}
+          <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.title }}</td>
+            <td>{{ user.slide_path }}</td>
+            <td>{{ user.time_start }}</td>
+            <td>{{ user.time_end }}</td>
+            <td>
+              <strong>Feed 00:</strong> {{user.feed00 }}
+              <strong>Feed 01:</strong> {{user.feed01 }}<br>
+              <strong>Feed 02:</strong> {{user.feed02 }}
+              <strong>Feed 03:</strong> {{user.feed03 }}<br>
+              <strong>Feed 04:</strong> {{user.feed04 }}
+              <strong>Feed 05:</strong> {{user.feed05 }}<br>
+              <strong>Feed 06:</strong> {{user.feed06 }}
+              <strong>Feed 07:</strong> {{user.feed07 }}<br>
+              <strong>Feed 08:</strong> {{user.feed08 }}
+              <strong>Feed 09:</strong> {{user.feed09 }}<br>
+              <strong>Feed 10:</strong> {{user.feed10 }}
+
+            </td>
+            <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 100px;'></td>
+            <td>{{ user.submitted_by }}</td>
+            <td>{{ user.approval }}</td>
+            <td>
+              <a href="/edit">Edit</a>
+              <!--
+              <form action = "/mod" method = "POST" enctype = "multipart/form-data">
+                <i class="fa fa-edit"></i>
+                <input type="submit" name="Edit" value="Edit (Coming Soon)" onclick="validateForm()" class="btn btn-success btn-sm" style="margin: 5px;">
+              </form>
+              -->
+            </td>
+
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+{% endblock %}

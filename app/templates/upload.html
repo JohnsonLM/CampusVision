@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex flex-row">
+   <div class="p-3">
+     <form action="/upload" method="POST" enctype="multipart/form-data">
+      <br>
+      <input type = "file" name = "file" onchange="loadFile(event)" required />
+         <p>Only accepts .jpg, .jpeg, and .png</p>
+      <div class="textbox">
+         <label for="title">Slide Name</label>
+         <input class="form-control" id="title" type="text" placeholder="World Backup Day" name="title" onfocus="this.placeholder = '', onblur=" this.placeholder = 'World backup Day' required>
+      </div>
+      <br>
+      <div class="textbox sign-up-textbox">
+         <label for="time_start">Slide Start Date: </label>
+         <input type="date" id="time_start" name="time_start" required>
+      </div>
+      <br>
+      <div class="textbox sign-up-textbox">
+         <label for="time_end">Slide End Date: </label>
+         <input type="date" id="time_end" name="time_end" required>
+      </div>
+      <br>
+      <strong>Feed Assignment</strong>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" onClick="toggle(this)"/>
+         <label class="form-check-label">Toggle All</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed00" name="feeds">
+         <label class="form-check-label">Main Feed</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed01" name="feeds">
+         <label class="form-check-label">Admissions Feed</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed02" name="feeds">
+         <label class="form-check-label">Service Desk Feed</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed03" name="feeds">
+         <label class="form-check-label">Feed 3</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed04" name="feeds">
+         <label class="form-check-label">Feed 4</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed05" name="feeds">
+         <label class="form-check-label">Feed 5</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed06" name="feeds">
+         <label class="form-check-label">Feed 6</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed07" name="feeds">
+         <label class="form-check-label">Feed 7</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed08" name="feeds">
+         <label class="form-check-label">Feed 8</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed09" name="feeds">
+         <label class="form-check-label">Feed 9</label>
+      </div>
+      <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="feed10" name="feeds">
+         <label class="form-check-label">Feed 10</label>
+      </div>
+      <br>
+      <button class="btn btn-primary" type="submit" onclick="validateForm()" name="submit">Submit Slide</button>
+   </form>
+   </div>
+   <div class="p-2">
+     <img id="output" style="max-width: 1000px; padding-left: 100px;"/>
+     <script>
+        var loadFile = function(event) {
+          var output = document.getElementById('output');
+          output.src = URL.createObjectURL(event.target.files[0]);
+          output.onload = function() {
+            URL.revokeObjectURL(output.src) // free memory
+          }
+        };
+      </script>
+  </div>
+</div>
+<script language="JavaScript">
+   function toggle(source) {
+     checkboxes = document.getElementsByName('feeds');
+     for(var i=0, n=checkboxes.length;i<n;i++) {
+       checkboxes[i].checked = source.checked;
+     }
+   }
+</script>
+
+{% endblock %}

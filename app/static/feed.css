@@ -1,0 +1,91 @@
+body {
+    overflow: hidden;
+    background-color: black;
+    font-family: 'PT Sans', sans-serif;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition-duration: .0s;
+    transition-property: opacity;
+}
+
+.carousel-item {
+    display: flex;
+    background: url('/static/background.jpg');
+}
+
+.carousel-fade .carousel-item.active,
+.carousel-fade .carousel-item-next.carousel-item-left,
+.carousel-fade .carousel-item-prev.carousel-item-right {
+    opacity: 1;
+}
+
+.carousel-fade .active.carousel-item-left,
+.carousel-fade .active.carousel-item-right {
+    opacity: 0;
+}
+
+.carousel-fade .carousel-item-next,
+.carousel-fade .carousel-item-prev,
+.carousel-fade .carousel-item.active,
+.carousel-fade .active.carousel-item-left,
+.carousel-fade .active.carousel-item-prev {
+    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
+}
+
+.alert-message {
+    font-size: 38px;
+    text-align: center;
+    padding: 100px;
+}
+
+.weather {
+    flex-grow: 1;
+}
+
+.weather-card {
+    color: white;
+    text-align: center;
+}
+
+.weather-card h3 {
+    font-size: 22px;
+}
+
+.weather-card h4 {
+    font-size: 32px;
+}
+
+.sidebar {
+    background: rgba(62, 25, 82, 0.9);
+    flex-grow: 1;
+    text-align: center;
+    padding: 25px;
+}
+
+.sidebar-inner {
+    border: white;
+    border-style: double;
+    height: 100%;
+}
+
+.datetime {
+    flex-grow: 1;
+    background-color:black;
+    font-family: 'PT Sans', sans-serif;
+    padding: 20px;
+}
+
+.weather-outer {
+    flex-grow: 1;
+    background-color:black;
+    font-family: 'PT Sans', sans-serif;
+    text-align: right;
+}

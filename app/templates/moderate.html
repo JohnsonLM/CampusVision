@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link {% if request.path == '/mod' %}active{% endif %}" aria-current="page" href="/mod">All</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if request.path == '/mod/approved' %}active{% endif %}" href="/mod/approved">Approved</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if request.path == '/mod/waiting' %}active{% endif %}" href="/mod/waiting">Waiting Review</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link {% if request.path == '/mod/denied' %}active{% endif %}" href="/mod/denied">Denied</a>
+  </li>
+</ul>
+<br>
+<table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Slide Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Image</th>
+        <th>Approval Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        {% if user.approval in filter %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.title }}</td>
+          <td>{{ user.time_start }}</td>
+          <td>{{ user.time_end }}</td>
+          <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 150px;'></td>
+          <td> {{ user.approval }} </td>
+          <td>
+            <form action = "/mod" method = "POST" enctype = "multipart/form-data">
+              <input type="hidden" name="slide_id" value="{{ user.id }}"/>
+              <i class="fa fa-thumbs-up fa-lg"></i>
+              <input type="submit" name="Approve" value="Approve" onclick="validateForm()" class="btn btn-success btn-sm" style="margin: 5px;">
+              <br>
+              <i class="fa fa-thumbs-down fa-lg"></i>
+              <input type="submit" name="Deny" value="Deny" onclick="validateForm()" class="btn btn-danger btn-sm" style="margin: 5px;">
+              <br>
+
+              <i class="fa fa-trash fa-lg"></i>
+              <input type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;">
+
+            </form>
+          </td>
+
+        </tr>
+        {% endif %}
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
