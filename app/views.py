@@ -8,7 +8,7 @@ from .models import Message, Slide
 
 main = Blueprint('main', __name__)
 app = Flask(__name__, instance_relative_config=True)
-
+POSTS_PER_PAGE = 10
 
 @main.route('/')
 def index():
@@ -18,7 +18,8 @@ def index():
 @main.route('/manager')
 @login_required
 def manager():
-    return render_template('manager.html', title='All Slides', users=reversed(Slide.query.all()), name=current_user.name, filter=['Approved', 'Waiting Review'], mod_count=mod_counter())
+    page = request.args.get('page', 1, type=int)
+    return render_template('manager.html', title='All Slides', users=reversed(Slide.query.paginate(page, POSTS_PER_PAGE, False).items), name=current_user.name, filter=['Approved', 'Waiting Review'], mod_count=mod_counter())
 
 
 @main.route('/manager/approved')
@@ -181,7 +182,7 @@ def settings():
     return redirect(url_for('auth.login'))
 
 
-@main.route('/feed')
+@main.route('/feed', methods=['POST'])
 def feed():
     interval = get_settings()
     return render_template('feed.html', title='', slides=get_slides('feed00'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()))
