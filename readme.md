@@ -1,5 +1,6 @@
-# Digital Signage System
-This is a digital signage manager designed to replace Concerto.
+# CampusVision
+## A Lightweight Digital Signage Management Solution
+CampusVison is a digital signage manager designed to run on minimal hardware to maximize deployment options to devices such as micro-computers, raspberry pis, smart TVs, and other display devices.
 
 ## Installation
 Before installing, ensure that Docker is installed and that the application files are copied to /var/www/signage on your server/workstation.
