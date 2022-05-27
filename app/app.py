@@ -5,21 +5,13 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
-
 def create_app():
+    ## initialize app
     app = Flask(__name__, instance_relative_config=True)
-    app.config['SECRET_KEY'] = '2asTNbQ4gN2K0HAIm6JWx0VM5wiMyzd4'
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
-    app.config["UPLOAD_FOLDER"] = '/uploads'
-    app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
-    app.config['TEMPLATES_AUTO_RELOAD'] = True
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    # app.config.from_object('park.default_settings')
-    app.config.from_pyfile('application.cfg', silent=True)
-
+    app.config.from_pyfile('config.py')
+    # initialize database
     db.init_app(app)
-
-    # login authentication
+    # initialize login authentication
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
