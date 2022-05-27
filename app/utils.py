@@ -1,4 +1,4 @@
-from .app import ALLOWED_EXTENSIONS, db
+from .app import db
 from flask_login import current_user
 import datetime
 from .models import Slide, Alert, Message, Settings
@@ -12,9 +12,9 @@ def mod_counter():
     return count
 
 
-def allowed_file(filename):
+def allowed_file(filename, allowed_ext):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+           filename.rsplit('.', 1)[1].lower() in allowed_ext
 
 
 # Slides

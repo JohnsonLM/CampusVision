@@ -3,14 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
 db = SQLAlchemy()
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
 
 def create_app():
-    ## initialize app
+    # initialize app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_pyfile('config.py')
-    # initialize database
     db.init_app(app)
+
     # initialize login authentication
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'

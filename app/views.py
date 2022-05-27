@@ -8,7 +8,9 @@ from .models import Message, Slide
 
 main = Blueprint('main', __name__)
 app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('config.py')
 POSTS_PER_PAGE = 10
+
 
 @main.route('/')
 def index():
@@ -57,7 +59,7 @@ def upload_file():
         if file.filename == '':
             flash('No selected file')
             return redirect(request.url)
-        if file and allowed_file(file.filename):
+        if file and allowed_file(file.filename, app.config["ALLOWED_EXTENSIONS"]):
             file.save(os.path.join(app.static_folder, 'uploads', secure_filename(file.filename)))
             time_start = request.form["time_start"]
             time_end = request.form["time_end"]
