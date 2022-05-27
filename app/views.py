@@ -184,67 +184,67 @@ def settings():
     return redirect(url_for('auth.login'))
 
 
-@main.route('/feed', methods=['POST'])
+@main.route('/feed')
 def feed():
     interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed00'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()))
+    return render_template('feed.html', title='', slides=get_slides('feed00'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed01')
 def feed01():
     interval = 7000
-    return render_template('feed.html', title='Admissions', slides=get_slides('feed01'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='Admissions', slides=get_slides('feed01'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed02')
 def feed02():
     interval = get_settings()
-    return render_template('feed.html', title='I.T. Services Service Desk', slides=get_slides('feed02'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='I.T. Services Service Desk', slides=get_slides('feed02'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed03')
 def feed03():
     interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed03'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='', slides=get_slides('feed03'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed04')
 def feed04():
     interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed04'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='', slides=get_slides('feed04'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed05')
 def feed05():
     interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed05'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='', slides=get_slides('feed05'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed06')
 def feed06():
     interval = get_settings()
-    return render_template('feed.html', title='Feed Six', slides=get_slides('feed06'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='Feed Six', slides=get_slides('feed06'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed07')
 def feed07():
     interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed07'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='', slides=get_slides('feed07'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed08')
 def feed08():
     interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed08'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='', slides=get_slides('feed08'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed09')
 def feed09():
     interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed09'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='', slides=get_slides('feed09'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
 
 
 @main.route('/feed10')
 def feed10():
     interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed10'), alert_status=alert_status(), interval=interval)
+    return render_template('feed.html', title='', slides=get_slides('feed10'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
