@@ -73,15 +73,13 @@
   </table>
 <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="/manager?page=1">1</a></li>
-    <li class="page-item"><a class="page-link" href="/manager?page=2">2</a></li>
-    <li class="page-item"><a class="page-link" href="/manager?page=3">3</a></li>
-    <li class="page-item"><a class="page-link" href="/manager?page=4">4</a></li>
-    <li class="page-item"><a class="page-link" href="/manager?page=5">5</a></li>
-    <li class="page-item"><a class="page-link" href="/manager?page=6">6</a></li>
-    <li class="page-item"><a class="page-link" href="/manager?page=7">7</a></li>
-    <li class="page-item"><a class="page-link" href="/manager?page=8">8</a></li>
-    <li class="page-item"><a class="page-link" href="/manager?page=9">9</a></li>
+    {% if prev_url %}
+    <li class="page-item"><a class="page-link" href="{{ prev_url }}">Newer Slides</a></li>
+    {% endif %}
+    {% if next_url %}
+    <li class="page-item"><a class="page-link" href="{{ next_url }}">Older Slides</a></li>
+    {% endif %}
+
   </ul>
 </nav>
 {% endblock %}
