@@ -1,24 +1,5 @@
 {% extends "base.html" %}
 
 {% block content %}
-<script>
-    $('button').click(function() {
-        var state = $(this).attr('data-state');
 
-        $.post('/clients/', { state: state });
-    });
-
-    // Check for messages every 1 second
-    var checkDelay = 1000;
-    var lastMessageSeen = new Date().getTime();
-
-    setInterval(function() {
-        $.get('/clients/', function(result) {
-            if(result.ready and result.timestamp > lastMessageSeen) {
-                lastMessageSeen = result.timestamp;
-                console.log('Message received: ' + result.msg);
-            }
-        });
-    }, checkDelay);
-</script>
 {% endblock %}
