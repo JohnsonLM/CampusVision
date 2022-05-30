@@ -15,6 +15,13 @@ CampusVison is a digital signage manager designed to run on minimal hardware to 
     - Customizable sidebar content
 - Runs on any web-based device with a network connection.
 
+## Built with
+![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
+![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+![PyCharm](https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green)
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Affinity Designer](https://img.shields.io/badge/affinity%20desginer-%231B72BE.svg?style=for-the-badge&logo=affinity-designer&logoColor=white)
+
 ## Installation
 Before installing, ensure that Docker is installed and that the application files are copied to /var/www/signage on your server/workstation.
 
