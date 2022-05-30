@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block content %}
 <form method = "POST" enctype = "multipart/form-data">
     <br>
@@ -32,7 +31,7 @@
         <th>Message</th>
         <th>Start Date</th>
         <th>End Date</th>
-          <th>Manage</th>
+        <th>Manage</th>
       </tr>
     </thead>
     <tbody>
@@ -43,10 +42,9 @@
             <td>{{ message.time_start }}</td>
             <td>{{ message.time_end }}</td>
             <td>
-                <form action = "/mod" method = "POST" enctype = "multipart/form-data">
-                  <input type="hidden" name="slide_id" value="{{ message.id }}"/>
-                  <!-- <i class="fa fa-trash fa-lg"></i> -->
-                </form>
+              <form action = "/mod" method = "POST" enctype = "multipart/form-data">
+                <input type="hidden" name="slide_id" value="{{ message.id }}"/>
+              </form>
             </td>
         </tr>
       {% endfor %}

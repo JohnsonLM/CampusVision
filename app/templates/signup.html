@@ -1,38 +1,14 @@
 {% extends "base.html" %}
-
 {% block content %}
-<style>
-    .wrapper {
-      justify-content: center;
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .form-content {
-      -webkit-border-radius: 10px 10px 10px 10px;
-      border-radius: 10px 10px 10px 10px;
-      background: #fff;
-      padding: 30px;
-      width: 90%;
-      max-width: 450px;
-      position: relative;
-      padding: 20px;
-      -webkit-box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-      box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    }
-    .field {
-        padding: 10px;
-    }
-</style>
+<link href="{{ url_for('static', filename='login.css') }}" rel="stylesheet">
 <div class="column is-4 is-offset-4">
     <h3 class="title">Add User</h3>
     <div class="box">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
-            <div class="notification is-danger">
-                {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
-            </div>
+          <div class="notification is-danger">
+            {{ messages[0] }}. Go to <a href="{{ url_for('auth.login') }}">login page</a>.
+          </div>
         {% endif %}
         {% endwith %}
         <div class="wrapper">
