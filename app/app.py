@@ -5,8 +5,9 @@ from flask_login import LoginManager
 # initilize database
 db = SQLAlchemy()
 
-# main app fuction
+
 def create_app():
+    """main app fuction"""
     # initialize app
     app = Flask(__name__, instance_relative_config=True)
     # load configuration from instance
