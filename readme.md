@@ -3,6 +3,18 @@
 ### A Lightweight Digital Signage Management Solution
 CampusVison is a digital signage manager designed to run on minimal hardware to maximize deployment options to devices such as micro-computers, raspberry pis, smart TVs, and other display devices.
 
+## Features
+- Web interface for content management.
+    - Add, schedule, edit, and remove slides.
+    -  Contributor and administrator accounts.
+    - Moderate slides
+- Client interface for displaying slides
+    - Display date and time and live weather.
+    - Display emergency alerts
+    - Display messages and "ticker" content
+    - Customizable sidebar content
+- Runs on any web-based device with a network connection.
+
 ## Installation
 Before installing, ensure that Docker is installed and that the application files are copied to /var/www/signage on your server/workstation.
 
