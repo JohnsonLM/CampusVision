@@ -1,23 +1,30 @@
+"""
+utils.py provides a number of helper fuctions to views.py and auth.py
+including mostly database connectors and data checks.
+"""
 from .app import db
 from flask_login import current_user
 import datetime
 from .models import Slide, Alert, Message, Settings
 
-# count how many slides need moderation attention
+
 def mod_counter():
+    """count how many slides need moderation attention"""
     count = 0
     for slide in reversed(Slide.query.all()):
         if slide.approval == "Waiting Review":
             count += 1
     return count
 
-# check if upload has an allowed file type
+
 def allowed_file(filename, allowed_ext):
+    """check if upload has an allowed file type"""
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in allowed_ext
 
-# add slide to database
+
 def add_slide(time_start, time_end, title, slide_path, feeds):
+    """adds a slide to the database"""
     approval = "Waiting Review"
     submitted_by = current_user.name
     feed00 = "False"
@@ -76,23 +83,28 @@ def add_slide(time_start, time_end, title, slide_path, feeds):
     db.session.commit()
     return 1
 
-# approve slide in database
+
 def appr_slide(approval, slide_id):
+    """approve slide in database"""
     selected_slide = Slide.query.get(slide_id)
     selected_slide.approval = approval
     db.session.commit()
     return 1
 
-# remove slide from database
-# does not remove image from uploads folder
+
 def remove_slide(slide_id):
+    """
+    remove slide from database
+    does not remove image from uploads folder
+    """
     selected_slide = Slide.query.get(slide_id)
     db.session.delete(selected_slide)
     db.session.commit()
     return 1
 
-# fetch slides from the database based on the desired feed
+
 def get_slides(target_feed):
+    """fetch slides from the database based on the desired feed"""
     slides = []
     for slide in reversed(Slide.query.all()):
         start_date = datetime.datetime.strptime(slide.time_start, '%Y-%m-%d').date()
@@ -155,30 +167,34 @@ def get_slides(target_feed):
                         slides.append(slide.slide_path)
     return slides
 
-# update slide in the database
+
 def update_slide(slide_id, slide_name):
+    """update slide in the database"""
     slide_data = Slide.query.get(slide_id)
     slide_data.title = slide_name
     db.session.commit()
     return 1
 
-# get the status of alert and alert content
+
 def alert_status():
+    """get the status of alert and alert content"""
     alert_data = Alert.query.get(1)
     if alert_data.alert_text is not None:
         return alert_data.alert_text
     else:
         return ""
 
-# update alert content and status
+
 def update_alert(alert_text):
+    """update alert content and status"""
     alert_data = Alert.query.get(1)
     alert_data.alert_text = alert_text
     db.session.commit()
     return 1
 
-# add a message to the database
+
 def add_message(message_text, time_start, time_end):
+    """add a message to the database"""
     data = Message(
         text=message_text,
         time_start=time_start,
@@ -188,8 +204,9 @@ def add_message(message_text, time_start, time_end):
     db.session.commit()
     return 1
 
-# get a message from the database
+
 def get_message():
+    """get a message from the database"""
     messages = Message.query.all()
     message_send = []
     for item in messages:
@@ -201,22 +218,24 @@ def get_message():
                 message_send.append(item.text)
     return message_send
 
-# remove a message from the database
+
 def delete_message(message_id):
+    """remove a message from the database"""
     data = Alert.query.get(message_id)
     db.session.delete(data)
     db.session.commit()
     return 1
 
 
-# update the app settings
 def update_settings(duration):
+    """update the app settings"""
     data = Settings.query.get(1)
     data.duration = duration
     db.session.commit()
     return 1
 
-# fetch the app settings
+
 def get_settings():
+    """fetch the app settings"""
     settings = Settings.query.all()
     return settings[0].duration
