@@ -6,8 +6,10 @@ from werkzeug.utils import secure_filename, redirect
 from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
 from .models import Message, Slide
 
+# initialize view routes
 main = Blueprint('main', __name__)
 app = Flask(__name__, instance_relative_config=True)
+# load app configuration from /instance/config.py
 app.config.from_pyfile('config.py')
 
 
@@ -285,7 +287,7 @@ def settings():
             return render_template('settings.html', title='System Settings', name=current_user.name, mod_count=mod_counter())
     return redirect(url_for('auth.login'))
 
-
+## feed routes for feeds 1-10
 @main.route('/feed')
 def feed():
     interval = get_settings()

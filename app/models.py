@@ -2,7 +2,7 @@ from flask_login import UserMixin
 from .app import db
 
 
-# Define user model
+# define user model
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
@@ -10,7 +10,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(1000))
     is_admin = db.Column(db.Integer)
 
-
+# define slide model
 class Slide(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slide_path = db.Column(db.String(1000))
@@ -31,12 +31,12 @@ class Slide(db.Model):
     feed10 = db.Column(db.String(1000))
     submitted_by = db.Column(db.String(1000))
 
-
+# define alert model
 class Alert(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     alert_text = db.Column(db.String(1000))
 
-
+# define message model
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     time_start = db.Column(db.String(1000))
@@ -44,7 +44,7 @@ class Message(db.Model):
     text = db.Column(db.String(1000))
     submitted_by = db.Column(db.String(1000))
 
-
+# define settings model
 class Settings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     duration = db.Column(db.String(1000))

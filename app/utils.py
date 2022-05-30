@@ -3,7 +3,7 @@ from flask_login import current_user
 import datetime
 from .models import Slide, Alert, Message, Settings
 
-
+# count how many slides need moderation attention
 def mod_counter():
     count = 0
     for slide in reversed(Slide.query.all()):
@@ -11,13 +11,12 @@ def mod_counter():
             count += 1
     return count
 
-
+# check if upload has an allowed file type
 def allowed_file(filename, allowed_ext):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in allowed_ext
 
-
-# Slides
+# add slide to database
 def add_slide(time_start, time_end, title, slide_path, feeds):
     approval = "Waiting Review"
     submitted_by = current_user.name
@@ -77,21 +76,22 @@ def add_slide(time_start, time_end, title, slide_path, feeds):
     db.session.commit()
     return 1
 
-
+# approve slide in database
 def appr_slide(approval, slide_id):
     selected_slide = Slide.query.get(slide_id)
     selected_slide.approval = approval
     db.session.commit()
     return 1
 
-
+# remove slide from database
+# does not remove image from uploads folder
 def remove_slide(slide_id):
     selected_slide = Slide.query.get(slide_id)
     db.session.delete(selected_slide)
     db.session.commit()
     return 1
 
-
+# fetch slides from the database based on the desired feed
 def get_slides(target_feed):
     slides = []
     for slide in reversed(Slide.query.all()):
@@ -155,15 +155,14 @@ def get_slides(target_feed):
                         slides.append(slide.slide_path)
     return slides
 
-
+# update slide in the database
 def update_slide(slide_id, slide_name):
     slide_data = Slide.query.get(slide_id)
     slide_data.title = slide_name
     db.session.commit()
     return 1
 
-
-# Alerts
+# get the status of alert and alert content
 def alert_status():
     alert_data = Alert.query.get(1)
     if alert_data.alert_text is not None:
@@ -171,15 +170,14 @@ def alert_status():
     else:
         return ""
 
-
+# update alert content and status
 def update_alert(alert_text):
     alert_data = Alert.query.get(1)
     alert_data.alert_text = alert_text
     db.session.commit()
     return 1
 
-
-# Messages
+# add a message to the database
 def add_message(message_text, time_start, time_end):
     data = Message(
         text=message_text,
@@ -190,7 +188,7 @@ def add_message(message_text, time_start, time_end):
     db.session.commit()
     return 1
 
-
+# get a message from the database
 def get_message():
     messages = Message.query.all()
     message_send = []
@@ -203,7 +201,7 @@ def get_message():
                 message_send.append(item.text)
     return message_send
 
-
+# remove a message from the database
 def delete_message(message_id):
     data = Alert.query.get(message_id)
     db.session.delete(data)
@@ -211,14 +209,14 @@ def delete_message(message_id):
     return 1
 
 
-# Settings
+# update the app settings
 def update_settings(duration):
     data = Settings.query.get(1)
     data.duration = duration
     db.session.commit()
     return 1
 
-
+# fetch the app settings
 def get_settings():
     settings = Settings.query.all()
     return settings[0].duration

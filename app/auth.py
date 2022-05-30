@@ -5,33 +5,36 @@ from flask_login import login_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 
+# initialize auth routes
 auth = Blueprint('auth', __name__)
 
-
+# basic login page route
 @auth.route('/login')
 def login():
     return render_template('login.html')
 
-
+# route for posting user-supplied input to app
 @auth.route('/login', methods=['POST'])
 def login_post():
+    # assign user input to variables
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
-
     user = User.query.filter_by(email=email).first()
 
     # check if the user actually exists
-    # take the user-supplied password, hash it, and compare it to the hashed password in the database
+    # take the user-supplied password, hash it, and compare to the hashed password in the database
     if not user or not check_password_hash(user.password, password):
+        # return the user to login page if details do not match
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login'))
-
+    # log the user into the app if details do match
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
 
-
+# allow a user to be added to the database
 @auth.route('/signup')
+# make visible only to admins
 @login_required
 def signup():
     if current_user.is_authenticated:
@@ -39,7 +42,7 @@ def signup():
             render_template('signup.html', name=current_user.name)
     return redirect(url_for('auth.login'))
 
-
+# accept user input to be added to the database
 @auth.route('/signup', methods=['POST'])
 def signup_post():
     if not current_user.is_admin:
@@ -62,13 +65,13 @@ def signup_post():
 
     return redirect(url_for('auth.login'))
 
-
+# log the user out of the app
 @auth.route('/logout')
 def logout():
     flask_login.logout_user()
     return 'Logout'
 
-
+# allow admins to view and manage users
 @auth.route('/usermanager')
 @login_required
 def usermanager():
