@@ -2,7 +2,6 @@
 # CampusVision
 ![License](https://badgen.net/badge/license/MIT/blue)
 ![Issues](https://badgen.net/github/issues/JohnsonLM/CampusVision)
-![Commits](https://badgen.net/github/last-commit/JohnsonLM/CampusVision)
 
 ### A Lightweight Digital Signage Management Solution
 CampusVison is a digital signage manager designed to run on minimal hardware to maximize deployment options to devices such as micro-computers, raspberry pis, smart TVs, and other display devices.
