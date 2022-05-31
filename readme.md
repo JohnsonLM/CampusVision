@@ -54,6 +54,12 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Insert an OpenWeatherMap API key here.
 WEATHER_KEY = 'OpenWeatherMapAPIKeyHere'
+
+# Sets what file types can be uploaded as slides
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+# For pagination of the slide manager
+POSTS_PER_PAGE = 10
 ```
 
 #### Running via Docker
