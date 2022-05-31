@@ -1,5 +1,6 @@
 # CampusVision
 ![Issues](https://badgen.net/badge/Status/Work-in-Progress/red)
+[![Azure Demo](https://github.com/JohnsonLM/CampusVision/actions/workflows/main_campusvisionapp.yml/badge.svg?branch=main)](https://github.com/JohnsonLM/CampusVision/actions/workflows/main_campusvisionapp.yml)
 ![Status](https://badgen.net/github/open-issues/JohnsonLM/CampusVision)
 ![Commits](https://badgen.net/github/commits/JohnsonLM/CampusVision/main)
 ![License](https://badgen.net/badge/license/GPL/blue)
