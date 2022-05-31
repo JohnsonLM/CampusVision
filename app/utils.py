@@ -227,10 +227,11 @@ def delete_message(message_id):
     return 1
 
 
-def update_settings(duration):
+def update_settings(duration, signups):
     """update the app settings"""
     data = Settings.query.get(1)
     data.duration = duration
+    data.allow_signups = signups
     db.session.commit()
     return 1
 
@@ -239,3 +240,8 @@ def get_settings():
     """fetch the app settings"""
     settings = Settings.query.all()
     return settings[0].duration
+
+def signups_allowed():
+    """fetch the signup setting"""
+    settings = Settings.query.all()
+    return settings[0].allow_signups

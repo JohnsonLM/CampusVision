@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
+from .utils import signups_allowed
 
 # initialize auth routes
 auth = Blueprint('auth', __name__)
@@ -32,21 +33,25 @@ def login_post():
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
 
+
 # allow a user to be added to the database
 @auth.route('/signup')
-# make visible only to admins
-@login_required
 def signup():
-    if current_user.is_authenticated:
-        if current_user.is_admin:
-            render_template('signup.html', name=current_user.name)
-    return redirect(url_for('auth.login'))
+    if signups_allowed() == 1:
+        return render_template('signup.html', name="Anonymous")
+    elif signups_allowed() == 0:
+        if current_user.is_authenticated:
+            if current_user.is_admin:
+                return render_template('signup.html', name=current_user.name)
+        else:
+            return redirect(url_for('auth.login'))
 
 # accept user input to be added to the database
 @auth.route('/signup', methods=['POST'])
 def signup_post():
-    if not current_user.is_admin:
-        abort(401)
+    if signups_allowed() == 0:
+        if not current_user.is_admin:
+            abort(401)
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')

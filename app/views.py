@@ -283,7 +283,8 @@ def settings():
         if current_user.is_admin:
             if request.method == 'POST':
                 duration_time = request.form["duration"]
-                update_settings(duration_time)
+                allow_signups = request.form["allow_signups"]
+                update_settings(duration_time, allow_signups)
             return render_template('settings.html', title='System Settings', name=current_user.name, mod_count=mod_counter())
     return redirect(url_for('auth.login'))
 

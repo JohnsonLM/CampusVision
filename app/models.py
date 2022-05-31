@@ -55,3 +55,4 @@ class Settings(db.Model):
     """defines settings model"""
     id = db.Column(db.Integer, primary_key=True)
     duration = db.Column(db.String(1000))
+    allow_signups = db.Column(db.Integer)
