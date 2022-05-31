@@ -1,11 +1,10 @@
 # CampusVision
-### A Lightweight Digital Signage Management Solution
 ![Issues](https://badgen.net/badge/Status/Work-in-Progress/red)
 ![Status](https://badgen.net/github/open-issues/JohnsonLM/CampusVision)
 ![Commits](https://badgen.net/github/commits/JohnsonLM/CampusVision/main)
 ![License](https://badgen.net/badge/license/GPL/blue)
 
-CampusVison is a digital signage manager designed to run on minimal hardware to maximize deployment options to devices such as micro-computers, raspberry pis, smart TVs, and other display devices.
+CampusVison is a digital signage Management solution designed to run on minimal hardware to maximize deployment options to devices such as micro-computers, raspberry pis, smart TVs, and other display devices.
 
 ## Features
 - Web interface for content management.
@@ -24,7 +23,7 @@ CampusVison is a digital signage manager designed to run on minimal hardware to 
 ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
 ![PyCharm](https://img.shields.io/badge/pycharm-143?style=for-the-badge&logo=pycharm&logoColor=black&color=black&labelColor=green)
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
-![Affinity Designer](https://img.shields.io/badge/affinity%20desginer-%231B72BE.svg?style=for-the-badge&logo=affinity-designer&logoColor=white)
+![Affinity Designer](https://img.shields.io/badge/affinity%20designer-%231B72BE.svg?style=for-the-badge&logo=affinity-designer&logoColor=white)
 
 ## Installation
 Before installing, ensure that Docker is installed and that the application files are copied to /var/www/signage on your server/workstation.
@@ -38,6 +37,7 @@ Next, create a configuration at path `/instance/config.py`. Copy and paste the b
 # add a secure 256-bit key here using a key generator such as allkeysgenerator.com
 SECRET_KEY = 'SuperSecureK3yHere'
 
+# points the app the the primary database
 SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
 
 # points the app to the uploads folder within the static directory.
