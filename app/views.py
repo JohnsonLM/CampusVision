@@ -6,21 +6,23 @@ from werkzeug.utils import secure_filename, redirect
 from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
 from .models import Message, Slide
 
-# initialize view routes
+"""initialize view routes"""
 main = Blueprint('main', __name__)
 app = Flask(__name__, instance_relative_config=True)
-# load app configuration from /instance/config.py
+"""load app configuration from /instance/config.py"""
 app.config.from_pyfile('config.py')
 
 
 @main.route('/')
 def index():
+    """homepage for the app to display info and stats"""
     return render_template('home.html', title='Dashboard', mod_count=mod_counter())
 
 
 @main.route('/manager')
 @login_required
 def manager():
+    """slide manager for users to view and edit submitted slides"""
     page = request.args.get('page', 1, type=int)
     posts = Slide.query.paginate(page, app.config['POSTS_PER_PAGE'], False)
     next_url = url_for('main.manager', page=posts.next_num) \
@@ -126,6 +128,10 @@ def upload_file():
 @main.route('/mod', methods=['GET', 'POST'])
 @login_required
 def moderate():
+    """
+    check if user is logged in and is an admin
+    if not then return user to login screen
+    """
     if current_user.is_authenticated:
         if current_user.is_admin:
             if request.method == 'POST':
@@ -288,7 +294,21 @@ def settings():
             return render_template('settings.html', title='System Settings', name=current_user.name, mod_count=mod_counter())
     return redirect(url_for('auth.login'))
 
-## feed routes for feeds 1-10
+
+"""Feed routes for feeds 1-10
+
+Args:
+    template (string): The template name to use for the feed.
+    title (string): title for the page. This is not displayed but should be declared.
+    slides (list): slides to display.
+    alert_status (string): if not none then overrides slide content to show the string.
+    interval (integer): rate in milliseconds to rotate slides.
+    messages (string): messages for the ticker display.
+    background (string): name of background image for the sidebar located in the static folder.
+
+Returns:
+template: the feed template with supplied content
+"""
 @main.route('/feed')
 def feed():
     interval = get_settings()

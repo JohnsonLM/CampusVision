@@ -9,7 +9,11 @@ from .models import Slide, Alert, Message, Settings
 
 
 def mod_counter():
-    """count how many slides need moderation attention"""
+    """count how many slides need moderation attention
+
+    Returns:
+        the number of slides waiting to be moderated.
+    """
     count = 0
     for slide in reversed(Slide.query.all()):
         if slide.approval == "Waiting Review":
@@ -18,13 +22,29 @@ def mod_counter():
 
 
 def allowed_file(filename, allowed_ext):
-    """check if upload has an allowed file type"""
+    """check if upload has an allowed file type
+
+    Args:
+        filename (string): the filename to check
+        allowed-ext (list): extensions that should be allowed in uploads
+    """
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in allowed_ext
 
 
 def add_slide(time_start, time_end, title, slide_path, feeds):
-    """adds a slide to the database"""
+    """Adds a slide to the database
+
+    Args:
+        time_start (string): date-time the slide should begin displaying.
+        time_end (string): date-time the slide should stop displaying.
+        title (string): name of the slide.
+        slide_path (string): filename/path of the slide relate to the /static/uploads folder.
+        feeds (list): feeds that the slide should be submitted to.
+
+    Returns:
+        None
+    """
     approval = "Waiting Review"
     submitted_by = current_user.name
     feed00 = "False"
@@ -85,7 +105,12 @@ def add_slide(time_start, time_end, title, slide_path, feeds):
 
 
 def appr_slide(approval, slide_id):
-    """approve slide in database"""
+    """approve slide in database
+
+    Args:
+        approval (string): the approval status of the slide.
+        slide_id (integer): id of the slide to change.
+    """
     selected_slide = Slide.query.get(slide_id)
     selected_slide.approval = approval
     db.session.commit()
