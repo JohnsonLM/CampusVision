@@ -1,21 +1,26 @@
 import json
 import os
+import ast
 from flask import render_template, request, Blueprint, flash, Flask, url_for
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename, redirect
-from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, get_feeds, remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
+from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
 from .models import Message, Slide
+from flask_socketio import SocketIO, emit
 
 """initialize view routes"""
 main = Blueprint('main', __name__)
 app = Flask(__name__, instance_relative_config=True)
 """load app configuration from /instance/config.py"""
 app.config.from_pyfile('config.py')
+socketio = SocketIO(app, logge=True)
+clients = 0
+
 
 @main.route('/')
 def index():
     """homepage for the app to display info and stats"""
-    return render_template('home.html', title='Dashboard', mod_count=mod_counter(), feeds=get_feeds())
+    return render_template('home.html', title='Dashboard', mod_count=mod_counter(), feeds=ast.literal_eval(get_settings().feeds))
 
 
 @main.route('/manager')
@@ -244,12 +249,12 @@ def mod_waiting():
     return redirect(url_for('auth.login'))
 
 
-@main.route('/edit', methods=['GET', 'POST'])
+@main.route('/edit/<id>', methods=['GET', 'POST'])
 @login_required
-def edit():
+def edit(id):
     if request.method == 'POST':
-        update_slide(request.form["id_number"], request.form["title_text"])
-    return render_template('edit.html', title='Edit Slide', slide_id='10', name=current_user.name, mod_count=mod_counter())
+        update_slide(id, request.form["title_text"], request.form["time_start"], request.form["time_end"], str(request.form.getlist('feeds')))
+    return render_template('edit.html', title='Edit Slide', slide_id=id, slide=Slide.query.get(id), name=current_user.name, mod_count=mod_counter(), feeds=get_settings().feeds)
 
 
 @main.route('/messages', methods=['GET', 'POST'])
@@ -290,9 +295,8 @@ def settings():
                 duration_time = request.form["duration"]
                 allow_signups = request.form["allow_signups"]
                 feeds = request.form["feeds"]
-                feeds = "'Main', 'Admissions', 'Dining Hall', 'Kinlaw Library', 'Service Desk'"
                 update_settings(duration_time, allow_signups, feeds)
-            return render_template('settings.html', title='System Settings', name=current_user.name, mod_count=mod_counter())
+            return render_template('settings.html', title='System Settings', name=current_user.name, mod_count=mod_counter(), settings=get_settings())
     return redirect(url_for('auth.login'))
 
 
@@ -316,7 +320,8 @@ def feeds(title):
                            title=title,
                            slides=get_slides(title),
                            alert_status=alert_status(),
-                           interval=get_settings(),
+                           interval=get_settings().duration,
                            messages=json.dumps(get_message()),
                            background='bg.jpg',
                            weather_key=app.config['WEATHER_KEY'])
+

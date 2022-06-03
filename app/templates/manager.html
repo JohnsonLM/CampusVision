@@ -45,14 +45,9 @@
             <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 100px;'></td>
             <td>{{ user.submitted_by }}</td>
             <td>{{ user.approval }}</td>
-            <td>
-              <a href="/edit">Edit</a>
-              <!--
-              <form action = "/mod" method = "POST" enctype = "multipart/form-data">
-                <i class="fa fa-edit"></i>
-                <input type="submit" name="Edit" value="Edit (Coming Soon)" onclick="validateForm()" class="btn btn-success btn-sm" style="margin: 5px;">
-              </form>
-              -->
+            <td width="100px">
+              <i class="fa fa-edit fa-lg" ></i>
+              <a href="/edit/{{ user.id }}" class="btn btn-dark btn-sm">Edit</a>
             </td>
 
           </tr>

@@ -99,10 +99,13 @@ def get_slides(target_feed):
                         slides.append(slide.slide_path)
     return slides
 
-def update_slide(slide_id, slide_name):
+def update_slide(slide_id, slide_name, time_start, time_end, feeds):
     """update slide in the database"""
     slide_data = Slide.query.get(slide_id)
     slide_data.title = slide_name
+    slide_data.time_start = time_start
+    slide_data.time_end = time_end
+    slide_data.feeds = feeds
     db.session.commit()
     return 1
 
@@ -171,13 +174,9 @@ def update_settings(duration, signups, feeds):
 def get_settings():
     """fetch the app settings"""
     settings = Settings.query.all()
-    return settings[0].duration
+    return settings[0]
 
 def signups_allowed():
     """fetch the signup setting"""
     settings = Settings.query.all()
     return settings[0].allow_signups
-
-def get_feeds():
-    feeds = {'Main', 'Admissions', 'Dining Hall', 'Kinlaw Library', 'Service Desk'}
-    return feeds

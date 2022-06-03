@@ -4,15 +4,15 @@
     <br>
     <div class="textbox sign-up-textbox">
         <label for="duration">Slide Duration (in milliseconds)</label>
-        <input type="number" id="duration" name="duration">
+        <input type="number" id="duration" value="{{ settings.duration }}" name="duration">
         <br>
         <br>
         <label for="duration">Allow user signups? Enter 0 or 1</label>
-        <input type="number" id="allow_signups" name="allow_signups">
+        <input type="number" id="allow_signups" value="{{ settings.allow_signups }}" name="allow_signups">
         <br>
         <br>
         <label for="duration">Feeds (list)</label>
-        <input type="text" id="feeds" name="feeds">
+        <input type="text" id="feeds" value="{{ settings.feeds }}" name="feeds">
     </div>
     <br>
     <button class="btn btn-primary" type="submit" onclick="validateForm()" name="submit">Update Settings</button>
