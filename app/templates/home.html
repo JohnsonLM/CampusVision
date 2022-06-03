@@ -24,72 +24,14 @@
             <h5 class="card-title">Feeds</h5>
         </div>
         <ul class="signs" style="display: flex; flex-flow: row wrap; list-style: none; padding: 10px;">
+            {% for feed in feeds %}
             <li>
-              <a href="/feed" target="_blank" class="slide-nav btn btn-outline-primary">
+              <a href="/feeds/{{ feed }}" target="_blank" class="slide-nav btn btn-outline-primary">
                 <i class="fa fa-tv"></i>
-                Main Feed
+                  {{ feed }}
               </a>
             </li>
-            <li>
-              <a href="/feed01" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Admissions
-              </a>
-            </li>
-            <li>
-              <a href="/feed02" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Service Desk
-              </a>
-            </li>
-            <li>
-              <a href="/feed03" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Art
-              </a>
-            </li>
-            <li>
-              <a href="/feed04" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Wellness
-              </a>
-            </li>
-            <li>
-              <a href="/feed05" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Curriculum Lab
-              </a>
-            </li>
-            <li>
-              <a href="/feed06" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Education
-              </a>
-            </li>
-            <li>
-              <a href="/feed07" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Library
-              </a>
-            </li>
-            <li>
-              <a href="/feed08" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Music
-              </a>
-            </li>
-            <li>
-              <a href="/feed09" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Science
-              </a>
-            </li>
-            <li>
-              <a href="/feed10" target="_blank" class="slide-nav btn btn-outline-primary btn">
-                <i class="fa fa-tv"></i>
-                Stuce
-              </a>
-            </li>
+            {% endfor %}
         </ul>
     </div>
     <div class="m-2 card">

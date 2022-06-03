@@ -22,18 +22,8 @@ class Slide(db.Model):
     time_end = db.Column(db.String(1000))
     title = db.Column(db.String(1000))
     approval = db.Column(db.String(1000))
-    feed00 = db.Column(db.String(1000))
-    feed01 = db.Column(db.String(1000))
-    feed02 = db.Column(db.String(1000))
-    feed03 = db.Column(db.String(1000))
-    feed04 = db.Column(db.String(1000))
-    feed05 = db.Column(db.String(1000))
-    feed06 = db.Column(db.String(1000))
-    feed07 = db.Column(db.String(1000))
-    feed08 = db.Column(db.String(1000))
-    feed09 = db.Column(db.String(1000))
-    feed10 = db.Column(db.String(1000))
     submitted_by = db.Column(db.String(1000))
+    feeds = db.Column(db.String(1000))
 
 
 class Alert(db.Model):
