@@ -312,7 +312,7 @@ template: the feed template with supplied content
 @main.route('/feed')
 def feed():
     interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed00'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
+    return render_template('feed.html', title='', slides=get_slides('feed00'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg', weather_key=app.config['WEATHER_KEY'])
 
 
 @main.route('/feed01')

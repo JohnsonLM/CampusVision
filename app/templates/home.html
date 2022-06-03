@@ -1,41 +1,111 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="accordion" id="accordionExample" style="max-width: 1000px">
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h5 class="mb-0">
-        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Digital Signage Policies
-        </button>
-      </h5>
+<hr>
+<div style="display:flex;">
+    <div class="m-2 card">
+        <div class="card-header">
+            <h5 class="card-title">Digital Signage Policies</h5>
+        </div>
+        <div class="card-body">
+            <ul>
+              <li>Slides must be in the 16:9 aspect ratio and landscape orientation</li>
+              <li>Slides must have dimensions of at least 1920x1080.</li>
+              <li>Slides must be under 16mb in size.</li>
+              <li>Designs must be submitted in either JPG or PNG file format.</li>
+              <li>Signs should follow good design principles (easy to read, sufficient contrast, not too busy, etc.).</li>
+              <li>All signs are subject to approval and redesign by staff based on these standard and general graphic design standards.</li>
+              <li>Signs should be submitted as well in advance as possible to ensure time for approval and possible revision.</li>
+              <li>If a sign has a specific date is must be posted or taken down, be sure to communicate this with staff. </li>
+            </ul>
+        </div>
     </div>
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-      <div class="card-body">
-        <ul>
-          <li>Slides must be in the 16:9 aspect ratio and landscape orientation</li>
-          <li>Slides must have dimensions of at least 1920x1080.</li>
-          <li>Slides must have dimensions of at least 1920x1080.</li>
-          <li>Slides must be under 16mb in size.</li>
-          <li>Designs must be submitted in either JPG or PNG file format.</li>
-          <li>Signs should follow good design principles (easy to read, sufficient contrast, not too busy, etc.).</li>
-          <li>All signs are subject to approval and redesign by staff based on these standard and general graphic design standards.</li>
-          <li>Signs should be submitted as well in advance as possible to ensure time for approval and possible revision.</li>
-          <li>If a sign has a specific date is must be posted or taken down, be sure to communicate this with staff. </li>
+    <div class="m-2 card">
+        <div class="card-header">
+            <h5 class="card-title">Feeds</h5>
+        </div>
+        <ul class="signs" style="display: flex; flex-flow: row wrap; list-style: none; padding: 10px;">
+            <li>
+              <a href="/feed" target="_blank" class="slide-nav btn btn-outline-primary">
+                <i class="fa fa-tv"></i>
+                Main Feed
+              </a>
+            </li>
+            <li>
+              <a href="/feed01" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Admissions
+              </a>
+            </li>
+            <li>
+              <a href="/feed02" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Service Desk
+              </a>
+            </li>
+            <li>
+              <a href="/feed03" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Art
+              </a>
+            </li>
+            <li>
+              <a href="/feed04" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Wellness
+              </a>
+            </li>
+            <li>
+              <a href="/feed05" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Curriculum Lab
+              </a>
+            </li>
+            <li>
+              <a href="/feed06" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Education
+              </a>
+            </li>
+            <li>
+              <a href="/feed07" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Library
+              </a>
+            </li>
+            <li>
+              <a href="/feed08" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Music
+              </a>
+            </li>
+            <li>
+              <a href="/feed09" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Science
+              </a>
+            </li>
+            <li>
+              <a href="/feed10" target="_blank" class="slide-nav btn btn-outline-primary btn">
+                <i class="fa fa-tv"></i>
+                Stuce
+              </a>
+            </li>
         </ul>
-      </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header" id="headingTwo">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Instructions
-        </button>
-      </h5>
+    <div class="m-2 card">
+        <div class="card-header">
+            <h5 class="card-title">Documentation</h5>
+        </div>
+        <div class="card-body">
+            <p>These documents will train you on how to make slides!</p>
+            <ul>
+                <li>Doc 1</li>
+                <li>Doc 2</li>
+                <li>Doc 3</li>
+                <li>Doc 4</li>
+                <li>Doc 5</li>
+            </ul>
+        </div>
     </div>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
-      <div class="card-body">Text Here</div>
-    </div>
-  </div>
 </div>
 {% endblock %}
