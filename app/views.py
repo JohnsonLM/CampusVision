@@ -289,7 +289,9 @@ def settings():
             if request.method == 'POST':
                 duration_time = request.form["duration"]
                 allow_signups = request.form["allow_signups"]
-                update_settings(duration_time, allow_signups)
+                feeds = request.form["feeds"]
+                feeds = "'Main', 'Admissions', 'Dining Hall', 'Kinlaw Library', 'Service Desk'"
+                update_settings(duration_time, allow_signups, feeds)
             return render_template('settings.html', title='System Settings', name=current_user.name, mod_count=mod_counter())
     return redirect(url_for('auth.login'))
 

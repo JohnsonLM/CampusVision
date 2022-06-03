@@ -158,11 +158,12 @@ def delete_message(message_id):
     return 1
 
 
-def update_settings(duration, signups):
+def update_settings(duration, signups, feeds):
     """update the app settings"""
     data = Settings.query.get(1)
     data.duration = duration
     data.allow_signups = signups
+    data.feeds = feeds
     db.session.commit()
     return 1
 
@@ -178,5 +179,5 @@ def signups_allowed():
     return settings[0].allow_signups
 
 def get_feeds():
-    feeds = {'Admissions', 'Main', 'Service Desk'}
+    feeds = {'Main', 'Admissions', 'Dining Hall', 'Kinlaw Library', 'Service Desk'}
     return feeds
