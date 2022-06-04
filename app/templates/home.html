@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
 <hr>
-<div style="display:flex;">
-    <div class="m-2 card">
+<div style="display:flex; flex-wrap: wrap;">
+    <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
             <h5 class="card-title">Digital Signage Policies</h5>
         </div>
@@ -19,11 +19,11 @@
             </ul>
         </div>
     </div>
-    <div class="m-2 card">
+    <div class="m-2 card" style="flex-grow: 1; max-width: 700px;">
         <div class="card-header">
             <h5 class="card-title">Feeds</h5>
         </div>
-        <ul class="signs" style="display: flex; flex-flow: row wrap; list-style: none; padding: 10px;">
+        <ul class="signs" style="display: flex; flex-wrap: wrap; list-style: none; padding: 10px;">
             {% for feed in feeds %}
             <li>
               <a href="/feeds/{{ feed }}" target="_blank" class="slide-nav btn btn-outline-primary">
@@ -34,7 +34,7 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="m-2 card">
+    <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
             <h5 class="card-title">Documentation</h5>
         </div>
@@ -47,6 +47,19 @@
                 <li>Doc 4</li>
                 <li>Doc 5</li>
             </ul>
+        </div>
+    </div>
+    <div class="m-2 card" style="flex-grow: 1">
+        <div class="card-header">
+            <h5 class="card-title">Active Clients</h5>
+        </div>
+        <div class="card-body">
+            {% if clients %}
+            {% for client in clients %}
+            <p>{{ client }}</p>
+            <br>
+            {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>

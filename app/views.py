@@ -1,7 +1,8 @@
 import json
 import os
 import ast
-from flask import render_template, request, Blueprint, flash, Flask, url_for
+from datetime import datetime
+from flask import render_template, request, Blueprint, flash, Flask, url_for, session
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename, redirect
 from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
@@ -13,14 +14,16 @@ main = Blueprint('main', __name__)
 app = Flask(__name__, instance_relative_config=True)
 """load app configuration from /instance/config.py"""
 app.config.from_pyfile('config.py')
-socketio = SocketIO(app, logge=True)
-clients = 0
 
 
 @main.route('/')
 def index():
     """homepage for the app to display info and stats"""
-    return render_template('home.html', title='Dashboard', mod_count=mod_counter(), feeds=ast.literal_eval(get_settings().feeds))
+    return render_template('home.html',
+                           title='Dashboard',
+                           mod_count=mod_counter(),
+                           feeds=ast.literal_eval(get_settings().feeds),
+                           clients=session.get('active_clients'))
 
 
 @main.route('/manager')
@@ -126,7 +129,11 @@ def upload_file():
             feeds = request.form.getlist('feeds')
             add_slide(time_start, time_end, title, slide_path, feeds)
             return redirect(request.url)
-    return render_template('upload.html', title='Upload a Slide', name=current_user.name, mod_count=mod_counter(), feeds=get_feeds())
+    return render_template('upload.html',
+                           title='Upload a Slide',
+                           name=current_user.name,
+                           mod_count=mod_counter(),
+                           feeds=ast.literal_eval(get_settings().feeds))
 
 
 @main.route('/mod', methods=['GET', 'POST'])
@@ -253,8 +260,18 @@ def mod_waiting():
 @login_required
 def edit(id):
     if request.method == 'POST':
-        update_slide(id, request.form["title_text"], request.form["time_start"], request.form["time_end"], str(request.form.getlist('feeds')))
-    return render_template('edit.html', title='Edit Slide', slide_id=id, slide=Slide.query.get(id), name=current_user.name, mod_count=mod_counter(), feeds=get_settings().feeds)
+        update_slide(id,
+                     request.form["title_text"],
+                     request.form["time_start"],
+                     request.form["time_end"],
+                     str(request.form.getlist('feeds')))
+    return render_template('edit.html',
+                           title='Edit Slide',
+                           slide_id=id,
+                           slide=Slide.query.get(id),
+                           name=current_user.name,
+                           mod_count=mod_counter(),
+                           feeds=get_settings().feeds)
 
 
 @main.route('/messages', methods=['GET', 'POST'])
@@ -267,7 +284,11 @@ def messages():
                 start_time = request.form["time_start"]
                 end_time = request.form["time_end"]
                 add_message(text, start_time, end_time)
-            return render_template('messages.html', title='Messages', name=current_user.name, mod_count=mod_counter(), messages=Message.query.all())
+            return render_template('messages.html',
+                                   title='Messages',
+                                   name=current_user.name,
+                                   mod_count=mod_counter(),
+                                   messages=Message.query.all())
     return redirect(url_for('auth.login'))
 
 
@@ -282,7 +303,10 @@ def alerts():
                     update_alert(request.form["alert_text"])
                 elif status == "Disable":
                     update_alert("")
-            return render_template('alerts.html', title='Submit an Emergency Alert', name=current_user.name, mod_count=mod_counter())
+            return render_template('alerts.html',
+                                   title='Submit an Emergency Alert',
+                                   name=current_user.name,
+                                   mod_count=mod_counter())
     return redirect(url_for('auth.login'))
 
 
@@ -296,7 +320,11 @@ def settings():
                 allow_signups = request.form["allow_signups"]
                 feeds = request.form["feeds"]
                 update_settings(duration_time, allow_signups, feeds)
-            return render_template('settings.html', title='System Settings', name=current_user.name, mod_count=mod_counter(), settings=get_settings())
+            return render_template('settings.html',
+                                   title='System Settings',
+                                   name=current_user.name,
+                                   mod_count=mod_counter(),
+                                   settings=get_settings())
     return redirect(url_for('auth.login'))
 
 
@@ -314,8 +342,13 @@ Args:
 Returns:
 template: the feed template with supplied content
 """
-@main.route('/feeds/<title>')
+@main.route('/feeds/<title>', methods=['GET', 'POST'])
 def feeds(title):
+    #if request.method == "POST":
+        #data = request.get_data()
+        #client_list = session['active_clients']
+        #client_list.append(data)
+        #session['active_clients'] = client_list
     return render_template('feed.html',
                            title=title,
                            slides=get_slides(title),
@@ -324,4 +357,12 @@ def feeds(title):
                            messages=json.dumps(get_message()),
                            background='bg.jpg',
                            weather_key=app.config['WEATHER_KEY'])
+
+
+@main.route('/clients')
+def clients():
+    return render_template('clients.html',
+                           title='Clients',
+                           mod_count=mod_counter(),
+                           clients=session.get('active_clients'))
 
