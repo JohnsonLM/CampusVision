@@ -143,6 +143,7 @@ def moderate():
     if not then return user to login screen
     """
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
@@ -172,6 +173,7 @@ def moderate():
 @login_required
 def mod_denied():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
@@ -201,6 +203,7 @@ def mod_denied():
 @login_required
 def mod_approved():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
@@ -230,6 +233,7 @@ def mod_approved():
 @login_required
 def mod_waiting():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
@@ -277,6 +281,7 @@ def edit(slide_id):
 @login_required
 def messages():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 text = request.form["message_text"]
@@ -295,6 +300,7 @@ def messages():
 @login_required
 def alerts():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 status = request.form["alert_status"]
@@ -313,6 +319,7 @@ def alerts():
 @login_required
 def settings():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 duration_time = request.form["duration"]
