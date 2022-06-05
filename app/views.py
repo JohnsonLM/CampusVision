@@ -352,11 +352,6 @@ template: the feed template with supplied content
 
 @main.route('/feeds/<title>', methods=['GET', 'POST'])
 def feeds(title):
-    # if request.method == "POST":
-        # data = request.get_data()
-        # client_list = session['active_clients']
-        # client_list.append(data)
-        # session['active_clients'] = client_list
     return render_template('feed.html',
                            title=title,
                            slides=get_slides(title),
