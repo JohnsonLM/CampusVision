@@ -1,13 +1,12 @@
 import json
 import os
 import ast
-from datetime import datetime
 from flask import render_template, request, Blueprint, flash, Flask, url_for, session
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename, redirect
-from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
+from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, \
+    remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
 from .models import Message, Slide
-from flask_socketio import SocketIO, emit
 
 """initialize view routes"""
 main = Blueprint('main', __name__)
@@ -126,8 +125,8 @@ def upload_file():
             time_end = request.form["time_end"]
             title = request.form["title"]
             slide_path = secure_filename(file.filename)
-            feeds = request.form.getlist('feeds')
-            add_slide(time_start, time_end, title, slide_path, feeds)
+            feed_list = request.form.getlist('feeds')
+            add_slide(time_start, time_end, title, slide_path, feed_list)
             return redirect(request.url)
     return render_template('upload.html',
                            title='Upload a Slide',
@@ -147,9 +146,9 @@ def moderate():
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
-                    appr_slide('Approved', request.form['slide_id'])
+                    appr_slide('Approved', int(request.form['slide_id']))
                 elif 'Deny' in request.form:
-                    appr_slide('Denied', request.form['slide_id'])
+                    appr_slide('Denied', int(request.form['slide_id']))
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
@@ -176,9 +175,9 @@ def mod_denied():
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
-                    appr_slide('Approved', request.form['slide_id'])
+                    appr_slide('Approved', int(request.form['slide_id']))
                 elif 'Deny' in request.form:
-                    appr_slide('Denied', request.form['slide_id'])
+                    appr_slide('Denied', int(request.form['slide_id']))
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
@@ -205,9 +204,9 @@ def mod_approved():
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
-                    appr_slide('Approved', request.form['slide_id'])
+                    appr_slide('Approved', int(request.form['slide_id']))
                 elif 'Deny' in request.form:
-                    appr_slide('Denied', request.form['slide_id'])
+                    appr_slide('Denied', int(request.form['slide_id']))
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
@@ -234,9 +233,9 @@ def mod_waiting():
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
-                    appr_slide('Approved', request.form['slide_id'])
+                    appr_slide('Approved', int(request.form['slide_id']))
                 elif 'Deny' in request.form:
-                    appr_slide('Denied', request.form['slide_id'])
+                    appr_slide('Denied', int(request.form['slide_id']))
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
@@ -258,9 +257,9 @@ def mod_waiting():
 
 @main.route('/edit/<id>', methods=['GET', 'POST'])
 @login_required
-def edit(id):
+def edit(slide_id):
     if request.method == 'POST':
-        update_slide(id,
+        update_slide(slide_id,
                      request.form["title_text"],
                      request.form["time_start"],
                      request.form["time_end"],
@@ -318,8 +317,8 @@ def settings():
             if request.method == 'POST':
                 duration_time = request.form["duration"]
                 allow_signups = request.form["allow_signups"]
-                feeds = request.form["feeds"]
-                update_settings(duration_time, allow_signups, feeds)
+                feed_list = request.form["feeds"]
+                update_settings(duration_time, allow_signups, feed_list)
             return render_template('settings.html',
                                    title='System Settings',
                                    name=current_user.name,
@@ -342,13 +341,15 @@ Args:
 Returns:
 template: the feed template with supplied content
 """
+
+
 @main.route('/feeds/<title>', methods=['GET', 'POST'])
 def feeds(title):
-    #if request.method == "POST":
-        #data = request.get_data()
-        #client_list = session['active_clients']
-        #client_list.append(data)
-        #session['active_clients'] = client_list
+    # if request.method == "POST":
+        # data = request.get_data()
+        # client_list = session['active_clients']
+        # client_list.append(data)
+        # session['active_clients'] = client_list
     return render_template('feed.html',
                            title=title,
                            slides=get_slides(title),
@@ -373,8 +374,10 @@ def feeds_vertical(title):
 
 @main.route('/clients')
 def clients():
+    """
+    Route for client page
+    """
     return render_template('clients.html',
                            title='Clients',
                            mod_count=mod_counter(),
                            clients=session.get('active_clients'))
-

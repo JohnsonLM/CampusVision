@@ -1,7 +1,7 @@
-# improt app
+# import app
 from app import app
 
-# initilize app
+# initialize app
 app = app.create_app()
 
 # run app

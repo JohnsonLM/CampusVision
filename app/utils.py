@@ -1,5 +1,5 @@
 """
-utils.py provides a number of helper fuctions to views.py and auth.py
+utils.py provides a number of helper functions to views.py and auth.py
 including mostly database connectors and data checks.
 """
 from .app import db
@@ -26,7 +26,7 @@ def allowed_file(filename, allowed_ext):
 
     Args:
         filename (string): the filename to check
-        allowed-ext (list): extensions that should be allowed in uploads
+        allowed_ext (list): extensions that should be allowed in uploads
     """
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in allowed_ext
@@ -98,6 +98,7 @@ def get_slides(target_feed):
                     if today_date <= end_date:
                         slides.append(slide.slide_path)
     return slides
+
 
 def update_slide(slide_id, slide_name, time_start, time_end, feeds):
     """update slide in the database"""
@@ -175,6 +176,7 @@ def get_settings():
     """fetch the app settings"""
     settings = Settings.query.all()
     return settings[0]
+
 
 def signups_allowed():
     """fetch the signup setting"""

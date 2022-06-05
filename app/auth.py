@@ -69,7 +69,10 @@ def signup_post():
         flash('Email already registered.')
         return redirect(url_for('auth.signup'))
 
-    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'), is_admin=is_admin)
+    new_user = User(email=email,
+                    name=name,
+                    password=generate_password_hash(password, method='sha256'),
+                    is_admin=is_admin)
     db.session.add(new_user)
     db.session.commit()
 
@@ -89,5 +92,8 @@ def usermanager():
     """allow admins to view and manage users"""
     if current_user.is_authenticated:
         if current_user.is_admin:
-            return render_template('manager-users.html', title="User Management Coming Soon!", users=User.query.all(), name=current_user.name)
+            return render_template('manager-users.html',
+                                   title="User Management Coming Soon!",
+                                   users=User.query.all(),
+                                   name=current_user.name)
     return redirect(url_for('auth.login'))
