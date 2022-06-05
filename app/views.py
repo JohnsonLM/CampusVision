@@ -8,10 +8,10 @@ from .utils import mod_counter, alert_status, add_message, add_slide, allowed_fi
     remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
 from .models import Message, Slide
 
-"""initialize view routes"""
+# initialize view routes
 main = Blueprint('main', __name__)
 app = Flask(__name__, instance_relative_config=True)
-"""load app configuration from /instance/config.py"""
+# load app configuration from /instance/config.py
 app.config.from_pyfile('config.py')
 
 
@@ -334,24 +334,22 @@ def settings():
     return redirect(url_for('auth.login'))
 
 
-"""Feed route
-
-Args:
-    template (string): The template name to use for the feed.
-    title (string): title for the page. This is not displayed but should be declared.
-    slides (list): slides to display.
-    alert_status (string): if not none then overrides slide content to show the string.
-    interval (integer): rate in milliseconds to rotate slides.
-    messages (string): messages for the ticker display.
-    background (string): name of background image for the sidebar located in the static folder.
-
-Returns:
-template: the feed template with supplied content
-"""
-
-
 @main.route('/feeds/<title>', methods=['GET', 'POST'])
 def feeds(title):
+    """Feed route
+
+    Args:
+        template (string): The template name to use for the feed.
+        title (string): title for the page. This is not displayed but should be declared.
+        slides (list): slides to display.
+        alert_status (string): if not none then overrides slide content to show the string.
+        interval (integer): rate in milliseconds to rotate slides.
+        messages (string): messages for the ticker display.
+        background (string): name of background image for the sidebar located in the static folder.
+
+    Returns:
+    template: the feed template with supplied content
+    """
     return render_template('feed.html',
                            title=title,
                            slides=get_slides(title),
@@ -364,6 +362,20 @@ def feeds(title):
 
 @main.route('/feeds-vertical/<title>', methods=['GET', 'POST'])
 def feeds_vertical(title):
+    """Feed route
+
+        Args:
+            template (string): The template name to use for the feed.
+            title (string): title for the page. This is not displayed but should be declared.
+            slides (list): slides to display.
+            alert_status (string): if not none then overrides slide content to show the string.
+            interval (integer): rate in milliseconds to rotate slides.
+            messages (string): messages for the ticker display.
+            background (string): name of background image for the sidebar located in the static folder.
+
+        Returns:
+        template: the feed template with supplied content
+        """
     return render_template('feed_vertical.html',
                            title=title,
                            slides=get_slides(title),

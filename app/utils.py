@@ -94,9 +94,8 @@ def get_slides(target_feed):
         today_date = datetime.datetime.now().date()
         if target_feed in slide.feeds:
             if slide.approval == 'Approved':
-                if today_date >= start_date:
-                    if today_date <= end_date:
-                        slides.append(slide.slide_path)
+                if start_date <= today_date <= end_date:
+                    slides.append(slide.slide_path)
     return slides
 
 
@@ -148,9 +147,8 @@ def get_message():
         start_date = datetime.datetime.strptime(item.time_start, '%Y-%m-%d').date()
         end_date = datetime.datetime.strptime(item.time_end, '%Y-%m-%d').date()
         today_date = datetime.datetime.now().date()
-        if today_date >= start_date:
-            if today_date <= end_date:
-                message_send.append(item.text)
+        if start_date <= today_date <= end_date:
+            message_send.append(item.text)
     return message_send
 
 
