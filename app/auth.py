@@ -24,7 +24,7 @@ def login_post():
     """
     email = request.form.get('email')
     password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
+    remember = bool(request.form.get('remember'))
     user = User.query.filter_by(email=email).first()
     # then check if the user actually exists then take the user-supplied password,
     # hash it and compare to the hashed password in the database
@@ -58,7 +58,7 @@ def signup_post():
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
-    is_admin = True if request.form.get('is_admin') else False
+    is_admin = bool(request.form.get('is_admin'))
     user = User.query.filter_by(
         email=email).first()
     # check if user is already registered

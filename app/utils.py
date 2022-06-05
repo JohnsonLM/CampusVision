@@ -92,10 +92,9 @@ def get_slides(target_feed):
         start_date = datetime.datetime.strptime(slide.time_start, '%Y-%m-%d').date()
         end_date = datetime.datetime.strptime(slide.time_end, '%Y-%m-%d').date()
         today_date = datetime.datetime.now().date()
-        if target_feed in slide.feeds:
-            if slide.approval == 'Approved':
-                if start_date <= today_date <= end_date:
-                    slides.append(slide.slide_path)
+        if target_feed in slide.feeds and slide.approval == 'Approved':
+            if start_date <= today_date <= end_date:
+                slides.append(slide.slide_path)
     return slides
 
 
