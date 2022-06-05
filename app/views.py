@@ -359,6 +359,18 @@ def feeds(title):
                            weather_key=app.config['WEATHER_KEY'])
 
 
+@main.route('/feeds-vertical/<title>', methods=['GET', 'POST'])
+def feeds_vertical(title):
+    return render_template('feed_vertical.html',
+                           title=title,
+                           slides=get_slides(title),
+                           alert_status=alert_status(),
+                           interval=get_settings().duration,
+                           messages=json.dumps(get_message()),
+                           background='bg.jpg',
+                           weather_key=app.config['WEATHER_KEY'])
+
+
 @main.route('/clients')
 def clients():
     return render_template('clients.html',
