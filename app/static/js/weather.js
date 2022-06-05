@@ -2,7 +2,6 @@ function weatherBalloon() {
   fetch('https://api.openweathermap.org/data/2.5/onecall?lat=37.86202&lon=-84.6616&exclude=current,minutely,hourly,alerts&appid=APIKEYHERE')
   .then(function(resp) { return resp.json() })
   .then(function(data) {
-    console.log(data.daily[0])
     drawWeather(data.daily);
   })
   .catch(function() {
