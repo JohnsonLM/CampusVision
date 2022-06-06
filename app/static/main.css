@@ -1,6 +1,7 @@
 html {
     font-size: 100%;
     box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
 }
 
 *, *:before, *:after {
@@ -25,6 +26,11 @@ html {
         border: none !important;
 }
 
+.side-nav {
+    font-family: 'Inter', sans-serif;
+    color: #d4d4d4;
+}
+
 .btn-outline-primary {
     color: #3e1952;
     border-color: #3e1952;
@@ -41,5 +47,5 @@ html {
 }
 .signs li {
     margin: auto;
-    padding: 5px;
+    padding: 3px;
 }

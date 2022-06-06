@@ -1,10 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
-<hr>
 <div style="display:flex; flex-wrap: wrap;">
     <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
-            <h5 class="card-title">Digital Signage Policies</h5>
+            <strong class="card-title">Digital Signage Policies</strong>
         </div>
         <div class="card-body">
             <ul>
@@ -21,7 +20,7 @@
     </div>
     <div class="m-2 card" style="flex-grow: 1; max-width: 700px;">
         <div class="card-header">
-            <h5 class="card-title">Feeds</h5>
+            <strong class="card-title">Feeds</strong>
         </div>
         <ul class="signs" style="display: flex; flex-wrap: wrap; list-style: none; padding: 10px;">
             {% for feed in feeds %}
@@ -36,7 +35,7 @@
     </div>
     <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
-            <h5 class="card-title">Documentation</h5>
+            <strong class="card-title">Documentation</strong>
         </div>
         <div class="card-body">
             <p>These documents will train you on how to make slides!</p>
@@ -51,7 +50,7 @@
     </div>
     <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
-            <h5 class="card-title">Active Clients</h5>
+            <strong class="card-title">Active Clients</strong>
         </div>
         <div class="card-body">
             {% if clients %}

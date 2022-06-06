@@ -8,11 +8,14 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   </head>
   <body>
     <main style="max-width: none; display: flex; flex-wrap: nowrap;">
       <div class="shadow d-flex flex-column flex-shrink-0 p-3 text-white" style="background: #3e1952; width: 248px; min-height: 100vh;">
-        <span class="fs-4" style="font-family: 'PT Sans', sans-serif; text-align:center; font-size: 1.7rem !important;">CampusVision</span>
+        <span class="fs-4">CampusVision</span>
         <hr>
         <ul class="nav nav-pills flex-column mb-auto">
           <li class="nav-item">
@@ -72,7 +75,7 @@
           </li>
         </ul>
         <hr>
-        <p class="small">Copyright © 2022 Asbury University | All Rights Reserved</p>
+        <p class="small">Copyright © 2022 Johnson Martin | All Rights Reserved</p>
       </div>
       <div class="d-flex flex-column" style="flex-grow: 1;">
         <nav class="shadow-sm navbar navbar-light" style="background: #e6e7e8;">
@@ -93,8 +96,8 @@
           {% endif %}
 
         </nav>
-        <div style="padding: 30px;">
-          <h1 class="display-4">{{ title }}</h1>
+        <div style="padding: 20px;">
+          <h3><strong>{{ title }}</strong></h3>
           {% block content %}{% endblock %}
         </div>
       </div>
