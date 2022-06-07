@@ -2,12 +2,12 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 
-# initilize database
+# initialize database
 db = SQLAlchemy()
 
 
 def create_app():
-    """main app fuction"""
+    """main app function"""
     # initialize app
     app = Flask(__name__, instance_relative_config=True)
     # load configuration from instance

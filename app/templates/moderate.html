@@ -18,11 +18,13 @@
 <table id="data" class="table table-striped">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Slide Name</th>
+        <th>File Name</th>
         <th>Start Date</th>
         <th>End Date</th>
+        <th>Feeds</th>
         <th>Image</th>
+        <th>Submitted By</th>
         <th>Approval Status</th>
       </tr>
     </thead>
@@ -30,13 +32,15 @@
       {% for user in users %}
         {% if user.approval in filter %}
         <tr>
-          <td>{{ user.id }}</td>
           <td>{{ user.title }}</td>
+          <td>{{ user.slide_path }}</td>
           <td>{{ user.time_start }}</td>
           <td>{{ user.time_end }}</td>
-          <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 150px;'></td>
+          <td>{{ user.feeds }}</td>
+          <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 200px;'></td>
+          <td>{{ user.submitted_by }}</td>
           <td> {{ user.approval }} </td>
-          <td>
+          <td width="150px">
             <form action = "/mod" method = "POST" enctype = "multipart/form-data">
               <input type="hidden" name="slide_id" value="{{ user.id }}"/>
               <i class="fa fa-thumbs-up fa-lg"></i>
@@ -48,8 +52,10 @@
 
               <i class="fa fa-trash fa-lg"></i>
               <input type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;">
-
+              <br>
             </form>
+            <i class="fa fa-edit fa-lg" ></i>
+            <a href="/edit/{{ user.id }}" class="btn btn-dark btn-sm">Edit</a>
           </td>
         </tr>
         {% endif %}

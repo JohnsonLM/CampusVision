@@ -26,52 +26,14 @@
          <input class="form-check-input" type="checkbox" onClick="toggle(this)"/>
          <label class="form-check-label">Toggle All</label>
       </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed00" name="feeds">
-         <label class="form-check-label">Main Feed</label>
+     {% for feed in feeds %}
+     <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="{{feed}}" name="feeds">
+         <label class="form-check-label">{{feed}}</label>
       </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed01" name="feeds">
-         <label class="form-check-label">Admissions Feed</label>
-      </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed02" name="feeds">
-         <label class="form-check-label">Service Desk Feed</label>
-      </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed03" name="feeds">
-         <label class="form-check-label">Feed 3</label>
-      </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed04" name="feeds">
-         <label class="form-check-label">Feed 4</label>
-      </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed05" name="feeds">
-         <label class="form-check-label">Feed 5</label>
-      </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed06" name="feeds">
-         <label class="form-check-label">Feed 6</label>
-      </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed07" name="feeds">
-         <label class="form-check-label">Feed 7</label>
-      </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed08" name="feeds">
-         <label class="form-check-label">Feed 8</label>
-      </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed09" name="feeds">
-         <label class="form-check-label">Feed 9</label>
-      </div>
-      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="feed10" name="feeds">
-         <label class="form-check-label">Feed 10</label>
-      </div>
-      <br>
-      <button class="btn btn-primary" type="submit" onclick="validateForm()" name="submit">Submit Slide</button>
+     {% endfor %}
+     <br>
+     <button class="btn btn-primary" type="submit" onclick="validateForm()" name="submit">Submit Slide</button>
    </form>
    </div>
    <div class="p-2">

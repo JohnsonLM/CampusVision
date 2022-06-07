@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+{% if clients %}
+{% for client in clients %}
+<p>{{ client }}</p>
+<br>
+{% endfor %}
+{% endif %}
+{% endblock %}

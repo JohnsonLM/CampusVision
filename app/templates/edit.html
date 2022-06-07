@@ -1,21 +1,30 @@
 {% extends "base.html" %}
-{% block content %}<html>
-   <form action = "/edit" method = "POST" enctype = "multipart/form-data">
-      <div class="textbox">
-         <label for="id_number">Slide ID</label>
-         <input class="form-control" id="id_number" type="text" placeholder="01" name="id_number" onfocus="this.placeholder = '', onblur=" this.placeholder='World backup Day'">
-      </div>
-      <br>
+{% block content %}
+<html xmlns="http://www.w3.org/1999/html">
+   <form action = "/edit/{{ slide_id }}" method = "POST" enctype = "multipart/form-data">
       <div class="textbox">
          <label for="title_text">Slide Title</label>
-         <input class="form-control" id="title_text" type="text" placeholder="World Backup Day" name="title_text" onfocus="this.placeholder = '', onblur=" this.placeholder='World backup Day'">
+         <input class="form-control" id="title_text" type="text" value="{{ slide.title }}" placeholder="World Backup Day" name="title_text" onfocus="this.placeholder = '', onblur=" this.placeholder='World backup Day'">
       </div>
       <br>
-      <p>Re-upload Image</p>
-      <p>Start Date</p>
-      <p>End Date</p>
-      <p>Feed Assignment</p>
+      <div class="textbox">
+         <label for="title_text">Slide Start</label>
+         <input class="form-control" id="time_start" type="date" value="{{ slide.time_start }}" placeholder="World Backup Day" name="time_start" onfocus="this.placeholder = '', onblur=" this.placeholder='World backup Day'">
+      </div>
       <br>
+      <div class="textbox">
+         <label for="title_text">Slide End</label>
+         <input class="form-control" id="time_end" type="date" value="{{ slide.time_end }}" placeholder="World Backup Day" name="time_end" onfocus="this.placeholder = '', onblur=" this.placeholder='World backup Day'">
+      </div>
+      <br>
+      <strong>Feed Assignment</strong>
+     {% for feed in feeds %}
+     <div class="form-check">
+         <input class="form-check-input" type="checkbox" value="{{feed}}" name="feeds" {% if feed in slide.feeds %}checked{% endif %}>
+         <label class="form-check-label">{{feed}}</label>
+      </div>
+     {% endfor %}
+     <br>
       <input class="btn btn-primary" type="submit" onclick="validateForm()" name="submit" value="Submit">
    </form>
 {% endblock %}

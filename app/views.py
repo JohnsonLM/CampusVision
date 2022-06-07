@@ -1,22 +1,30 @@
 import json
 import os
-from flask import render_template, request, Blueprint, flash, Flask, url_for
+import ast
+from flask import render_template, request, Blueprint, flash, Flask, url_for, session
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename, redirect
-from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
+from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, \
+    remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
 from .models import Message, Slide
 
-"""initialize view routes"""
+# initialize view routes
 main = Blueprint('main', __name__)
 app = Flask(__name__, instance_relative_config=True)
-"""load app configuration from /instance/config.py"""
+# load app configuration from /instance/config.py
 app.config.from_pyfile('config.py')
 
 
 @main.route('/')
 def index():
     """homepage for the app to display info and stats"""
-    return render_template('home.html', title='Dashboard', mod_count=mod_counter())
+    return render_template('home.html',
+                           title='Dashboard',
+                           mod_count=mod_counter(),
+                           feeds=ast.literal_eval(get_settings().feeds),
+                           clients=session.get('active_clients'),
+                           name="Profile"
+                           )
 
 
 @main.route('/manager')
@@ -119,10 +127,14 @@ def upload_file():
             time_end = request.form["time_end"]
             title = request.form["title"]
             slide_path = secure_filename(file.filename)
-            feeds = request.form.getlist('feeds')
-            add_slide(time_start, time_end, title, slide_path, feeds)
+            feed_list = request.form.getlist('feeds')
+            add_slide(time_start, time_end, title, slide_path, feed_list)
             return redirect(request.url)
-    return render_template('upload.html', title='Upload a Slide', name=current_user.name, mod_count=mod_counter())
+    return render_template('upload.html',
+                           title='Upload a Slide',
+                           name=current_user.name,
+                           mod_count=mod_counter(),
+                           feeds=ast.literal_eval(get_settings().feeds))
 
 
 @main.route('/mod', methods=['GET', 'POST'])
@@ -133,12 +145,13 @@ def moderate():
     if not then return user to login screen
     """
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
-                    appr_slide('Approved', request.form['slide_id'])
+                    appr_slide('Approved', int(request.form['slide_id']))
                 elif 'Deny' in request.form:
-                    appr_slide('Denied', request.form['slide_id'])
+                    appr_slide('Denied', int(request.form['slide_id']))
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
@@ -162,12 +175,13 @@ def moderate():
 @login_required
 def mod_denied():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
-                    appr_slide('Approved', request.form['slide_id'])
+                    appr_slide('Approved', int(request.form['slide_id']))
                 elif 'Deny' in request.form:
-                    appr_slide('Denied', request.form['slide_id'])
+                    appr_slide('Denied', int(request.form['slide_id']))
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
@@ -191,12 +205,13 @@ def mod_denied():
 @login_required
 def mod_approved():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
-                    appr_slide('Approved', request.form['slide_id'])
+                    appr_slide('Approved', int(request.form['slide_id']))
                 elif 'Deny' in request.form:
-                    appr_slide('Denied', request.form['slide_id'])
+                    appr_slide('Denied', int(request.form['slide_id']))
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
@@ -220,12 +235,13 @@ def mod_approved():
 @login_required
 def mod_waiting():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 if 'Approve' in request.form:
-                    appr_slide('Approved', request.form['slide_id'])
+                    appr_slide('Approved', int(request.form['slide_id']))
                 elif 'Deny' in request.form:
-                    appr_slide('Denied', request.form['slide_id'])
+                    appr_slide('Denied', int(request.form['slide_id']))
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
@@ -245,25 +261,40 @@ def mod_waiting():
     return redirect(url_for('auth.login'))
 
 
-@main.route('/edit', methods=['GET', 'POST'])
+@main.route('/edit/<id>', methods=['GET', 'POST'])
 @login_required
-def edit():
+def edit(slide_id):
     if request.method == 'POST':
-        update_slide(request.form["id_number"], request.form["title_text"])
-    return render_template('edit.html', title='Edit Slide', slide_id='10', name=current_user.name, mod_count=mod_counter())
+        update_slide(slide_id,
+                     request.form["title_text"],
+                     request.form["time_start"],
+                     request.form["time_end"],
+                     str(request.form.getlist('feeds')))
+    return render_template('edit.html',
+                           title='Edit Slide',
+                           slide_id=id,
+                           slide=Slide.query.get(id),
+                           name=current_user.name,
+                           mod_count=mod_counter(),
+                           feeds=get_settings().feeds)
 
 
 @main.route('/messages', methods=['GET', 'POST'])
 @login_required
 def messages():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 text = request.form["message_text"]
                 start_time = request.form["time_start"]
                 end_time = request.form["time_end"]
                 add_message(text, start_time, end_time)
-            return render_template('messages.html', title='Messages', name=current_user.name, mod_count=mod_counter(), messages=Message.query.all())
+            return render_template('messages.html',
+                                   title='Messages',
+                                   name=current_user.name,
+                                   mod_count=mod_counter(),
+                                   messages=Message.query.all())
     return redirect(url_for('auth.login'))
 
 
@@ -271,6 +302,7 @@ def messages():
 @login_required
 def alerts():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 status = request.form["alert_status"]
@@ -278,7 +310,10 @@ def alerts():
                     update_alert(request.form["alert_text"])
                 elif status == "Disable":
                     update_alert("")
-            return render_template('alerts.html', title='Submit an Emergency Alert', name=current_user.name, mod_count=mod_counter())
+            return render_template('alerts.html',
+                                   title='Submit an Emergency Alert',
+                                   name=current_user.name,
+                                   mod_count=mod_counter())
     return redirect(url_for('auth.login'))
 
 
@@ -286,90 +321,79 @@ def alerts():
 @login_required
 def settings():
     if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
         if current_user.is_admin:
             if request.method == 'POST':
                 duration_time = request.form["duration"]
                 allow_signups = request.form["allow_signups"]
-                update_settings(duration_time, allow_signups)
-            return render_template('settings.html', title='System Settings', name=current_user.name, mod_count=mod_counter())
+                feed_list = request.form["feeds"]
+                update_settings(duration_time, allow_signups, feed_list)
+            return render_template('settings.html',
+                                   title='System Settings',
+                                   name=current_user.name,
+                                   mod_count=mod_counter(),
+                                   settings=get_settings())
     return redirect(url_for('auth.login'))
 
 
-"""Feed routes for feeds 1-10
+@main.route('/feeds/<title>', methods=['GET', 'POST'])
+def feeds(title):
+    """Feed route
 
-Args:
-    template (string): The template name to use for the feed.
-    title (string): title for the page. This is not displayed but should be declared.
-    slides (list): slides to display.
-    alert_status (string): if not none then overrides slide content to show the string.
-    interval (integer): rate in milliseconds to rotate slides.
-    messages (string): messages for the ticker display.
-    background (string): name of background image for the sidebar located in the static folder.
+    Args:
+        template (string): The template name to use for the feed.
+        title (string): title for the page. This is not displayed but should be declared.
+        slides (list): slides to display.
+        alert_status (string): if not none then overrides slide content to show the string.
+        interval (integer): rate in milliseconds to rotate slides.
+        messages (string): messages for the ticker display.
+        background (string): name of background image for the sidebar located in the static folder.
 
-Returns:
-template: the feed template with supplied content
-"""
-@main.route('/feed')
-def feed():
-    interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed00'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
-
-
-@main.route('/feed01')
-def feed01():
-    interval = 7000
-    return render_template('feed.html', title='Admissions', slides=get_slides('feed01'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
-
-
-@main.route('/feed02')
-def feed02():
-    interval = get_settings()
-    return render_template('feed.html', title='I.T. Services Service Desk', slides=get_slides('feed02'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
+    Returns:
+    template: the feed template with supplied content
+    """
+    return render_template('feed.html',
+                           title=title,
+                           slides=get_slides(title),
+                           alert_status=alert_status(),
+                           interval=get_settings().duration,
+                           messages=json.dumps(get_message()),
+                           background='bg.jpg',
+                           weather_key=app.config['WEATHER_KEY'])
 
 
-@main.route('/feed03')
-def feed03():
-    interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed03'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
+@main.route('/feeds-vertical/<title>', methods=['GET', 'POST'])
+def feeds_vertical(title):
+    """Feed route
+
+        Args:
+            template (string): The template name to use for the feed.
+            title (string): title for the page. This is not displayed but should be declared.
+            slides (list): slides to display.
+            alert_status (string): if not none then overrides slide content to show the string.
+            interval (integer): rate in milliseconds to rotate slides.
+            messages (string): messages for the ticker display.
+            background (string): name of background image for the sidebar located in the static folder.
+
+        Returns:
+        template: the feed template with supplied content
+        """
+    return render_template('feed_vertical.html',
+                           title=title,
+                           slides=get_slides(title),
+                           alert_status=alert_status(),
+                           interval=get_settings().duration,
+                           messages=json.dumps(get_message()),
+                           background='bg.jpg',
+                           weather_key=app.config['WEATHER_KEY'])
 
 
-@main.route('/feed04')
-def feed04():
-    interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed04'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
-
-
-@main.route('/feed05')
-def feed05():
-    interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed05'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
-
-
-@main.route('/feed06')
-def feed06():
-    interval = get_settings()
-    return render_template('feed.html', title='Feed Six', slides=get_slides('feed06'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
-
-
-@main.route('/feed07')
-def feed07():
-    interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed07'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
-
-
-@main.route('/feed08')
-def feed08():
-    interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed08'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
-
-
-@main.route('/feed09')
-def feed09():
-    interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed09'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
-
-
-@main.route('/feed10')
-def feed10():
-    interval = get_settings()
-    return render_template('feed.html', title='', slides=get_slides('feed10'), alert_status=alert_status(), interval=interval, messages=json.dumps(get_message()), background='bg.jpg')
+@main.route('/clients')
+def clients():
+    """
+    Route for client page
+    """
+    return render_template('clients.html',
+                           title='Clients',
+                           mod_count=mod_counter(),
+                           clients=session.get('active_clients'))

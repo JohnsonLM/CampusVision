@@ -8,5 +8,10 @@ function clock() {
     });
 }
 
-setInterval(clock, 1000);
-setTimeout("window.location.reload(true)",60 * 1000 * 1)
+setInterval(function() {
+    clock();
+}, 1000);
+
+setTimeout(function() {
+    window.location.reload(true);
+}, 60000);

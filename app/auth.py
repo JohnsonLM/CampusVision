@@ -4,9 +4,9 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
-from .utils import signups_allowed
+from .utils import signups_allowed, mod_counter
 
-"""initialize auth routes"""
+# initialize auth routes
 auth = Blueprint('auth', __name__)
 
 
@@ -24,17 +24,15 @@ def login_post():
     """
     email = request.form.get('email')
     password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
+    remember = bool(request.form.get('remember'))
     user = User.query.filter_by(email=email).first()
-    """
-    then check if the user actually exists then take the user-supplied password,
-    hash it and compare to the hashed password in the database
-    """
+    # then check if the user actually exists then take the user-supplied password,
+    # hash it and compare to the hashed password in the database
     if not user or not check_password_hash(user.password, password):
         # return the user to login page if details do not match
         flash('Please check your login details and try again.')
         return redirect(url_for('auth.login'))
-    """log the user into the app if details do match"""
+    # log the user into the app if details do match
     login_user(user, remember=remember)
     return redirect(url_for('main.profile'))
 
@@ -43,7 +41,7 @@ def login_post():
 def signup():
     """allow a user to be added to the database"""
     if signups_allowed() == 1:
-        return render_template('signup.html', name="Anonymous")
+        return render_template('signup.html', name="Profile")
     elif signups_allowed() == 0:
         if current_user.is_authenticated:
             if current_user.is_admin:
@@ -54,22 +52,24 @@ def signup():
 
 @auth.route('/signup', methods=['POST'])
 def signup_post():
-    """accept user input to be added to the database"""
-    if signups_allowed() == 0:
-        if not current_user.is_admin:
-            abort(401)
+    # accept user input to be added to the database
+    if signups_allowed() == 0 and not current_user.is_admin:
+        abort(401)
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
-    is_admin = True if request.form.get('is_admin') else False
+    is_admin = bool(request.form.get('is_admin'))
     user = User.query.filter_by(
         email=email).first()
-    """check if user is already registered"""
+    # check if user is already registered
     if user:
         flash('Email already registered.')
         return redirect(url_for('auth.signup'))
 
-    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'), is_admin=is_admin)
+    new_user = User(email=email,
+                    name=name,
+                    password=generate_password_hash(password, method='sha256'),
+                    is_admin=is_admin)
     db.session.add(new_user)
     db.session.commit()
 
@@ -88,6 +88,12 @@ def logout():
 def usermanager():
     """allow admins to view and manage users"""
     if current_user.is_authenticated:
+        # nested to prevent errors for users that are not logged in
         if current_user.is_admin:
-            return render_template('manager-users.html', title="User Management Coming Soon!", users=User.query.all(), name=current_user.name)
+            return render_template('manager-users.html',
+                                   title="User Management Coming Soon!",
+                                   users=User.query.all(),
+                                   name=current_user.name,
+                                   mod_count=mod_counter()
+            )
     return redirect(url_for('auth.login'))

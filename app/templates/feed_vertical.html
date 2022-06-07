@@ -11,9 +11,15 @@
       <link href="{{ url_for('static', filename='feed.css') }}" rel="stylesheet">
   </head>
   <body>
+    <div class="flex-column text-white sidebar" style="background: linear-gradient(to right, rgba(62, 25, 82, 0.85), rgba(62, 25, 82, 0.85)), url('/static/{{ background }}');">
+        <div class="sidebar-inner">
+            <img src="https://www.asbury.edu/wp-content/uploads/2022/01/Asbury-Logo-4-Reversed.png" width=500px; style="padding-top: 100px; align-content: center;">
+            <h1 style="text-align:center; margin: 250px;">{{ title }}</h1>
+            <br><br>
+        </div>
+     </div>
     <!-- Main Content -->
-    <div class="wrapper">
-        <div class="flex-column carousel carousel-fade" data-ride="carousel" data-interval="{{ interval }}">
+    <div class="flex-column carousel carousel-fade" data-ride="carousel" data-interval="{{ interval }}">
             <div class="carousel-inner">
                  {% if alert_status %}
                  <h4 class="alert-message text-white">{{ alert_status }}</h4>
@@ -26,41 +32,34 @@
                  {% endif %}
              </div>
         </div>
-        <div class="flex-column text-white sidebar" style="background: linear-gradient(to right, rgba(62, 25, 82, 0.85), rgba(62, 25, 82, 0.85)), url('/static/{{ background }}');">
-            <div class="sidebar-inner">
-                <img src="https://www.asbury.edu/wp-content/uploads/2022/01/Asbury-Logo-4-Reversed.png" width=300px; style="padding: 30px; align-content: center;">
-                <h2 style="text-align:center; margin-top: 200px;">{{ title }}</h2>
-            </div>
-         </div>
-     </div>
+
     <!-- Lower Third -->
-    <div class="wrapper">
-         <div class="d-flex flex-column text-white p-3 datetime">
-             <h2 id="date"></h2>
-             <h1 id="time" class="display-2"></h1>
-         </div>
-         <!--<h1 class="d-flex" id="message-cycle"></h1>-->
-         <div class="d-flex flex-column text-white weather-outer">
-             <div class="weather">
-                 <div class="d-inline-flex">
-                     <div id="day1" class="weather-card p-3">
-                     </div>
-                     <div id="day2" class="weather-card p-3">
-                     </div>
-                     <div id="day3" class="weather-card p-3">
-                     </div>
-                     <div id="day4" class="weather-card p-3">
-                     </div>
-                     <div id="day5" class="weather-card p-3">
-                     </div>
-                     <div id="day6" class="weather-card p-3">
-                     </div>
-                     <div id="day7" class="weather-card p-3">
-                     </div>
+    <div class="d-flex flex-column text-white p-3 datetime" style="padding-top: 20px;">
+         <h2 id="date"></h2>
+         <h1 id="time" class="display-2"></h1>
+     </div>
+    <!--<h1 class="d-flex" id="message-cycle"></h1>-->
+    <div class="d-flex flex-column text-white weather-outer">
+         <div class="weather">
+             <div class="d-inline-flex">
+                 <div id="day1" class="weather-card p-3">
+                 </div>
+                 <div id="day2" class="weather-card p-3">
+                 </div>
+                 <div id="day3" class="weather-card p-3">
+                 </div>
+                 <div id="day4" class="weather-card p-3">
+                 </div>
+                 <div id="day5" class="weather-card p-3">
+                 </div>
+                 <div id="day6" class="weather-card p-3">
+                 </div>
+                 <div id="day7" class="weather-card p-3">
                  </div>
              </div>
          </div>
      </div>
+
     <!-- scripts -->
     <script src="{{ url_for('static', filename='js/datetime.js') }}"></script>
     <script src="{{ url_for('static', filename='js/messages.js') }}"></script>
@@ -83,7 +82,9 @@
               day_plus = day + 1
               var element = 'day' + day_plus
               document.getElementById(element).innerHTML =
-              '<h3>${dt_txt.toLocaleDateString("en-us", {day:"numeric", weekday:"short", month:"short"})}</h3><img src="http://openweathermap.org/img/wn/${d[day].weather[0].icon}@2x.png"><h4> ${fahrenheit}&deg; f</h4>'
+              '<h3>' + dt_txt.toLocaleDateString('en-us', {day:"numeric", weekday:"short", month:"short"}) + '</h3>' +
+              '<img src="http://openweathermap.org/img/wn/' + d[day].weather[0].icon + '@2x.png">' +
+              '<h4>' + fahrenheit + '&deg; f' + '</h4>'
             }
         }
 
