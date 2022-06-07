@@ -2,6 +2,11 @@ html {
     font-size: 100%;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
+
+}
+
+.main-body {
+    background: #1a1a1a;
 }
 
 *, *:before, *:after {
@@ -15,20 +20,60 @@ html {
 }
 
 .btn-primary:hover, .side-nav:hover, nav-link.active {
-    color: black;
-    background-color: #e3bf42;
+    color: white;
     border: none;
 }
 
 .side-nav.active {
-        color: black !important;
-        background-color: #e3bf42 !important;
-        border: none !important;
+    color: black !important;
+    background-color: white !important;
+    border: none !important;
 }
 
-.side-nav {
+.nav-pills .nav-link {
     font-family: 'Inter', sans-serif;
     color: #d4d4d4;
+    margin-right: 10px;
+    margin-left: 10px;
+    border-radius: 12px;
+}
+
+.app-title {
+    height: 50px;
+    padding: 10px;
+    margin-bottom: 0rem;
+    padding-left: 25px;
+    background: #1a1a1a;
+}
+
+.topnav {
+    height: 50px;
+    background: #3e1952;
+    color: white;
+    background: #1a1a1a;
+}
+.topnav a {
+    color: white;
+    text-align: center;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.sidebar {
+    background: #1a1a1a;
+    width: 280px;
+    min-height: 100vh;
+
+}
+
+.side-nav i {
+    padding: 8px;
+}
+
+.content-box {
+    border-radius: 12px 0px 0px 12px;
+    min-height: 95vh;
+    background: white;
 }
 
 .btn-outline-primary {
@@ -48,4 +93,13 @@ html {
 .signs li {
     margin: auto;
     padding: 3px;
+}
+
+.bottom-nav {
+    display: flex;
+    margin-left: 10px;
+}
+.bottom-nav a {
+    padding: 8px;
+    color: white;
 }

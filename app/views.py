@@ -22,7 +22,9 @@ def index():
                            title='Dashboard',
                            mod_count=mod_counter(),
                            feeds=ast.literal_eval(get_settings().feeds),
-                           clients=session.get('active_clients'))
+                           clients=session.get('active_clients'),
+                           name="Profile"
+                           )
 
 
 @main.route('/manager')

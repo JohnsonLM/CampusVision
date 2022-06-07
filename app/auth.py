@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash,
 from flask_login import login_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
-from .utils import signups_allowed
+from .utils import signups_allowed, mod_counter
 
 # initialize auth routes
 auth = Blueprint('auth', __name__)
@@ -41,7 +41,7 @@ def login_post():
 def signup():
     """allow a user to be added to the database"""
     if signups_allowed() == 1:
-        return render_template('signup.html', name="Anonymous")
+        return render_template('signup.html', name="Profile")
     elif signups_allowed() == 0:
         if current_user.is_authenticated:
             if current_user.is_admin:
@@ -93,5 +93,7 @@ def usermanager():
             return render_template('manager-users.html',
                                    title="User Management Coming Soon!",
                                    users=User.query.all(),
-                                   name=current_user.name)
+                                   name=current_user.name,
+                                   mod_count=mod_counter()
+            )
     return redirect(url_for('auth.login'))
