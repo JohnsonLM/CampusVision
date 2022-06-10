@@ -263,9 +263,9 @@ def mod_waiting():
 
 @main.route('/edit/<id>', methods=['GET', 'POST'])
 @login_required
-def edit(slide_id):
+def edit(id):
     if request.method == 'POST':
-        update_slide(slide_id,
+        update_slide(id,
                      request.form["title_text"],
                      request.form["time_start"],
                      request.form["time_end"],
@@ -276,7 +276,7 @@ def edit(slide_id):
                            slide=Slide.query.get(id),
                            name=current_user.name,
                            mod_count=mod_counter(),
-                           feeds=get_settings().feeds)
+                           feeds=ast.literal_eval(get_settings().feeds))
 
 
 @main.route('/messages', methods=['GET', 'POST'])
