@@ -21,7 +21,7 @@ TEMPLATES_AUTO_RELOAD = True
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 # Insert an OpenWeatherMap API key here.
-WEATHER_KEY = 'WeatherKeyHere'
+WEATHER_KEY = '99ec4e7d956393e48a8cda51317329c5'
 
 # Sets what file types can be uploaded as slides
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
