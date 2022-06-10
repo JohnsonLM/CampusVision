@@ -83,7 +83,9 @@
               day_plus = day + 1
               var element = 'day' + day_plus
               document.getElementById(element).innerHTML =
-              '<h3> ${dt_txt.toLocaleDateString("en-us", {day:"numeric", weekday:"short", month:"short"})} </h3><img src="http://openweathermap.org/img/wn/ ${d[day].weather[0].icon} @2x.png"><h4> ${fahrenheit} &deg; f</h4>'
+                  '<h3>' + dt_txt.toLocaleDateString('en-us', {day:"numeric", weekday:"short", month:"short"}) + '</h3>' +
+                  '<img src="http://openweathermap.org/img/wn/' + d[day].weather[0].icon + '@2x.png">' +
+                  '<h4>' + fahrenheit + '&deg; f' + '</h4>'
             }
         }
 
