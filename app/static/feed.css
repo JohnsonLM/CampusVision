@@ -64,7 +64,6 @@ body {
 }
 
 .sidebar {
-    flex-grow: 1;
     text-align: center;
     padding: 25px;
     background-size: cover !important;
