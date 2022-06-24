@@ -14,4 +14,4 @@ setInterval(function() {
 
 setTimeout(function() {
     window.location.reload(true);
-}, 60000);
+}, 1800000);

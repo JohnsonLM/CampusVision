@@ -48,27 +48,15 @@
               </a>
               <ul class="list-unstyled nav-link" style="padding-top: 0px; padding-bottom: 0px;">
                 <li>
-                  <a href="/mod" class="nav-link side-nav {% if request.path == '/mod' %}active{% endif %}">
-                    <i class="fa fa-thumbs-up"></i>
-                     Moderate <span class="badge badge-info">{{ mod_count }}</span>
-                  </a>
+                  <a href="/mod" class="nav-link side-nav {% if request.path == '/mod' %}active{% endif %}"><i class="fa fa-thumbs-up"></i>Moderate<span class="badge badge-info">{{ mod_count }}</span></a>
                 </li>
                 <li>
-                  <a href="/signup" class="nav-link side-nav {% if request.path == '/signup' %}active{% endif %}">
-                    <i class="fa fa-user-plus"></i>
-                    Add Users
-                  </a>
+                  <a href="/signup" class="nav-link side-nav {% if request.path == '/signup' %}active{% endif %}"><i class="fa fa-user-plus"></i>Add Users</a>
                 </li>
-                 <li>
-                  <a href="/usermanager" class="nav-link side-nav {% if request.path == '/usermanager' %}active{% endif %}">
-                    <i class="fa fa-user"></i>
-                    Manage Users
-                  </a>
-                  <li>
-                  <a href="/settings" class="nav-link side-nav {% if request.path == '/settings' %}active{% endif %}">
-                    <i class="fa fa-cog"></i>
-                     Settings
-                  </a>
+                <li>
+                  <a href="/usermanager" class="nav-link side-nav {% if request.path == '/usermanager' %}active{% endif %}"><i class="fa fa-user"></i>Users</a>
+                <li>
+                  <a href="/settings" class="nav-link side-nav {% if request.path == '/settings' %}active{% endif %}"><i class="fa fa-cog"></i>Settings</a>
                 </li>
               </ul>
           </li>

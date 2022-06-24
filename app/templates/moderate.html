@@ -18,14 +18,14 @@
 <table id="data" class="table table-striped">
     <thead>
       <tr>
-        <th>Slide Name</th>
-        <th>File Name</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Feeds</th>
-        <th>Image</th>
-        <th>Submitted By</th>
-        <th>Approval Status</th>
+        <th>Title</th>
+        <th>Filename</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Assigned Feeds</th>
+        <th></th>
+        <th>Author</th>
+        <th>Status</th>
       </tr>
     </thead>
     <tbody>
@@ -36,8 +36,8 @@
           <td>{{ user.slide_path }}</td>
           <td>{{ user.time_start }}</td>
           <td>{{ user.time_end }}</td>
-          <td>{{ user.feeds }}</td>
-          <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 200px;'></td>
+          <td>{% for feed in user.feeds.strip('][').split(', ')  %}{{ feed.strip("'") }} <br> {% endfor %}</td>
+          <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 150px;'></td>
           <td>{{ user.submitted_by }}</td>
           <td> {{ user.approval }} </td>
           <td width="150px">

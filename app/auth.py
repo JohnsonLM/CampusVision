@@ -1,6 +1,6 @@
 import flask_login
 from .app import db
-from flask import Blueprint, render_template, redirect, url_for, request, flash, abort
+from flask import Flask, Blueprint, render_template, redirect, url_for, request, flash, abort
 from flask_login import login_user, current_user, login_required
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
@@ -9,6 +9,9 @@ from .utils import signups_allowed, mod_counter
 # initialize auth routes
 auth = Blueprint('auth', __name__)
 
+app = Flask(__name__, instance_relative_config=True)
+# load app configuration from /instance/config.py
+app.config.from_pyfile('config.py')
 
 @auth.route('/login')
 def login():
@@ -31,9 +34,11 @@ def login_post():
     if not user or not check_password_hash(user.password, password):
         # return the user to login page if details do not match
         flash('Please check your login details and try again.')
+        app.logger.warning('Failed to log in user')
         return redirect(url_for('auth.login'))
     # log the user into the app if details do match
     login_user(user, remember=remember)
+    app.logger.info('%s logged in successfully', user.email)
     return redirect(url_for('main.profile'))
 
 
@@ -72,7 +77,7 @@ def signup_post():
                     is_admin=is_admin)
     db.session.add(new_user)
     db.session.commit()
-
+    app.logger.info('%s signed up successfully', new_user.email)
     return redirect(url_for('auth.login'))
 
 
@@ -80,6 +85,7 @@ def signup_post():
 def logout():
     """log the user out of the app"""
     flask_login.logout_user()
+    app.logger.info('User logged out successfully')
     return 'Logout'
 
 
@@ -91,7 +97,7 @@ def usermanager():
         # nested to prevent errors for users that are not logged in
         if current_user.is_admin:
             return render_template('manager-users.html',
-                                   title="User Management Coming Soon!",
+                                   title="Users",
                                    users=User.query.all(),
                                    name=current_user.name,
                                    mod_count=mod_counter()

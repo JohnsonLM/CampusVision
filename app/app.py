@@ -16,6 +16,7 @@ def create_app():
     # start app using database
     db.init_app(app)
 
+
     # initialize login authentication
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
@@ -37,5 +38,8 @@ def create_app():
     # blueprint for non-auth routes
     from .views import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .api import api as api_blueprint
+    app.register_blueprint(api_blueprint)
 
     return app

@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import ast
 from flask import render_template, request, Blueprint, flash, Flask, url_for, session
@@ -14,10 +15,13 @@ app = Flask(__name__, instance_relative_config=True)
 # load app configuration from /instance/config.py
 app.config.from_pyfile('config.py')
 
+# set logging path
+logging.basicConfig(filename='app.log', level=logging.INFO)
 
 @main.route('/')
 def index():
     """homepage for the app to display info and stats"""
+    app.logger.info('Home Page Served')
     return render_template('home.html',
                            title='Dashboard',
                            mod_count=mod_counter(),
@@ -116,10 +120,12 @@ def upload_file():
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('No file part')
+            app.logger.info('Slide upload failed')
             return redirect(request.url)
         file = request.files['file']
         if file.filename == '':
             flash('No selected file')
+            app.logger.info('Slide upload failed')
             return redirect(request.url)
         if file and allowed_file(file.filename, app.config["ALLOWED_EXTENSIONS"]):
             file.save(os.path.join(app.static_folder, 'uploads', secure_filename(file.filename)))
@@ -129,6 +135,7 @@ def upload_file():
             slide_path = secure_filename(file.filename)
             feed_list = request.form.getlist('feeds')
             add_slide(time_start, time_end, title, slide_path, feed_list)
+            app.logger.info('Slide %s submitted successfully', title)
             return redirect(request.url)
     return render_template('upload.html',
                            title='Upload a Slide',
@@ -358,7 +365,7 @@ def feeds(title):
                            alert_status=alert_status(),
                            interval=get_settings().duration,
                            messages=json.dumps(get_message()),
-                           background='bg.jpg',
+                           background=title + '.jpg',
                            weather_key=app.config['WEATHER_KEY'])
 
 
