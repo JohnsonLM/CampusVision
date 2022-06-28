@@ -1,7 +1,9 @@
 body {
     overflow: hidden;
     background-color: black;
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'Myriad Pro Light';
+    font-weight: normal;
+    font-style: normal;
 }
 
 .wrapper {
@@ -64,10 +66,23 @@ body {
 }
 
 .sidebar {
-    flex-grow: 1;
+    flex-grow: 0;
     text-align: center;
     padding: 25px;
     background-size: cover !important;
+    width: -moz-available;
+    width: 100%;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+}
+
+.datetime h1 {
+    font-size: 4.5vw;
+}
+
+.datetime h2 {
+    font-size: 2.5vw;
 }
 
 .sidebar-inner {
@@ -79,13 +94,48 @@ body {
 .datetime {
     flex-grow: 1;
     background-color:black;
-    font-family: 'PT Sans', sans-serif;
     padding: 20px;
 }
 
 .weather-outer {
     flex-grow: 1;
     background-color:black;
-    font-family: 'PT Sans', sans-serif;
     text-align: right;
 }
+
+@font-face {
+    font-family: 'Myriad Pro Light';
+    src: url('fonts/MyriadPro-Light.woff2') format('woff2'),
+        url('fonts/MyriadPro-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro Cond';
+    src: url('fonts/MyriadPro-Cond.woff2') format('woff2'),
+        url('fonts/MyriadPro-Cond.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: url('fonts/MyriadPro-Regular.woff2') format('woff2'),
+        url('fonts/MyriadPro-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro Semibold Cond';
+    src: url('fonts/MyriadPro-SemiboldCond.woff2') format('woff2'),
+        url('fonts/MyriadPro-SemiboldCond.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+

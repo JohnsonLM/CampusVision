@@ -1,8 +1,6 @@
 html {
     font-size: 100%;
     box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-
 }
 
 .main-body {
@@ -31,7 +29,6 @@ html {
 }
 
 .nav-pills .nav-link {
-    font-family: 'Inter', sans-serif;
     color: #d4d4d4;
     margin-right: 10px;
     margin-left: 10px;
@@ -101,4 +98,40 @@ html {
 .bottom-nav a {
     padding: 8px;
     color: white;
+}
+
+@font-face {
+    font-family: 'Myriad Pro Light';
+    src: url('fonts/MyriadPro-Light.woff2') format('woff2'),
+        url('fonts/MyriadPro-Light.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro Cond';
+    src: url('fonts/MyriadPro-Cond.woff2') format('woff2'),
+        url('fonts/MyriadPro-Cond.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro';
+    src: url('fonts/MyriadPro-Regular.woff2') format('woff2'),
+        url('fonts/MyriadPro-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Myriad Pro Semibold Cond';
+    src: url('fonts/MyriadPro-SemiboldCond.woff2') format('woff2'),
+        url('fonts/MyriadPro-SemiboldCond.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
 }
