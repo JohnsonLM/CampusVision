@@ -365,7 +365,7 @@ def feeds(title):
                            alert_status=alert_status(),
                            interval=get_settings().duration,
                            messages=json.dumps(get_message()),
-                           background=title + '.jpg',
+                           background=title + '.webp',
                            weather_key=app.config['WEATHER_KEY'])
 
 
