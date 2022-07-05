@@ -18,7 +18,6 @@ body {
 }
 
 .carousel-item {
-    display: flex;
     background: url('/static/background.jpg');
 }
 
@@ -58,11 +57,11 @@ body {
 }
 
 .weather-card h3 {
-    font-size: 22px;
+    font-size: 1.1vw;
 }
 
 .weather-card h4 {
-    font-size: 32px;
+    font-size: 1.9vw;
 }
 
 .sidebar {
@@ -71,7 +70,6 @@ body {
     padding: 25px;
     background-size: cover !important;
     width: -moz-available;
-    width: 100%;
     width: -moz-available;
     width: -webkit-fill-available;
     width: fill-available;
@@ -79,10 +77,12 @@ body {
 
 .datetime h1 {
     font-size: 4.5vw;
+    line-height: 140%;
 }
 
 .datetime h2 {
     font-size: 2.5vw;
+    line-height: 140%;
 }
 
 .sidebar-inner {
@@ -138,4 +138,3 @@ body {
     font-style: normal;
     font-display: swap;
 }
-
