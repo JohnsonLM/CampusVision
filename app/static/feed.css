@@ -95,10 +95,14 @@ body {
     flex-grow: 1;
     background-color:black;
     padding: 20px;
+    width: 6vw;
+}
+
+.weather-card img {
+    width: 6vw;
 }
 
 .weather-outer {
-    flex-grow: 1;
     background-color:black;
     text-align: right;
 }
