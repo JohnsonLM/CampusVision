@@ -5,6 +5,7 @@ function clock() {
       day: "numeric",
       month: "short",
       year: "numeric",
+      hour12: true,
     });
 }
 
