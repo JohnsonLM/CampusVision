@@ -43,6 +43,7 @@ body {
 
 .alert-message {
     font-size: 38px;
+    color: white;
     text-align: center;
     padding: 100px;
 }
@@ -75,14 +76,30 @@ body {
     width: fill-available;
 }
 
+.sidebar h2 {
+    text-align:center;
+    margin-top: 10vw;
+    margin-bottom: 10vw;
+    font-size: 2vw;
+    color: white;
+}
+
+.sidebar img {
+    padding: 30px;
+    align-content: center;
+    width: 15vw;
+}
+
 .datetime h1 {
     font-size: 4.5vw;
     line-height: 140%;
+    color: white;
 }
 
 .datetime h2 {
     font-size: 2.5vw;
     line-height: 140%;
+    color: white;
 }
 
 .sidebar-inner {
@@ -100,11 +117,6 @@ body {
 
 .weather-card img {
     width: 6vw;
-}
-
-.weather-outer {
-    background-color:black;
-    text-align: right;
 }
 
 @font-face {
