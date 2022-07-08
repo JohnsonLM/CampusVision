@@ -18,6 +18,7 @@ app.config.from_pyfile('config.py')
 # set logging path
 logging.basicConfig(filename='app.log', level=logging.INFO)
 
+
 @main.route('/')
 def index():
     """homepage for the app to display info and stats"""
@@ -114,29 +115,9 @@ def profile():
     return render_template('profile.html', name=current_user.name, mod_count=mod_counter())
 
 
-@main.route('/upload', methods=['GET', 'POST'])
+@main.route('/upload', methods=['GET'])
 @login_required
 def upload_file():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file part')
-            app.logger.info('Slide upload failed')
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            flash('No selected file')
-            app.logger.info('Slide upload failed')
-            return redirect(request.url)
-        if file and allowed_file(file.filename, app.config["ALLOWED_EXTENSIONS"]):
-            file.save(os.path.join(app.static_folder, 'uploads', secure_filename(file.filename)))
-            time_start = request.form["time_start"]
-            time_end = request.form["time_end"]
-            title = request.form["title"]
-            slide_path = secure_filename(file.filename)
-            feed_list = request.form.getlist('feeds')
-            add_slide(time_start, time_end, title, slide_path, feed_list)
-            app.logger.info('Slide %s submitted successfully', title)
-            return redirect(request.url)
     return render_template('upload.html',
                            title='Upload a Slide',
                            name=current_user.name,
@@ -144,9 +125,60 @@ def upload_file():
                            feeds=ast.literal_eval(get_settings().feeds))
 
 
-@main.route('/mod', methods=['GET', 'POST'])
+@main.route('/upload', methods=['POST'])
+@login_required
+def upload_file_post():
+    if 'file' not in request.files:
+        flash('No file part')
+        app.logger.info('Slide upload failed')
+        return redirect(request.url)
+    file = request.files['file']
+    if file.filename == '':
+        flash('No selected file')
+        app.logger.info('Slide upload failed')
+        return redirect(request.url)
+    if file and allowed_file(file.filename, app.config["ALLOWED_EXTENSIONS"]):
+        file.save(os.path.join(app.static_folder, 'uploads', secure_filename(file.filename)))
+        time_start = request.form["time_start"]
+        time_end = request.form["time_end"]
+        title = request.form["title"]
+        slide_path = secure_filename(file.filename)
+        feed_list = request.form.getlist('feeds')
+        add_slide(time_start, time_end, title, slide_path, feed_list)
+        app.logger.info('Slide %s submitted successfully', title)
+        return redirect(request.url)
+
+
+@main.route('/mod', methods=['GET'])
 @login_required
 def moderate():
+    """
+    check if user is logged in and is an admin
+    if not then return user to login screen
+    """
+    if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
+        if current_user.is_admin:
+            page = request.args.get('page', 1, type=int)
+            posts = Slide.query.paginate(page, app.config['POSTS_PER_PAGE'], False)
+            next_url = url_for('main.moderate', page=posts.next_num) \
+                if posts.has_next else None
+            prev_url = url_for('main.moderate', page=posts.prev_num) \
+                if posts.has_prev else None
+            return render_template('moderate.html',
+                                   title='Slide Moderator',
+                                   name=current_user.name,
+                                   users=reversed(posts.items),
+                                   filter=['Approved', 'Waiting Review', 'Denied'],
+                                   mod_count=mod_counter(),
+                                   next_url=next_url,
+                                   prev_url=prev_url)
+    return redirect(url_for('auth.login'))
+
+
+@main.route('/mod', methods=['POST'])
+@login_required
+def moderate_post():
     """
     check if user is logged in and is an admin
     if not then return user to login screen
@@ -268,15 +300,9 @@ def mod_waiting():
     return redirect(url_for('auth.login'))
 
 
-@main.route('/edit/<id>', methods=['GET', 'POST'])
+@main.route('/edit/<id>', methods=['GET'])
 @login_required
 def edit(id):
-    if request.method == 'POST':
-        update_slide(id,
-                     request.form["title_text"],
-                     request.form["time_start"],
-                     request.form["time_end"],
-                     str(request.form.getlist('feeds')))
     return render_template('edit.html',
                            title='Edit Slide',
                            slide_id=id,
@@ -286,9 +312,40 @@ def edit(id):
                            feeds=ast.literal_eval(get_settings().feeds))
 
 
-@main.route('/messages', methods=['GET', 'POST'])
+@main.route('/edit/<id>', methods=['POST'])
+@login_required
+def edit_post(id):
+    update_slide(id,
+                 request.form["title_text"],
+                 request.form["time_start"],
+                 request.form["time_end"],
+                 str(request.form.getlist('feeds')))
+    return render_template('edit.html',
+                           title='Edit Slide',
+                           slide_id=id,
+                           slide=Slide.query.get(id),
+                           name=current_user.name,
+                           mod_count=mod_counter(),
+                           feeds=ast.literal_eval(get_settings().feeds))
+
+
+@main.route('/messages', methods=['GET'])
 @login_required
 def messages():
+    if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
+        if current_user.is_admin:
+            return render_template('messages.html',
+                                   title='Messages',
+                                   name=current_user.name,
+                                   mod_count=mod_counter(),
+                                   messages=Message.query.all())
+    return redirect(url_for('auth.login'))
+
+
+@main.route('/messages', methods=['POST'])
+@login_required
+def messages_post():
     if current_user.is_authenticated:
         # nested to prevent errors when users not logged in
         if current_user.is_admin:
@@ -305,9 +362,21 @@ def messages():
     return redirect(url_for('auth.login'))
 
 
-@main.route('/alerts', methods=['GET', 'POST'])
+@main.route('/alerts', methods=['GET'])
 @login_required
 def alerts():
+    if current_user.is_authenticated:
+        if current_user.is_admin:
+            return render_template('alerts.html',
+                                   title='Submit an Emergency Alert',
+                                   name=current_user.name,
+                                   mod_count=mod_counter())
+    return redirect(url_for('auth.login'))
+
+
+@main.route('/alerts', methods=['POST'])
+@login_required
+def alerts_post():
     if current_user.is_authenticated:
         # nested to prevent errors when users not logged in
         if current_user.is_admin:
@@ -324,9 +393,23 @@ def alerts():
     return redirect(url_for('auth.login'))
 
 
-@main.route('/settings', methods=['GET', 'POST'])
+@main.route('/settings', methods=['GET'])
 @login_required
 def settings():
+    if current_user.is_authenticated:
+        # nested to prevent errors when users not logged in
+        if current_user.is_admin:
+            return render_template('settings.html',
+                                   title='System Settings',
+                                   name=current_user.name,
+                                   mod_count=mod_counter(),
+                                   settings=get_settings())
+    return redirect(url_for('auth.login'))
+
+
+@main.route('/settings', methods=['POST'])
+@login_required
+def settings_post():
     if current_user.is_authenticated:
         # nested to prevent errors when users not logged in
         if current_user.is_admin:
@@ -343,7 +426,7 @@ def settings():
     return redirect(url_for('auth.login'))
 
 
-@main.route('/feeds/<title>', methods=['GET', 'POST'])
+@main.route('/feeds/<title>', methods=['GET'])
 def feeds(title):
     """Feed route
 
@@ -369,7 +452,7 @@ def feeds(title):
                            weather_key=app.config['WEATHER_KEY'])
 
 
-@main.route('/feeds-vertical/<title>', methods=['GET', 'POST'])
+@main.route('/feeds-vertical/<title>', methods=['GET'])
 def feeds_vertical(title):
     """Feed route
 
