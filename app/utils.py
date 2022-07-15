@@ -96,9 +96,27 @@ def get_slides(target_feed):
             target_feed in slide.feeds
             and slide.approval == 'Approved'
             and start_date <= today_date <= end_date
+            and not slide.slide_path.endswith(".mp4")
         ):
             slides.append(slide.slide_path)
     return slides
+
+
+def get_video(target_feed):
+    """fetch slides from the database based on the desired feed"""
+    slides = []
+    for slide in reversed(Slide.query.all()):
+        start_date = datetime.datetime.strptime(slide.time_start, '%Y-%m-%d').date()
+        end_date = datetime.datetime.strptime(slide.time_end, '%Y-%m-%d').date()
+        today_date = datetime.datetime.now().date()
+        if (
+            target_feed in slide.feeds
+            and slide.approval == 'Approved'
+            and start_date <= today_date <= end_date
+            and slide.slide_path.endswith(".mp4")
+        ):
+            return slide.slide_path
+    return 0
 
 
 def update_slide(slide_id, slide_name, time_start, time_end, feeds):

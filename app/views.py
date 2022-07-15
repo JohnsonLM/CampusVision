@@ -6,7 +6,7 @@ from flask import render_template, request, Blueprint, flash, Flask, url_for, se
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename, redirect
 from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, \
-    remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide
+    remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide, get_video
 from .models import Message, Slide
 
 # initialize view routes
@@ -442,6 +442,7 @@ def feeds(title):
     Returns:
     template: the feed template with supplied content
     """
+
     return render_template('feed.html',
                            title=title,
                            slides=get_slides(title),
@@ -487,3 +488,28 @@ def clients():
                            title='Clients',
                            mod_count=mod_counter(),
                            clients=session.get('active_clients'))
+
+@main.route('/feed-video/<title>', methods=['GET'])
+def feeds_video(title):
+    """Feed route
+
+    Args:
+        template (string): The template name to use for the feed.
+        title (string): title for the page. This is not displayed but should be declared.
+        slides (list): slides to display.
+        alert_status (string): if not none then overrides slide content to show the string.
+        interval (integer): rate in milliseconds to rotate slides.
+        messages (string): messages for the ticker display.
+        background (string): name of background image for the sidebar located in the static folder.
+
+    Returns:
+    template: the feed template with supplied content
+    """
+    return render_template('feed-video.html',
+                           title=title,
+                           video=get_video(title),
+                           alert_status=alert_status(),
+                           interval=get_settings().duration,
+                           messages=json.dumps(get_message()),
+                           background=title + '.webp',
+                           weather_key=app.config['WEATHER_KEY'])
