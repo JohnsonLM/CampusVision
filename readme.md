@@ -13,10 +13,12 @@ CampusVison is a digital signage Management solution designed to run on minimal 
     -  Contributor and administrator accounts.
     - Moderate slides
 - Client interface for displaying slides
+    - Display slides and graphic content.
+    - Display video  looping content.
     - Display date and time and live weather.
     - Display emergency alerts
     - Display messages and "ticker" content
-    - Customizable sidebar content
+    - Customizable sidebar content and fullscreen modes.
 - Runs on any web-based device with a network connection.
 
 ## Built with
