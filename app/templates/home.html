@@ -25,7 +25,7 @@
         <ul class="signs" style="display: flex; flex-wrap: wrap; list-style: none; padding: 10px;">
             {% for feed in feeds %}
             <li>
-              <a href="/feeds/{{ feed }}" target="_blank" class="slide-nav btn btn-outline-primary">
+              <a href="/feeds/{{ feed }}?weather=True&interval=1000&reload=1800000&fullscreen=False" target="_blank" class="slide-nav btn btn-outline-primary">
                 <i class="fa fa-tv"></i>
                   {{ feed }}
               </a>

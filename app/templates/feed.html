@@ -9,7 +9,7 @@
   <body>
     <!-- Main Content -->
     <div class="wrapper">
-        <div class="flex-column carousel carousel-fade" data-ride="carousel" data-interval="{{ interval }}">
+        <div class="flex-column carousel carousel-fade" data-ride="carousel" data-interval="{{ request.args.get('interval') }}">
             <div class="carousel-inner">
                 {% if alert_status %}
                 <h4 class="alert-message">{{ alert_status }}</h4>
@@ -17,7 +17,7 @@
                 {% if slides %}
                 {% for slide in slides %}
                 <div class="carousel-item {% if loop.first %}active{% endif %}" id="slide{{ slide }}">
-                    <img class="block" src="/static/uploads/{{ slide }}" style="width: 80vw">
+                    <img class="block" src="/static/uploads/{{ slide }}" style="{% if request.args.get('fullscreen') == 'False' %} width: 80vw {% else %} width: 100vw {% endif %}">
                 </div>
                 {% endfor %}
                 {% else %}
@@ -28,14 +28,17 @@
                 {% endif %}
             </div>
         </div>
+        {% if request.args.get('fullscreen') == 'False' %}
         <div class="flex-column sidebar" style="background: linear-gradient(to right, rgba(62, 25, 82, 0.85), rgba(62, 25, 82, 0.85)), url('/static/{{ background }}') center;">
             <div class="sidebar-inner">
                 <img src="/static/Asbury-Logo.png">
                 <h2>{{ title }}</h2>
             </div>
          </div>
+        {% endif %}
     </div>
     <!-- Lower Third -->
+    {% if request.args.get('fullscreen') == 'False' %}
     <div class="wrapper">
          <div class="datetime d-flex flex-column">
              <h2 id="date"></h2>
@@ -53,9 +56,10 @@
              </div>
          </div>
     </div>
+    {% endif %}
     <!-- scripts -->
-    <script src="{{ url_for('static', filename='js/datetime.js') }}"></script>
     <script src="{{ url_for('static', filename='js/messages.js') }}"></script>
+    {% if request.args.get('weather') == 'True' %}
     <script>
         function weatherBalloon() {
           fetch('https://api.openweathermap.org/data/2.5/onecall?lat=37.86202&lon=-84.6616&exclude=current,minutely,hourly,alerts&appid={{ weather_key }}')
@@ -91,6 +95,27 @@
           data: Date().toLocaleString(),
           dataType: 'text',
         });
+    </script>
+    {% endif %}
+    <script>
+        function clock() {
+            var dt = new Date();
+            document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+            document.getElementById("date").innerHTML = dt.toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+              hour12: true,
+            });
+        }
+
+        setInterval(function() {
+            clock();
+        }, 1000);
+
+        setTimeout(function() {
+            window.location.reload(true);
+        }, {{ request.args.get('reload') }});
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
