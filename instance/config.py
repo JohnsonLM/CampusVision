@@ -12,7 +12,7 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
 UPLOAD_FOLDER = '/uploads'
 
 # sets the maximum bit length of uploads.
-MAX_CONTENT_LENGTH = 25 * 1000 * 1000
+MAX_CONTENT_LENGTH = 50 * 1000 * 1000
 
 # Allows template updates to be loaded without restarting the app.
 TEMPLATES_AUTO_RELOAD = True

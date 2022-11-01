@@ -1,0 +1,124 @@
+{% block content %}
+<html>
+  <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+      <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+      <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+      <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+      <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="container">
+        <h3>Service Desk Operational Status</h3>
+      <div class="row clearfix">
+              <br>
+              <div class="d-flex">
+                  {% for room in rooms %}
+                  <div class="card" style="width: 18rem; margin: 0.5em;">
+                      <div class="card-body">
+                          <strong>{{ room.id }}</strong>
+                          {% if room.status == 1 %}
+                          <span class="label label-success">Online</span>
+                          {% elif room.status == 2 %}
+                          <span class="label label-warning">Problem</span>
+                          {% else %}
+                          <span class="label label-danger">Offline</span>
+                          {% endif %}
+                      </div>
+                  </div>
+                  {% endfor %}
+              </div>
+              <br>
+              <div class="row clearfix">
+                  <div class="col-md-12 column">
+                      <div class="list-group">
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  Event Management
+                                  <a href="#"  data-toggle="tooltip" data-placement="bottom" title="Access website and use site API">
+                                    <i class="fa fa-question-circle"></i>
+                                  </a>
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-success">Operational</span>
+                              </p>
+                          </div>
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  Transact
+                                  <a href="#"  data-toggle="tooltip" data-placement="bottom" title="Access site using SSH terminal">
+                                    <i class="fa fa-question-circle"></i>
+                                  </a>
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-success">Operational</span>
+                              </p>
+                          </div>
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  Campus Dorm Services
+                                  <a href="#"  data-toggle="tooltip" data-placement="bottom" title="Access database server and execute queries">
+                                    <i class="fa fa-question-circle"></i>
+                                  </a>
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-success">Operational</span>
+                              </p>
+                          </div>
+                          <div class="list-group-item">
+                              <h4 class="list-group-item-heading">
+                                  Chapel
+                                  <a href="#"  data-toggle="tooltip" data-placement="bottom" title="Access database server and execute queries">
+                                    <i class="fa fa-question-circle"></i>
+                                  </a>
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-success">Operational</span>
+                              </p>
+                          </div>
+                          <div class="list-group-item card">
+                              <h4 class="list-group-item-heading">
+                                  External Communication
+                                  <a href="#"  data-toggle="tooltip" data-placement="bottom" title="KB, Documentation, Newsletter, Social Media, Bookings, Email, PR">
+                                    <i class="fa fa-question-circle"></i>
+                                  </a>
+                              </h4>
+                              <p class="list-group-item-text">
+                                  <span class="label label-success">Operational</span>
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+    <!-- scripts -->
+    <script>
+        function clock() {
+            var dt = new Date();
+            document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+            document.getElementById("date").innerHTML = dt.toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+              hour12: true,
+            });
+        }
+
+        setInterval(function() {
+            clock();
+        }, 1000);
+
+        setTimeout(function() {
+            window.location.reload(true);
+        }, {{ request.args.get('reload') }});
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
+{% endblock %}

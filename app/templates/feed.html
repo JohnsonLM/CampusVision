@@ -22,7 +22,7 @@
                 {% endfor %}
                 {% else %}
                 <div class="carousel-item active" id="">
-                    <img class="block" src="/static/background.webp" style="width: 80vw">
+                    <img class="block" src="/static/background.png" style="width: 80vw">
                 </div>
                 {% endif %}
                 {% endif %}
@@ -31,7 +31,7 @@
         {% if request.args.get('fullscreen') == 'False' %}
         <div class="flex-column sidebar" style="background: linear-gradient(to right, rgba(62, 25, 82, 0.85), rgba(62, 25, 82, 0.85)), url('/static/{{ background }}') center;">
             <div class="sidebar-inner">
-                <img src="/static/Asbury-Logo.png">
+                <img src="/static/logo.png">
                 <h2>{{ title }}</h2>
             </div>
          </div>

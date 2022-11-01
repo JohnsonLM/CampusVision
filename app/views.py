@@ -7,7 +7,7 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename, redirect
 from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, \
     remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide, get_video
-from .models import Message, Slide
+from .models import Message, Slide, Room
 
 # initialize view routes
 main = Blueprint('main', __name__)
@@ -489,7 +489,7 @@ def clients():
                            mod_count=mod_counter(),
                            clients=session.get('active_clients'))
 
-@main.route('/feed-video/<title>', methods=['GET'])
+@main.route('/feeds_video/<title>', methods=['GET'])
 def feeds_video(title):
     """Feed route
 
@@ -513,3 +513,10 @@ def feeds_video(title):
                            messages=json.dumps(get_message()),
                            background=title + '.webp',
                            weather_key=app.config['WEATHER_KEY'])
+
+@main.route('/status')
+def status():
+    """
+    Route for client page
+    """
+    return render_template('status.html', title='Operational Status', rooms=Room.query.all())

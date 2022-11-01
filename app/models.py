@@ -47,3 +47,9 @@ class Settings(db.Model):
     duration = db.Column(db.String(1000))
     allow_signups = db.Column(db.Integer)
     feeds = db.Column(db.String(1000))
+
+class Room(db.Model):
+    """defines settings model"""
+    id = db.Column(db.String(1000), primary_key=True)
+    title = db.Column(db.String(1000))
+    status = db.Column(db.Integer)
