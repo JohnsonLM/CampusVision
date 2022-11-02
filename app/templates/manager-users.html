@@ -16,6 +16,15 @@
           <td>{{ user['name'] }}</td>
           <td>{{ user['email'] }}</td>
           <td>{% if user['is_admin'] %} Admin {% else %}Contributor{% endif %}</td>
+          <td>
+            {% if current_user.id != user['id'] %}
+            <form action="/usermanager" method="POST" enctype="multipart/form-data">
+              <input type="hidden" name="user_id" value="{{ user['id'] }}">
+              <i class="fa fa-trash fa-lg"></i>
+              <input type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;">
+            </form>
+            {% endif %}
+          </td>
         </tr>
       {% endfor %}
     </tbody>

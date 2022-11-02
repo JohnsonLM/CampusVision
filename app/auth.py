@@ -89,13 +89,17 @@ def logout():
     return 'Logout'
 
 
-@auth.route('/usermanager')
+@auth.route('/usermanager', methods=['GET', 'POST'])
 @login_required
 def usermanager():
     """allow admins to view and manage users"""
     if current_user.is_authenticated:
         # nested to prevent errors for users that are not logged in
         if current_user.is_admin:
+            if request.method == 'POST':
+                user = User.query.filter_by(id=request.form.get('user_id')).first()
+                db.session.delete(user)
+                db.session.commit()
             return render_template('manager-users.html',
                                    title="Users",
                                    users=User.query.all(),
