@@ -86,7 +86,7 @@ def logout():
     """log the user out of the app"""
     flask_login.logout_user()
     app.logger.info('User logged out successfully')
-    return 'Logout'
+    return '<h3 style="text-align: center; margin: 2em; font-family: sans-serif;">You have been logged out.</h3>'
 
 
 @auth.route('/usermanager', methods=['GET', 'POST'])

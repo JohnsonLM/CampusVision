@@ -4,6 +4,7 @@ import os
 import ast
 from flask import render_template, request, Blueprint, flash, Flask, url_for, session
 from flask_login import login_required, current_user
+from sqlalchemy import desc
 from werkzeug.utils import secure_filename, redirect
 from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, \
     remove_slide, update_alert, get_slides, get_message, update_settings, get_settings, update_slide, get_video
@@ -37,14 +38,14 @@ def index():
 def manager():
     """slide manager for users to view and edit submitted slides"""
     page = request.args.get('page', 1, type=int)
-    posts = Slide.query.paginate(page, app.config['POSTS_PER_PAGE'], False)
+    posts = Slide.query.order_by(desc(Slide.id)).paginate(page, app.config['POSTS_PER_PAGE'], False)
     next_url = url_for('main.manager', page=posts.next_num) \
         if posts.has_next else None
     prev_url = url_for('main.manager', page=posts.prev_num) \
         if posts.has_prev else None
     return render_template('manager.html',
                            title='All Slides',
-                           users=reversed(posts.items),
+                           users=posts.items,
                            name=current_user.name,
                            filter=['Approved', 'Waiting Review', 'Denied'],
                            mod_count=mod_counter(),
@@ -56,14 +57,14 @@ def manager():
 @login_required
 def manager_approved():
     page = request.args.get('page', 1, type=int)
-    posts = Slide.query.filter_by(approval='Approved').paginate(page, app.config['POSTS_PER_PAGE'], False)
+    posts = Slide.query.filter_by(approval='Approved').order_by(desc(Slide.id)).paginate(page, app.config['POSTS_PER_PAGE'], False)
     next_url = url_for('main.manager_approved', page=posts.next_num) \
         if posts.has_next else None
     prev_url = url_for('main.manager_approved', page=posts.prev_num) \
         if posts.has_prev else None
     return render_template('manager.html',
                            title='Approved Slides',
-                           users=reversed(posts.items),
+                           users=posts.items,
                            name=current_user.name,
                            filter=['Approved'],
                            mod_count=mod_counter(),
@@ -75,14 +76,14 @@ def manager_approved():
 @login_required
 def manager_waiting():
     page = request.args.get('page', 1, type=int)
-    posts = Slide.query.filter_by(approval='Waiting Review').paginate(page, app.config['POSTS_PER_PAGE'], False)
+    posts = Slide.query.filter_by(approval='Waiting Review').order_by(desc(Slide.id)).paginate(page, app.config['POSTS_PER_PAGE'], False)
     next_url = url_for('main.manager_waiting', page=posts.next_num) \
         if posts.has_next else None
     prev_url = url_for('main.manager_waiting', page=posts.prev_num) \
         if posts.has_prev else None
     return render_template('manager.html',
                            title='Waiting Slides',
-                           users=reversed(posts.items),
+                           users=posts.items,
                            name=current_user.name,
                            filter=['Waiting Review'],
                            mod_count=mod_counter(),
@@ -94,14 +95,14 @@ def manager_waiting():
 @login_required
 def manager_denied():
     page = request.args.get('page', 1, type=int)
-    posts = Slide.query.filter_by(approval='Denied').paginate(page, app.config['POSTS_PER_PAGE'], False)
+    posts = Slide.query.filter_by(approval='Denied').order_by(desc(Slide.id)).paginate(page, app.config['POSTS_PER_PAGE'], False)
     next_url = url_for('main.manager_denied', page=posts.next_num) \
         if posts.has_next else None
     prev_url = url_for('main.manager_denied', page=posts.prev_num) \
         if posts.has_prev else None
     return render_template('manager.html',
                            title='Denied Slides',
-                           users=reversed(posts.items),
+                           users=posts.items,
                            name=current_user.name,
                            filter=['Denied'],
                            mod_count=mod_counter(),
@@ -160,7 +161,7 @@ def moderate():
         # nested to prevent errors when users not logged in
         if current_user.is_admin:
             page = request.args.get('page', 1, type=int)
-            posts = Slide.query.paginate(page, app.config['POSTS_PER_PAGE'], False)
+            posts = Slide.query.order_by(desc(Slide.id)).paginate(page, app.config['POSTS_PER_PAGE'], False)
             next_url = url_for('main.moderate', page=posts.next_num) \
                 if posts.has_next else None
             prev_url = url_for('main.moderate', page=posts.prev_num) \
@@ -168,7 +169,7 @@ def moderate():
             return render_template('moderate.html',
                                    title='Slide Moderator',
                                    name=current_user.name,
-                                   users=reversed(posts.items),
+                                   users=posts.items,
                                    filter=['Approved', 'Waiting Review', 'Denied'],
                                    mod_count=mod_counter(),
                                    next_url=next_url,
@@ -194,7 +195,7 @@ def moderate_post():
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
-            posts = Slide.query.paginate(page, app.config['POSTS_PER_PAGE'], False)
+            posts = Slide.query.order_by(desc(Slide.id)).paginate(page, app.config['POSTS_PER_PAGE'], False)
             next_url = url_for('main.moderate', page=posts.next_num) \
                 if posts.has_next else None
             prev_url = url_for('main.moderate', page=posts.prev_num) \
@@ -202,7 +203,7 @@ def moderate_post():
             return render_template('moderate.html',
                                    title='Slide Moderator',
                                    name=current_user.name,
-                                   users=reversed(posts.items),
+                                   users=posts.items,
                                    filter=['Approved', 'Waiting Review', 'Denied'],
                                    mod_count=mod_counter(),
                                    next_url=next_url,
@@ -224,14 +225,14 @@ def mod_denied():
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
-            posts = Slide.query.filter_by(approval='Denied').paginate(page, app.config['POSTS_PER_PAGE'], False)
+            posts = Slide.query.filter_by(approval='Denied').order_by(desc(Slide.id)).paginate(page, app.config['POSTS_PER_PAGE'], False)
             next_url = url_for('main.mod_denied', page=posts.next_num) \
                 if posts.has_next else None
             prev_url = url_for('main.mod_denied', page=posts.prev_num) \
                 if posts.has_prev else None
             return render_template('moderate.html',
                                    title='Denied Slides',
-                                   users=reversed(posts.items),
+                                   users=posts.items,
                                    name=current_user.name,
                                    filter=['Denied'],
                                    mod_count=mod_counter(),
@@ -254,14 +255,14 @@ def mod_approved():
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
-            posts = Slide.query.filter_by(approval='Approved').paginate(page, app.config['POSTS_PER_PAGE'], False)
+            posts = Slide.query.filter_by(approval='Approved').order_by(desc(Slide.id)).paginate(page, app.config['POSTS_PER_PAGE'], False)
             next_url = url_for('main.mod_approved', page=posts.next_num) \
                 if posts.has_next else None
             prev_url = url_for('main.mod_approved', page=posts.prev_num) \
                 if posts.has_prev else None
             return render_template('moderate.html',
                                    title='Approved Slides',
-                                   users=reversed(posts.items),
+                                   users=posts.items,
                                    name=current_user.name,
                                    filter=['Approved'],
                                    mod_count=mod_counter(),
@@ -284,14 +285,14 @@ def mod_waiting():
                 elif 'Delete' in request.form:
                     remove_slide(request.form['slide_id'])
             page = request.args.get('page', 1, type=int)
-            posts = Slide.query.filter_by(approval='Waiting Review').paginate(page, app.config['POSTS_PER_PAGE'], False)
+            posts = Slide.query.filter_by(approval='Waiting Review').order_by(desc(Slide.id)).paginate(page, app.config['POSTS_PER_PAGE'], False)
             next_url = url_for('main.mod_waiting', page=posts.next_num) \
                 if posts.has_next else None
             prev_url = url_for('main.mod_waiting', page=posts.prev_num) \
                 if posts.has_prev else None
             return render_template('moderate.html',
                                    title='Waiting Slides',
-                                   users=reversed(posts.items),
+                                   users=posts.items,
                                    name=current_user.name,
                                    filter=['Waiting Review'],
                                    mod_count=mod_counter(),
