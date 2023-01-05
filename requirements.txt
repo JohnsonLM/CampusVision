@@ -3,14 +3,18 @@
 
 # Flask Framework
 click==8.0.0
-Flask==2.1.2
+Flask~=2.2.2
 itsdangerous==2.0.1
 Jinja2==3.0.0
 MarkupSafe==2.0.0rc2
-Werkzeug==2.0.3
+Werkzeug~=2.2.2
 
 # Flask Packages
-Flask-Login==0.6.1
+Flask-Login~=0.6.1
 Flask-Script==2.0.5
 Flask-SQLAlchemy==2.5.1
 Flask-WTF==0.14.2
+
+msal~=1.20.0
+requests~=2.28.1
+SQLAlchemy~=1.4.44

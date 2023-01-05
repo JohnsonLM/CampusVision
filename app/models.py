@@ -9,9 +9,8 @@ class User(UserMixin, db.Model):
     """defines user model"""
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True)
-    password = db.Column(db.String(100))
     name = db.Column(db.String(1000))
-    is_admin = db.Column(db.Integer)
+    type = db.Column(db.String(1000))
 
 
 class Slide(db.Model):
@@ -24,6 +23,18 @@ class Slide(db.Model):
     approval = db.Column(db.String(1000))
     submitted_by = db.Column(db.String(1000))
     feeds = db.Column(db.String(1000))
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'slide_path': self.slide_path,
+            'time_start': self.time_start,
+            'time_end': self.time_end,
+            'title': self.title,
+            'approval': self.approval,
+            'submitted_by': self.submitted_by,
+            'feeds': self.feeds,
+        }
 
 
 class Alert(db.Model):

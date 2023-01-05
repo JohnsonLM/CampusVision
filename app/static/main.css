@@ -32,15 +32,10 @@ html {
     color: #d4d4d4;
     margin-right: 10px;
     margin-left: 10px;
-    border-radius: 12px;
 }
 
 .app-title {
-    height: 50px;
     padding: 10px;
-    margin-bottom: 0rem;
-    padding-left: 25px;
-    background: #1a1a1a;
 }
 
 .topnav {
@@ -98,6 +93,10 @@ html {
 .bottom-nav a {
     padding: 8px;
     color: white;
+}
+
+.preview {
+    width: 100%;
 }
 
 @font-face {

@@ -1,0 +1,12 @@
+{% extends "auth_base.html" %}
+{% block content %}
+<div class="m-3 col-6 mx-auto text-center">
+    <h2 class="text-center">TimeClockTool</h2>
+    <br>
+    <a href='{{ auth_url }}' class="btn btn-primary btn-block" style="width: 20em;">Sign In via SSO</a>
+
+    {% if config.get("B2C_RESET_PASSWORD_AUTHORITY") %}
+    <a href='{{_build_auth_code_flow(authority=config["B2C_RESET_PASSWORD_AUTHORITY"])["auth_uri"]}}' class="btn btn-primary btn-block">Reset Password</a>
+    {% endif %}
+</div>
+{% endblock %}

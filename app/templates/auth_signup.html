@@ -1,0 +1,26 @@
+{% extends "auth_base.html" %}
+{% block content %}
+<div class="m-3 col-6 mx-auto">
+    <h2 class="text-center">CampusVision Signage Control</h2>
+    <div>
+        <h3>Sign up</h3>
+        <p>It looks like you're new here! Please sign up below to get started.</p>
+    </div>
+    <form action="/auth/signup" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label>Your Name</label>
+            <input class="form-control" type="text" placeholder="{{ user }}" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="eid">Your ID Number</label>
+            <input type="number" name="eid" class="form-control" required>
+        </div>
+        <br>
+        <div class="form-row form-group">
+            <input type="Submit" name="Submit" value="Submit" onclick="validateForm()" class="btn btn-primary">
+            <a type="button" href="/logout" class="btn btn-secondary">Logout</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

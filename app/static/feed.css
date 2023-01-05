@@ -84,6 +84,12 @@ body {
     color: white;
 }
 
+.sidebar h4 {
+    text-align:center;
+    font-size: 1.2vw;
+    color: white;
+}
+
 .sidebar img {
     padding: 30px;
     align-content: center;

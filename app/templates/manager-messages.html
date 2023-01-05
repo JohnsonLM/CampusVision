@@ -4,25 +4,22 @@
     <br>
     <h3>Submit a Message</h3>
     <div class="textbox sign-up-textbox">
-        <label for="message_text">Message Contents</label>
-        <br>
-        <input type="text" id="message_text" name="message_text">
+        <label for="message_text">Message Content</label>
+        <input class="form-control" type="text" id="message_text" name="message_text" required>
     </div>
-    <br>
     <div class="textbox sign-up-textbox">
-         <label for="time_start">Start Date: </label>
-         <input type="date" id="time_start" name="time_start" required>
+         <label for="time_start">Display Start Date: </label>
+         <input class="form-control" type="date" id="time_start" name="time_start" required>
       </div>
-    <br>
     <div class="textbox sign-up-textbox">
-         <label for="time_end">End Date: </label>
-         <input type="date" id="time_end" name="time_end" required>
+         <label for="time_end">Display End Date: </label>
+         <input class="form-control" type="date" id="time_end" name="time_end" required>
       </div>
     <br>
     <button class="btn btn-primary" type="submit" onclick="validateForm()" name="submit">Submit</button>
 </form>
 <br>
-<h3>Current Messages</h3>
+<h3>Manage Messages</h3>
 <br>
 <table id="data" class="table table-striped">
     <thead>
@@ -31,7 +28,7 @@
         <th>Message</th>
         <th>Start Date</th>
         <th>End Date</th>
-        <th>Manage</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -42,9 +39,10 @@
             <td>{{ message.time_start }}</td>
             <td>{{ message.time_end }}</td>
             <td>
-              <form action = "/mod" method = "POST" enctype = "multipart/form-data">
-                <input type="hidden" name="slide_id" value="{{ message.id }}"/>
-              </form>
+                <form action="/api/messages/delete" method="POST">
+                    <input type="hidden" name="message_id" value="{{ message.id }}"/>
+                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                </form>
             </td>
         </tr>
       {% endfor %}

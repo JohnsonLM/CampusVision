@@ -15,15 +15,13 @@
           <td>{{ user['id'] }}</td>
           <td>{{ user['name'] }}</td>
           <td>{{ user['email'] }}</td>
-          <td>{% if user['is_admin'] %} Admin {% else %}Contributor{% endif %}</td>
+          <td>{{ user['type'] }}</td>
           <td>
-            {% if current_user.id != user['id'] %}
+            <button class="btn btn-sm btn-secondary"><i class="fa fa-edit"></i> Edit</button>
             <form action="/usermanager" method="POST" enctype="multipart/form-data">
               <input type="hidden" name="user_id" value="{{ user['id'] }}">
-              <i class="fa fa-trash fa-lg"></i>
-              <input type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;">
+              <button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;"><i class="fa fa-trash"></i> Delete</button>
             </form>
-            {% endif %}
           </td>
         </tr>
       {% endfor %}

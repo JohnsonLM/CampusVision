@@ -5,7 +5,7 @@ including mostly database connectors and data checks.
 from .app import db
 from flask_login import current_user
 import datetime
-from .models import Slide, Alert, Message, Settings
+from .models import Slide, Alert, Message, Settings, User
 
 
 def mod_counter():
@@ -200,3 +200,9 @@ def signups_allowed():
     """fetch the signup setting"""
     settings = Settings.query.all()
     return settings[0].allow_signups
+
+def get_user(user_session):
+    if User.query.filter_by(email=user_session["preferred_username"]).first():
+        return User.query.filter_by(email=user_session["preferred_username"]).first()
+    else:
+        return False

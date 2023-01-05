@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<h3>Screen Generator</h3>
+<p>Generate urls for use on campus displays</p>
+<div class="container">
+     <form onchange="updateInput()">
+                <div class="form-group">
+                   <label class="form" for="feed">Feed</label>
+                    <select class="form-control" id="feed">
+                        {% for feed in feeds %}
+                        <option>{{ feed }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                       <input class="form-check-input" type="checkbox" id="fullscreen">
+                       <label class="form-check-label" for="fullscreen">Fullscreen</label>
+                  </div>
+                  <div class="form-group">
+                       <input class="form-check-input" type="checkbox" id="weather">
+                       <label class="form-check-label" for="weather">Weather</label>
+                  </div>
+                  <div class="form-group">
+                       <label class="form-label" for="interval">Slide Rotation Interval (milliseconds)</label>
+                       <input class="form-range" type="range" id="interval" min="1000" max="15000" step="1000" oninput="this.nextElementSibling.value = this.value">
+                       <output></output>
+                  </div>
+                  <div class="form-group">
+                       <label class="form-label" for="reload_interval">Reload Interval (milliseconds)</label>
+                       <input class="form-range" type="range" id="reload_interval" min="360000" max="14400000" step="10000" oninput="this.nextElementSibling.value = this.value">
+                       <output></output>
+                  </div>
+         </form>
+     <hr>
+     <div class="container text-center" style="margin: 1em;">
+          <h6>URL (Click to Copy)</h6>
+          <h3 id="url_field" class="btn btn-secondary" onclick="copyText()"><i class="fa fa-times"></i></h3>
+     </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function updateInput(){
+     var interval = document.getElementById('interval'),
+         feed = document.getElementById('feed'),
+         fullscreen = document.getElementById('fullscreen'),
+         weather = document.getElementById('weather'),
+         reload_interval = document.getElementById('reload_interval'),
+         url_field = document.getElementById('url_field');
+
+     var value = 'signage-control-01.asbury.edu/feeds/' + feed.value + '?interval=' + interval.value + '&reload=' + reload_interval.value;
+     if (fullscreen.checked == true) {
+          value = value + '&fullscreen=True';
+     } else {
+          value = value + '&fullscreen=False';
+     }
+     if (weather.checked == true) {
+          value = value + '&weather=True';
+     } else {
+          value = value + '&weather=False';
+     }
+     document.getElementById("url_field").innerText = value;
+     console.log(value)
+}
+
+function copyText() {
+     var text = document.getElementById("url_field");
+     navigator.clipboard.writeText(text.innerText);
+}
+</script>
+{% endblock %}

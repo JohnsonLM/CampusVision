@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<br>
+<ul class="list-group">
+    <li class="list-group-item">
+        <strong>{{ user_info.name }}</strong> - {{ user_info.email }}
+        <br>
+        <i>
+            {% if user_info.is_admin %}
+            Admin
+            {% elif user.manages %}
+            Manager
+            {% else %}
+            Student Worker
+            {% endif %}
+        </i>
+    </li>
+    <li class="list-group-item">
+        Positions: {{ user_info.positions }}</li>
+    <li class="list-group-item">
+        Departments: {{ user_info.dept }}
+    </li>
+    <li class="list-group-item">
+        Employee ID: {{ user_info.eid }}
+    </li>
+</ul>
+{% endblock %}

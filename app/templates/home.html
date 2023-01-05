@@ -7,19 +7,19 @@
         </div>
         <div class="card-body">
             <ul>
-              <li>Slides must be in the 16:9 aspect ratio and landscape orientation</li>
+              <li>Slides must be in the 16:9 aspect ratio and landscape orientation.</li>
               <li>Slides must have dimensions of at least 1920x1080.</li>
               <li>Slides must be under 16mb in size.</li>
               <li>Designs must be submitted in either JPG or PNG file format.</li>
-              <li>Signs should follow good design principles (easy to read, sufficient contrast, not too busy, etc.).</li>
-              <li>All signs are subject to approval and redesign by staff based on the above graphic design standards.</li>
+              <li>Slides should follow good design principles (easy to read, sufficient contrast, not too busy, etc.).</li>
+              <li>All slides are subject to approval and redesign by staff based on the above graphic design standards.</li>
               <li>Signs should be submitted as well in advance as possible to ensure time for approval and possible revision.</li>
             </ul>
         </div>
     </div>
     <div class="m-2 card" style="flex-grow: 1; max-width: 700px;">
         <div class="card-header">
-            <strong class="card-title">Feeds</strong>
+            <strong class="card-title">Feed Previews</strong>
         </div>
         <ul class="signs" style="display: flex; flex-wrap: wrap; list-style: none; padding: 10px;">
             {% for feed in feeds %}
@@ -56,6 +56,46 @@
             </ul>
         </div>
     </div>
+    <div class="m-3 card" style="flex-grow: 1; min-width: 50vw;">
+        <div class="card-header">
+            <strong class="card-title">Generate a Screen URL</strong>
+        </div>
+        <div class="card-body">
+            <form onchange="updateInput()">
+                <div class="form-group">
+                   <label class="form" for="feed">Feed</label>
+                    <select class="form-control" id="feed">
+                        {% for feed in feeds %}
+                        <option>{{ feed }}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="form-group">
+                       <input class="form-check-input" type="checkbox" id="fullscreen">
+                       <label class="form-check-label" for="fullscreen">Fullscreen</label>
+                  </div>
+                  <div class="form-group">
+                       <input class="form-check-input" type="checkbox" id="weather">
+                       <label class="form-check-label" for="weather">Weather</label>
+                  </div>
+                  <div class="form-group">
+                       <label class="form-label" for="interval">Slide Rotation Interval (milliseconds)</label>
+                       <input class="form-range" type="range" id="interval" min="1000" max="15000" step="1000" oninput="this.nextElementSibling.value = this.value">
+                       <output></output>
+                  </div>
+                  <div class="form-group">
+                       <label class="form-label" for="reload_interval">Reload Interval (milliseconds)</label>
+                       <input class="form-range" type="range" id="reload_interval" min="360000" max="14400000" step="10000" oninput="this.nextElementSibling.value = this.value">
+                       <output></output>
+                  </div>
+         </form>
+            <hr>
+            <div class="container text-center" style="margin: 1em;">
+                  <h6>URL (Click to Copy)</h6>
+                  <h3 id="url_field" class="btn btn-secondary" onclick="copyText()"><i class="fa fa-times"></i></h3>
+             </div>
+        </div>
+    </div>
     <!--
     <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
@@ -72,4 +112,35 @@
     </div>
     -->
 </div>
+{% endblock %}
+{% block scripts %}
+<script>
+function updateInput(){
+     var interval = document.getElementById('interval'),
+         feed = document.getElementById('feed'),
+         fullscreen = document.getElementById('fullscreen'),
+         weather = document.getElementById('weather'),
+         reload_interval = document.getElementById('reload_interval'),
+         url_field = document.getElementById('url_field');
+
+     var value = 'signage-control-01.asbury.edu/feeds/' + feed.value + '?interval=' + interval.value + '&reload=' + reload_interval.value;
+     if (fullscreen.checked == true) {
+          value = value + '&fullscreen=True';
+     } else {
+          value = value + '&fullscreen=False';
+     }
+     if (weather.checked == true) {
+          value = value + '&weather=True';
+     } else {
+          value = value + '&weather=False';
+     }
+     document.getElementById("url_field").innerText = value;
+     console.log(value)
+}
+
+function copyText() {
+     var text = document.getElementById("url_field");
+     navigator.clipboard.writeText(text.innerText);
+}
+</script>
 {% endblock %}
