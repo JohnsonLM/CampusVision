@@ -26,9 +26,9 @@ def index():
 
 @app.route('/manager')
 def manager():
+    """slide manager for users to view and edit submitted slides"""
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    """slide manager for users to view and edit submitted slides"""
     page = request.args.get('page', 1, type=int)
     posts = Slide.query.order_by(desc(Slide.id)).paginate(page=page, per_page=app_config.POSTS_PER_PAGE, error_out=False)
     next_url = url_for('app.manager', page=posts.next_num) \

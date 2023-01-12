@@ -1,14 +1,14 @@
 from .app import db
 from flask import Blueprint, render_template, redirect, url_for, request, session
 from .models import User
-import msal as msal
+import msal
 import requests
 import instance.config as app_config
 
 # initialize auth routes
 auth = Blueprint('auth', __name__)
 
-@auth.route("/signup", methods=['GET', 'POST'])
+@auth.route("/signup", methods=['GET'])
 def signup():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
@@ -26,6 +26,22 @@ def signup():
     else:
         name = session.get("user")["name"]
         return render_template('auth_signup.html', user=name, version=msal.__version__, title='Sign Up')
+
+
+@auth.route("/signup", methods=['POST'])
+def signup_post():
+    if not session.get("user"):
+        return redirect(url_for("auth.login"))
+    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first():
+        return redirect(url_for("app.index"))
+    data = User(
+        email = session.get("user")["preferred_username"],
+        name = session.get("user")["name"],
+        type = "Viewer",
+        eid = int(request.form['eid']))
+    db.session.add(data)
+    db.session.commit()
+    return redirect(url_for("app.index"))
 
 
 @auth.route("/login")

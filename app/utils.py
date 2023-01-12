@@ -104,7 +104,6 @@ def get_slides(target_feed):
 
 def get_video(target_feed):
     """fetch slides from the database based on the desired feed"""
-    slides = []
     for slide in reversed(Slide.query.all()):
         start_date = datetime.datetime.strptime(slide.time_start, '%Y-%m-%d').date()
         end_date = datetime.datetime.strptime(slide.time_end, '%Y-%m-%d').date()
