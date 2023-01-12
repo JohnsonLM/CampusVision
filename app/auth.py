@@ -16,10 +16,10 @@ def signup():
         return redirect(url_for("app.index"))
     elif request.method == 'POST':
         data = User(
-            email = session.get("user")["preferred_username"],
-            name = session.get("user")["name"],
-            type = "Viewer",
-            eid = int(request.form['eid']))
+            email = session.get("user")["preferred_username"], # type: ignore
+            name = session.get("user")["name"], # type: ignore
+            type = "Viewer", # type: ignore
+            eid = int(request.form['eid'])) # type: ignore
         db.session.add(data)
         db.session.commit()
         return redirect(url_for("app.index"))
@@ -35,10 +35,10 @@ def signup_post():
     elif User.query.filter_by(email=session.get("user")["preferred_username"]).first():
         return redirect(url_for("app.index"))
     data = User(
-        email = session.get("user")["preferred_username"],
-        name = session.get("user")["name"],
-        type = "Viewer",
-        eid = int(request.form['eid']))
+        email = session.get("user")["preferred_username"], # type: ignore
+        name = session.get("user")["name"], # type: ignore
+        type = "Viewer", # type: ignore
+        eid = int(request.form['eid'])) # type: ignore
     db.session.add(data)
     db.session.commit()
     return redirect(url_for("app.index"))
@@ -84,7 +84,7 @@ def graphcall():
         app_config.ENDPOINT,
         headers={'Authorization': 'Bearer ' + token['access_token']},
         ).json()
-    return render_template('display.html', result=graph_data)
+    return render_template('home.html', result=graph_data)
 
 
 def _load_cache():

@@ -47,8 +47,8 @@ html {
 .topnav a {
     color: white;
     text-align: center;
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .sidebar {
@@ -62,7 +62,7 @@ html {
 }
 
 .content-box {
-    border-radius: 12px 0px 0px 12px;
+    border-radius: 12px 0 0 12px;
     min-height: 95vh;
     background: white;
 }

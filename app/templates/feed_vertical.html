@@ -76,7 +76,7 @@
                   var element = 'day' + day_plus
                   document.getElementById(element).innerHTML =
                       '<h1>' + dt_txt.toLocaleDateString('en-us', {day:"numeric", weekday:"short", month:"short"}) + '</h1>' +
-                      '<img src="http://openweathermap.org/img/wn/' + d[day].weather[0].icon + '@2x.png" style="width: 10vw;">' +
+                      '<img src="https://openweathermap.org/img/wn/' + d[day].weather[0].icon + '@2x.png" style="width: 10vw;" alt="weather icon">' +
                       '<h1>' + fahrenheit + '&deg; f' + '</h1>'
                 }
             }

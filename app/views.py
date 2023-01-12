@@ -250,10 +250,9 @@ def alerts_post():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
     if request.method == 'POST':
-        status = request.form["alert_status"]
-        if status == "Enable":
+        if request.form["alert_status"] == "Enable":
             update_alert(request.form["alert_text"])
-        elif status == "Disable":
+        else:
             update_alert("")
     return render_template('alerts.html',
                            title='Submit an Emergency Alert',

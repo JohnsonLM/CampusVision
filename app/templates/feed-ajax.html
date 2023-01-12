@@ -89,7 +89,7 @@
               var element = 'day' + day_plus
               document.getElementById(element).innerHTML =
                   '<h3>' + dt_txt.toLocaleDateString('en-us', {day:"numeric", weekday:"short", month:"short"}) + '</h3>' +
-                  '<img src="http://openweathermap.org/img/wn/' + d[day].weather[0].icon + '@2x.png">' +
+                  '<img src="https://openweathermap.org/img/wn/' + d[day].weather[0].icon + '@2x.png">' +
                   '<h4>' + fahrenheit + '&deg; f' + '</h4>'
             }
         }
@@ -137,11 +137,11 @@
               template = '<div class="carousel-item">';
             }
             if ( item.endsWith('.mp4') ) {
-            template += '<video class="block" id="' + item + '" style="{% if request.args.get('fullscreen') == 'False' %} width: 80vw {% else %} width: 100vw {% endif %}" autoplay loop><source src="' + item + '" type="video/webm"></video>';
+            template += '<video class="block" id="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 80vw {% else %} width: 100vw {% endif %}" autoplay loop><source src="' + item + '" type="video/webm"></video>';
             template += '</div>';
             template += '</div>';
             } else {
-            template += '<img class="block" src="' + item + '" style="{% if request.args.get('fullscreen') == 'False' %} width: 80vw {% else %} width: 100vw {% endif %}">';
+            template += '<img class="block" src="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 80vw {% else %} width: 100vw {% endif %}">';
             template += '</div>';
             template += '</div>';
             }
