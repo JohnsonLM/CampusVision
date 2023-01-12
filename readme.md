@@ -5,7 +5,7 @@
 ![Commits](https://badgen.net/github/commits/JohnsonLM/CampusVision/main)
 ![License](https://badgen.net/badge/license/GPL/blue)
 
-CampusVison is a digital signage Management solution designed to run on minimal hardware to maximize deployment options to devices such as micro-computers, raspberry pis, smart TVs, and other display devices.
+CampusVison is a digital signage Management solution designed to run on minimal hardware to maximize deployment options to devices such as microcomputers, raspberry pis, smart TVs, and other display devices.
 
 ## Features
 - Web interface for content management.
@@ -68,7 +68,7 @@ POSTS_PER_PAGE = 10
 First, setup the Azure web app in Azure.
 
 **Create Repository Secret**
-In your Github repo, create a reposiroty secret to share with the Azure installation. This will allow the app to conect ot your reposotroy and rebuild the project when changes are pushed to the branch. Once you have the secret, copy it to Azure in the Deployment Center.
+In your GitHub repo, create a reposiroty secret to share with the Azure installation. This will allow the app to conect ot your reposotroy and rebuild the project when changes are pushed to the branch. Once you have the secret, copy it to Azure in the Deployment Center.
 
 **Setup custom Azure start command**
 In your web app configuration, create a custom startup command as follows: 
@@ -80,7 +80,7 @@ Before installing, ensure that Docker is installed and that the application file
 
 Once you've configured the application, run the bash script `start.sh` to configure the docker container and begin the docker process. If all is well, you should be able to visit the site at `localhost:56733`. If the app fails to start, check the DockerFile and ensure that all of your paths match with the directories you copied over.
 
-Once you can connect to the site, you can login with the default admin user:
+Once you can connect to the site, you can log in with the default admin user:
 
 username: first.last@domain.com
 password: password

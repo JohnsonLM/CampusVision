@@ -1,7 +1,7 @@
 body {
     overflow: hidden;
     background-color: black;
-    font-family: 'Myriad Pro Light';
+    font-family: 'Myriad Pro Light', sans-serif;
     font-weight: normal;
     font-style: normal;
 }
@@ -71,7 +71,6 @@ body {
     padding: 25px;
     background-size: cover !important;
     width: -moz-available;
-    width: -moz-available;
     width: -webkit-fill-available;
     width: fill-available;
 }
@@ -109,8 +108,7 @@ body {
 }
 
 .sidebar-inner {
-    border: white;
-    border-style: double;
+    border: double white;
     height: 100%;
 }
 

@@ -8,7 +8,7 @@
          <p>Only accepts .jpg, .jpeg, .png, and .mp4 video files</p>
       <div class="textbox">
          <label for="title">Slide Name</label>
-         <input class="form-control" id="title" type="text" placeholder="World Backup Day" name="title" onfocus="this.placeholder = '', onblur=" this.placeholder = 'World backup Day' required>
+         <input class="form-control" id="title" type="text" placeholder="World Backup Day" name="title" onfocus="this.placeholder = ''" onblur="this.placeholder = 'World backup Day'" required>
       </div>
       <br>
       <div class="textbox sign-up-textbox">
@@ -23,13 +23,13 @@
       <br>
       <strong>Feed Assignment</strong>
       <div class="form-check">
-         <input class="form-check-input" type="checkbox" onClick="toggle(this)"/>
-         <label class="form-check-label">Toggle All</label>
+         <input class="form-check-input" type="checkbox" onClick="toggle(this)" id="feed_assign"/>
+         <label for="feed_assign" class="form-check-label">Toggle All</label>
       </div>
      {% for feed in feeds %}
      <div class="form-check">
-         <input class="form-check-input" type="checkbox" value="{{feed}}" name="feeds">
-         <label class="form-check-label">{{feed}}</label>
+         <input class="form-check-input" type="checkbox" value="{{ feed.name }}" name="feeds" id="feeds">
+         <label for="feeds" class="form-check-label">{{ feed.name }}</label>
       </div>
      {% endfor %}
      <br>
@@ -37,7 +37,7 @@
    </form>
    </div>
    <div class="p-2">
-     <img id="output" style="max-width: 1000px; padding-left: 100px;"/>
+     <img id="output" style="max-width: 1000px; padding-left: 100px;" alt="slide preview"/>
      <script>
         var loadFile = function(event) {
           var output = document.getElementById('output');
@@ -49,7 +49,7 @@
       </script>
   </div>
 </div>
-<script language="JavaScript">
+<script>
    function toggle(source) {
      checkboxes = document.getElementsByName('feeds');
      for(var i=0, n=checkboxes.length;i<n;i++) {

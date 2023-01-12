@@ -1,7 +1,8 @@
 {% block content %}
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
+        <title>Digital Sign</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ url_for('static', filename='feed.css') }}">
@@ -10,7 +11,7 @@
         <div class="text-white p-3" style="background: linear-gradient(to right, rgba(62, 25, 82, 0.85), rgba(62, 25, 82, 0.85)), url('/static/{{ background }}') center;">
               <div class="d-flex">
                   <div class="">
-                      <img src="/static/logo.png" style="width: 25vw;">
+                      <img src="/static/logo.png" style="width: 25vw;" alt="logo">
                   </div>
                   <div class="">
                       <h2 id="date"></h2>
@@ -29,12 +30,12 @@
                     {% if slides %}
                     {% for slide in slides %}
                     <div class="carousel-item {% if loop.first %}active{% endif %}" id="slide{{ slide }}">
-                        <img class="block" src="/static/uploads/{{ slide }}" style="width: 100vw">
+                        <img class="block" src="/static/uploads/{{ slide }}" style="width: 100vw" alt="slide">
                     </div>
                     {% endfor %}
                     {% else %}
                     <div class="carousel-item active" id="">
-                        <img class="block" src="/static/background-square.png" style="width: 100vw">
+                        <img class="block" src="/static/background-square.png" style="width: 100vw" alt="slide">
                     </div>
                     {% endif %}
                     {% endif %}
@@ -110,7 +111,9 @@
 
             setTimeout(function() {
                 window.location.reload(true);
-            }, {{ request.args.get('reload') }});
+            },
+                {{ request.args.get('reload') }}
+            );
         </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

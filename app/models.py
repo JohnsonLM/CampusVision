@@ -11,6 +11,15 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     name = db.Column(db.String(1000))
     type = db.Column(db.String(1000))
+    eid = db.Column(db.String(100), unique=True)
+
+
+class Feed(db.Model):
+    """defines feed model"""
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(1000), unique=True)
+    location = db.Column(db.String(1000))
+    manager_group = db.Column(db.String(1000))
 
 
 class Slide(db.Model):
@@ -51,13 +60,6 @@ class Message(db.Model):
     text = db.Column(db.String(1000))
     submitted_by = db.Column(db.String(1000))
 
-
-class Settings(db.Model):
-    """defines settings model"""
-    id = db.Column(db.Integer, primary_key=True)
-    duration = db.Column(db.String(1000))
-    allow_signups = db.Column(db.Integer)
-    feeds = db.Column(db.String(1000))
 
 class Room(db.Model):
     """defines settings model"""

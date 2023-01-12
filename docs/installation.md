@@ -38,4 +38,4 @@ POSTS_PER_PAGE = 10
 #### Running via Docker
 Once you've confugured the application, run the bash script `start.sh` to configure the docker container and begin the docker process. If all is well, you should be able to visit the site at `localhost:56733`. If the app fails to start, check the DockerFile and ensure that all of your paths match with the directories you copied over.
 
-Once you can connect to the site, you can login with the default admin user.
+Once you can connect to the site, you can log in with the default admin user.

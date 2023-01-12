@@ -8,13 +8,13 @@
     </div>
     <form action="/auth/signup" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-            <label>Your Name</label>
-            <input class="form-control" type="text" placeholder="{{ user }}" readonly>
+            <label for="username">Your Name</label>
+            <input class="form-control" type="text" id="username" placeholder="{{ user }}" readonly>
         </div>
 
         <div class="form-group">
             <label for="eid">Your ID Number</label>
-            <input type="number" name="eid" class="form-control" required>
+            <input type="number" id="eid" name="eid" class="form-control" required>
         </div>
         <br>
         <div class="form-row form-group">

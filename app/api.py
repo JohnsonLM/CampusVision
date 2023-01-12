@@ -1,6 +1,6 @@
 import datetime
-from flask import request, Blueprint, session, abort, redirect, url_for, flash, jsonify, json, Flask
-from .models import Slide, Message
+from flask import request, Blueprint, session, abort, redirect, url_for, jsonify, Flask
+from .models import Slide, Message, User, Feed
 from .app import db
 
 # initialize view routes
@@ -33,6 +33,12 @@ def get_slides():
     return {'data': [item.to_dict() for item in data]}
 
 
+@api.route('/slides/<name>/', methods=['GET'])
+def get_user_slides(name):
+    data = Slide.query.filter_by(submitted_by=name).limit(1000)
+    return {'data': [item.to_dict() for item in data]}
+
+
 @api.route('/messages', methods=['GET'])
 def messages():
     message_set = []
@@ -51,3 +57,34 @@ def delete_messages():
     data.delete()
     db.session.commit()
     return redirect(url_for('app.messages'))
+
+@api.route('/user/<email>/edit', methods=['POST'])
+def edit_user(email):
+    if not session.get("user"):
+        abort(401)
+    selected_user = User.query.filter_by(email=email).first()
+    selected_user.name = request.form["name"]
+    selected_user.type = request.form["type"]
+    db.session.commit()
+    return redirect(url_for("app.manager_users"))
+
+
+@api.route('/feeds/add', methods=['POST'])
+def add_feed():
+    if not session.get("user"):
+        abort(401)
+    data = Feed(name=request.form["feed_name"])
+    db.session.add(data)
+    db.session.commit()
+    return redirect(url_for("app.settings"))
+
+
+@api.route('/feeds/delete', methods=['POST'])
+def delete_feed():
+    if not session.get("user"):
+        abort(401)
+    selected = Feed.query.get(request.form["feed_id"])
+    db.session.delete(selected)
+    db.session.commit()
+    return redirect(url_for("app.settings"))
+

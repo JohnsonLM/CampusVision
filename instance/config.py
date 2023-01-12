@@ -47,9 +47,10 @@ if not CLIENT_SECRET:
 
 AUTHORITY = "https://login.microsoftonline.com/testliveasbury.onmicrosoft.com"
 
-REDIRECT_PATH = "/getAToken"  # Used for forming an absolute URL to your redirect URI.
-                              # The absolute URL must match the redirect URI you set
-                              # in the app's registration in the Azure portal.
+REDIRECT_PATH = "/getAToken"
+# Used for forming an absolute URL to your redirect URI.
+# The absolute URL must match the redirect URI you set
+# in the app's registration in the Azure portal.
 
 # You can find more Microsoft Graph API endpoints from Graph Explorer
 # https://developer.microsoft.com/en-us/graph/graph-explorer

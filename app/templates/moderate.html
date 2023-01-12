@@ -1,20 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link {% if request.path == '/mod' %}active{% endif %}" aria-current="page" href="/mod">All</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link {% if request.path == '/mod/approved' %}active{% endif %}" href="/mod/approved">Approved</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link {% if request.path == '/mod/waiting' %}active{% endif %}" href="/mod/waiting">Waiting Review</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link {% if request.path == '/mod/denied' %}active{% endif %}" href="/mod/denied">Denied</a>
-  </li>
-</ul>
-<br>
 <table id="data" class="table table-striped">
     <thead>
       <tr>
@@ -37,11 +22,11 @@
           <td>{{ user.time_start }}</td>
           <td>{{ user.time_end }}</td>
           <td>{% for feed in user.feeds.strip('][').split(', ')  %}{{ feed.strip("'") }} <br> {% endfor %}</td>
-          <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 150px;'></td>
+          <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 150px;' alt="slide preview"></td>
           <td>{{ user.submitted_by }}</td>
           <td> {{ user.approval }} </td>
-          <td width="150px">
-            <form action = "/mod" method = "POST" enctype = "multipart/form-data">
+          <td>
+            <form action = "/moderate" method = "POST" enctype = "multipart/form-data">
               <input type="hidden" name="slide_id" value="{{ user.id }}"/>
               <i class="fa fa-thumbs-up fa-lg"></i>
               <input type="submit" name="Approve" value="Approve" onclick="validateForm()" class="btn btn-success btn-sm" style="margin: 5px;">

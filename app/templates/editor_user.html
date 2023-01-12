@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<form action="/api/user/{{ selected_user.email }}/edit" method="POST">
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" class="form-control" name="email" id="email" value="{{ selected_user.email }}" readonly>
+    </div>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" name="name" id="name" value="{{ selected_user.name }}">
+    </div>
+    <div class="form-group">
+        <label for="type">User Type</label>
+        <select class="form-control dropdown-toggle" data-toggle="dropdown" name="type" id="type">
+            <option>{{ selected_user.type }}</option>
+            <option>Admin</option>
+            <option>Contributor</option>
+            <option>Security</option>
+            <option>Viewer</option>
+        </select>
+    </div>
+    <br>
+    <div class="form-group">
+        <input class="btn btn-primary" type="submit" value="Update User">
+    </div>
+</form>
+{% endblock %}

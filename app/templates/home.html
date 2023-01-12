@@ -24,9 +24,9 @@
         <ul class="signs" style="display: flex; flex-wrap: wrap; list-style: none; padding: 10px;">
             {% for feed in feeds %}
             <li>
-              <a href="/feeds/{{ feed }}?weather=True&interval=7000&reload=1800000&fullscreen=False" target="_blank" class="slide-nav btn btn-outline-primary">
+              <a href="/feeds/standard/{{ feed.name }}?weather=True&interval=7000&reload=1800000&fullscreen=False" target="_blank" class="slide-nav btn btn-outline-primary">
                 <i class="fa fa-tv"></i>
-                  {{ feed }}
+                  {{ feed.name }}
               </a>
             </li>
             {% endfor %}
@@ -37,7 +37,7 @@
             <strong class="card-title">Documentation</strong>
         </div>
         <div class="card-body">
-            <p>These documents will provide the skills and knowledge needed to make well designed and effective digital signage.</p>
+            <p>These documents will provide the skills and knowledge needed to make well-designed and effective digital signage.</p>
             <ul>
                 <li><a href="https://medium.com/@anahatrawal/10-basic-principles-of-graphic-design-b74be0dbdb58" target="_blank">Principles of Design</a></li>
                 <li><a href="https://medium.freecodecamp.org/fundamental-design-principles-for-non-designers-ad34c30caa7" target="_blank">Design Fundamentals</a></li>
@@ -66,10 +66,18 @@
                    <label class="form" for="feed">Feed</label>
                     <select class="form-control" id="feed">
                         {% for feed in feeds %}
-                        <option>{{ feed }}</option>
+                        <option>{{ feed.name }}</option>
                         {% endfor %}
                     </select>
                   </div>
+                <div class="form-group">
+                     <label class="form" for="type">Feed Type</label>
+                     <select class="form-control" id="type">
+                         <option>standard</option>
+                         <option>video</option>
+                         <option>vertical</option>
+                    </select>
+                 </div>
                   <div class="form-group">
                        <input class="form-check-input" type="checkbox" id="fullscreen">
                        <label class="form-check-label" for="fullscreen">Fullscreen</label>
@@ -96,7 +104,6 @@
              </div>
         </div>
     </div>
-    <!--
     <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
             <strong class="card-title">Active Clients</strong>
@@ -110,7 +117,6 @@
             {% endif %}
         </div>
     </div>
-    -->
 </div>
 {% endblock %}
 {% block scripts %}
@@ -118,24 +124,27 @@
 function updateInput(){
      var interval = document.getElementById('interval'),
          feed = document.getElementById('feed'),
+         type = document.getElementById('type'),
          fullscreen = document.getElementById('fullscreen'),
          weather = document.getElementById('weather'),
          reload_interval = document.getElementById('reload_interval'),
          url_field = document.getElementById('url_field');
 
-     var value = 'signage-control-01.asbury.edu/feeds/' + feed.value + '?interval=' + interval.value + '&reload=' + reload_interval.value;
+     var value = window.location.origin + '/feeds/' + type.value + '/' + feed.value + '?interval=' + interval.value + '&reload=' + reload_interval.value;
+
      if (fullscreen.checked == true) {
           value = value + '&fullscreen=True';
      } else {
           value = value + '&fullscreen=False';
      }
+
      if (weather.checked == true) {
           value = value + '&weather=True';
      } else {
           value = value + '&weather=False';
      }
+
      document.getElementById("url_field").innerText = value;
-     console.log(value)
 }
 
 function copyText() {

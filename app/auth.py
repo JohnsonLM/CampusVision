@@ -1,8 +1,6 @@
 from .app import db
-from flask import Flask, Blueprint, render_template, redirect, url_for, request, flash, abort, session
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Blueprint, render_template, redirect, url_for, request, session
 from .models import User
-from .utils import signups_allowed, mod_counter
 import msal as msal
 import requests
 import instance.config as app_config
@@ -17,7 +15,13 @@ def signup():
     elif User.query.filter_by(email=session.get("user")["preferred_username"]).first():
         return redirect(url_for("app.index"))
     elif request.method == 'POST':
-        # TODO add signup logic
+        data = User(
+            email = session.get("user")["preferred_username"],
+            name = session.get("user")["name"],
+            type = "Viewer",
+            eid = int(request.form['eid']))
+        db.session.add(data)
+        db.session.commit()
         return redirect(url_for("app.index"))
     else:
         name = session.get("user")["name"]

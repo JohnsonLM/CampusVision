@@ -3,7 +3,7 @@
 ![Commits](https://badgen.net/github/commits/JohnsonLM/CampusVision/main)
 ![License](https://badgen.net/badge/license/GPL/blue)
 
-CampusVison is a digital signage Management solution designed to run on minimal hardware to maximize deployment options to devices such as micro-computers, raspberry pis, smart TVs, and other display devices.
+CampusVison is a digital signage Management solution designed to run on minimal hardware to maximize deployment options to devices such as microcomputers, raspberry pis, smart TVs, and other display devices.
 
 ## Features
 - Web interface for content management.
@@ -27,4 +27,4 @@ CampusVison is a digital signage Management solution designed to run on minimal 
 
 ### Support or Contact
 
-Having trouble with CampusVision?Contact @johnsonLM and I'll help you sort it out.
+Having trouble with CampusVision? Contact @johnsonLM, and I'll help you sort it out.

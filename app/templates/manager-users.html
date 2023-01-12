@@ -17,10 +17,13 @@
           <td>{{ user['email'] }}</td>
           <td>{{ user['type'] }}</td>
           <td>
-            <button class="btn btn-sm btn-secondary"><i class="fa fa-edit"></i> Edit</button>
+            <button class="btn btn-sm btn-secondary" onclick="window.location.href='/manager/users/{{ user['id'] }}'">
+              <i class="fa fa-edit"></i>
+              Edit
+            </button>
             <form action="/usermanager" method="POST" enctype="multipart/form-data">
               <input type="hidden" name="user_id" value="{{ user['id'] }}">
-              <button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;"><i class="fa fa-trash"></i> Delete</button>
+              <button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm"><i class="fa fa-trash"></i> Delete</button>
             </form>
           </td>
         </tr>
