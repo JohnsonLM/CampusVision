@@ -20,6 +20,7 @@ class Feed(db.Model):
     name = db.Column(db.String(1000), unique=True)
     location = db.Column(db.String(1000))
     manager_group = db.Column(db.String(1000))
+    status = db.Column(db.String(1000))
 
 
 class Slide(db.Model):
@@ -66,3 +67,9 @@ class Room(db.Model):
     id = db.Column(db.String(1000), primary_key=True)
     title = db.Column(db.String(1000))
     status = db.Column(db.Integer)
+
+class Keys(db.Model):
+    """api keys"""
+    id = db.Column(db.String(1000), primary_key=True)
+    name = db.Column(db.String(1000))
+    key = db.Column(db.String(1000))

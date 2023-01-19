@@ -6,9 +6,6 @@
          <div class="form-group">
              <label class="form" for="feed">Feed</label>
              <select class="form-control" id="feed">
-                {% for feed in feeds %}
-                <option>{{ feed.name }}</option>
-                {% endfor %}
             </select>
          </div>
          <div class="form-group">
@@ -77,5 +74,18 @@ function copyText() {
      var text = document.getElementById("url_field");
      navigator.clipboard.writeText(text.innerText);
 }
+
+async function getfeeds(url) {
+        const response = await fetch(url);
+        var data = await response.json();
+        var $target = $('#feed');
+        data.forEach(function(item, i) {
+            var template = '';
+            template += "<option>" + item.replace(/^\"|\"$/g, '') + "</option>";
+            $target.append(template);
+        });
+      };
+
+getfeeds("/api/feeds");
 </script>
 {% endblock %}

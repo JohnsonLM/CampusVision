@@ -1,60 +1,65 @@
 {% extends "base.html" %}
 {% block content %}
-<table id="data" class="table table-striped">
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Filename</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Assigned Feeds</th>
-        <th></th>
-        <th>Author</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for user in users %}
-        {% if user.approval in filter %}
-        <tr>
-          <td>{{ user.title }}</td>
-          <td>{{ user.slide_path }}</td>
-          <td>{{ user.time_start }}</td>
-          <td>{{ user.time_end }}</td>
-          <td>{% for feed in user.feeds.strip('][').split(', ')  %}{{ feed.strip("'") }} <br> {% endfor %}</td>
-          <td><img src="/static/uploads/{{ user.slide_path }}" style='height: 150px;' alt="slide preview"></td>
-          <td>{{ user.submitted_by }}</td>
-          <td> {{ user.approval }} </td>
-          <td>
-            <form action = "/moderate" method = "POST" enctype = "multipart/form-data">
-              <input type="hidden" name="slide_id" value="{{ user.id }}"/>
-              <i class="fa fa-thumbs-up fa-lg"></i>
-              <input type="submit" name="Approve" value="Approve" onclick="validateForm()" class="btn btn-success btn-sm" style="margin: 5px;">
-              <br>
-              <i class="fa fa-thumbs-down fa-lg"></i>
-              <input type="submit" name="Deny" value="Deny" onclick="validateForm()" class="btn btn-danger btn-sm" style="margin: 5px;">
-              <br>
-
-              <i class="fa fa-trash fa-lg"></i>
-              <input type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;">
-              <br>
-            </form>
-            <i class="fa fa-edit fa-lg" ></i>
-            <a href="/edit/{{ user.id }}" class="btn btn-dark btn-sm">Edit</a>
-          </td>
-        </tr>
-        {% endif %}
-      {% endfor %}
-    </tbody>
-  </table>
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    {% if prev_url %}
-    <li class="page-item"><a class="page-link" href="{{ prev_url }}">Newer Slides</a></li>
-    {% endif %}
-    {% if next_url %}
-    <li class="page-item"><a class="page-link" href="{{ next_url }}">Older Slides</a></li>
-    {% endif %}
-  </ul>
-</nav>
+<i class="fa fa-lg fa-filter"></i>
+<a class="btn btn-secondary" href="/moderate?filter=Approved">Approved</a>
+<a class="btn btn-secondary" href="/moderate?filter=Denied">Denied</a>
+<a class="btn btn-secondary" href="/moderate?filter=Waiting Review">Waiting Review</a>
+<div id="table"></div>
+{% endblock %}
+{% block scripts %}
+<script>
+    new gridjs.Grid({
+        columns: [
+          { id: 'id', name: 'id', hidden: true},
+          {
+            id: 'Preview',
+            name: 'Preview',
+            formatter: (_, row) => gridjs.html(`<img class="preview" alt="slide preview" src="/static/uploads/${row.cells[4].data}">`),
+            sort: { enabled: false },
+            },
+          { id: 'title', name: 'Title' },
+          { id: 'feeds', name: 'Assigned Feeds' },
+          { id: 'slide_path', name: 'Filename', hidden: true},
+          {
+            id: 'approval',
+            name: 'Status',
+            formatter: (cell) => gridjs.html(`<p class="badge badge-info" data-val="${cell}">${cell}</p>`),
+           },
+          { id: 'submitted_by', name: 'Submitted By' },
+          { id: 'time_start', name: 'Start' },
+          { id: 'time_end', name: 'End' },
+          {
+            id: 'appovals',
+            name: '',
+            formatter: (_, row) => gridjs.html(
+                    `<form action = "/moderate" method = "POST" enctype = "multipart/form-data">` +
+                    `<input type="hidden" name="slide_id" value="${row.cells[0].data}"/>` +
+                    '<div><i class="fa fa-thumbs-up fa-lg"></i>' +
+                    '<input type="submit" name="Approve" value="Approve" onclick="validateForm()" class="btn btn-success btn-sm" style="margin: 5px;"></div>' +
+                    '<div><i class="fa fa-thumbs-down fa-lg"></i>' +
+                    '<input type="submit" name="Deny" value="Deny" onclick="validateForm()" class="btn btn-danger btn-sm" style="margin: 5px;"></div>' +
+                    '<div><i class="fa fa-trash fa-lg"></i>' +
+                    '<input type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;"></div>' +
+                    '</form>')
+          },
+         {
+            id: 'edit',
+            name: '',
+            formatter: (_, row) => gridjs.html(`<a class="btn btn-secondary" href="/edit/${row.cells[0].data}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>`),
+            sort: { enabled: false },
+          },
+        ],
+        server: {
+          url: '/api/slides/{{ request.args.get("filter") }}/',
+          then: results => results.data,
+        },
+        search: true,
+        sort: true,
+        pagination: true,
+        style: {
+          td: {padding: '6px 12px'},
+          table: {width: "100%"}
+        }
+      }).render(document.getElementById('table'));
+  </script>
 {% endblock %}

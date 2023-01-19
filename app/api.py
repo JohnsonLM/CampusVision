@@ -1,6 +1,6 @@
 import datetime
 from flask import request, Blueprint, session, abort, redirect, url_for, jsonify, Flask
-from .models import Slide, Message, User, Feed
+from .models import Slide, Message, User, Feed, Keys
 from .app import db
 
 # initialize view routes
@@ -27,15 +27,18 @@ def get_feed_slides(feed):
     return jsonify(slide_set)
 
 
-@api.route('/slides/', methods=['GET'])
-def get_slides():
-    data = Slide.query.limit(1000)
+@api.route('/slides/<slide_filter>/', methods=['GET'])
+def get_slides(slide_filter):
+    if slide_filter == "None":
+        data = Slide.query.limit(500)
+    else:
+        data = Slide.query.filter_by(approval=slide_filter).limit(500)
     return {'data': [item.to_dict() for item in data]}
 
 
-@api.route('/slides/<name>/', methods=['GET'])
+@api.route('/slides/user/<name>/', methods=['GET'])
 def get_user_slides(name):
-    data = Slide.query.filter_by(submitted_by=name).limit(1000)
+    data = Slide.query.filter_by(submitted_by=name).limit(500)
     return {'data': [item.to_dict() for item in data]}
 
 
@@ -68,6 +71,13 @@ def edit_user(email):
     db.session.commit()
     return redirect(url_for("app.manager_users"))
 
+@api.route('/feeds/', methods=['GET'])
+def feeds():
+    feeds = []
+    for feed in Feed.query.all():
+        feeds.append(feed.name)
+    return jsonify(feeds)
+
 
 @api.route('/feeds/add', methods=['POST'])
 def add_feed():
@@ -88,3 +98,20 @@ def delete_feed():
     db.session.commit()
     return redirect(url_for("app.settings"))
 
+
+@api.route('/keys/openweathermap', methods=['POST'])
+def update_weather_api():
+    if not session.get("user"):
+        abort(401)
+    key = Keys.query.filter_by(name="OpenWeatherMap").first()
+    key.key = request.form['key']
+    db.session.commit()
+    return redirect(url_for("app.settings"))
+
+@api.route('/clients/register', methods=['POST'])
+def update_clients():
+    data = request.json
+    feed = Feed.query.filter_by(name=data['Feed']).first()
+    feed.status = datetime.datetime.now().strftime("%D %H:%M:%S")
+    db.session.commit()
+    return jsonify(200)

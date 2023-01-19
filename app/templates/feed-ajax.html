@@ -120,7 +120,6 @@
         }, {{ request.args.get('reload') }});
     </script>
     <script>
-    const api_url = "/api/slides/Service Desk";
     async function getapi(url) {
         const response = await fetch(url);
         var data = await response.json();
@@ -150,7 +149,17 @@
         })
       };
 
-    getapi(api_url);
+    getapi("/api/slides/{{ title }}");
+
+    var SendInfo= { Feed: "{{ title }}"};
+        $.ajax({
+            type: 'post',
+            url: '/api/clients/register',
+            data: JSON.stringify(SendInfo),
+            contentType: "application/json; charset=utf-8",
+            traditional: true,
+            success: function (data) {}
+        });
     </script>
   </body>
 </html>

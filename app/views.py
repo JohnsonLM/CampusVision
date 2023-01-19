@@ -1,11 +1,10 @@
 import json
 import os
 from flask import render_template, request, Blueprint, flash, url_for, session
-from sqlalchemy import desc
 from werkzeug.utils import secure_filename, redirect
 from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, \
     remove_slide, update_alert, get_slides, get_message, update_slide, get_video, get_user
-from .models import Message, Slide, Room, User, Feed
+from .models import Message, Slide, User, Feed, Keys
 import instance.config as app_config
 
 # initialize view routes
@@ -19,9 +18,9 @@ def index():
         return redirect(url_for("auth.login"))
     return render_template('home.html',
                            title='Dashboard',
+                           name=session.get("user")["name"],
                            mod_count=mod_counter(),
-                           feeds=Feed.query.all(),
-                           name=session.get("user")["name"])
+                           clients=Feed.query.filter_by().all())
 
 
 @app.route('/manager')
@@ -29,20 +28,7 @@ def manager():
     """slide manager for users to view and edit submitted slides"""
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    page = request.args.get('page', 1, type=int)
-    posts = Slide.query.order_by(desc(Slide.id)).paginate(page=page, per_page=app_config.POSTS_PER_PAGE, error_out=False)
-    next_url = url_for('app.manager', page=posts.next_num) \
-        if posts.has_next else None
-    prev_url = url_for('app.manager', page=posts.prev_num) \
-        if posts.has_prev else None
-    return render_template('manager.html',
-                           title='Your Slides',
-                           users=posts.items,
-                           name=session.get("user")["name"],
-                           filter=['Approved', 'Waiting Review', 'Denied'],
-                           mod_count=mod_counter(),
-                           next_url=next_url,
-                           prev_url=prev_url)
+    return render_template('manager.html', title='Your Slides', name=session.get("user")["name"], mod_count=mod_counter())
 
 
 @app.route('/manager/users')
@@ -68,7 +54,6 @@ def editor_user(user_id):
 def manager_screens():
     return render_template('screens.html',
                            title="Screen Generator",
-                           feeds=Feed.query.all(),
                            name=session.get("user")["name"],
                            mod_count=mod_counter())
 
@@ -120,36 +105,15 @@ def upload_file_post():
 
 @app.route('/moderate', methods=['GET'])
 def moderate():
-    """
-    check if user is logged in and is an admin
-    if not then return user to login screen
-    """
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif session.get("user"):
-        page = request.args.get('page', 1, type=int)
-        posts = Slide.query.order_by(desc(Slide.id)).paginate(page=page, per_page=app_config.POSTS_PER_PAGE, error_out=False)
-        next_url = url_for('app.moderate', page=posts.next_num) \
-            if posts.has_next else None
-        prev_url = url_for('app.moderate', page=posts.prev_num) \
-            if posts.has_prev else None
-        return render_template('moderate.html',
-                               title='Slide Moderator',
-                               name=session.get("user")["name"],
-                               users=posts.items,
-                               filter=['Approved', 'Waiting Review', 'Denied'],
-                               mod_count=mod_counter(),
-                               next_url=next_url,
-                               prev_url=prev_url)
-    else:
-        return redirect(url_for('app.index'))
+    return render_template('moderate.html', title='Slide Moderator', name=session.get("user")["name"])
 
 
 @app.route('/moderate', methods=['POST'])
 def moderate_post():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-        # nested to prevent errors when users not logged in
     if request.method == 'POST':
         if 'Approve' in request.form:
             appr_slide('Approved', int(request.form['slide_id']))
@@ -157,20 +121,10 @@ def moderate_post():
             appr_slide('Denied', int(request.form['slide_id']))
         elif 'Delete' in request.form:
             remove_slide(request.form['slide_id'])
-    page = request.args.get('page', 1, type=int)
-    posts = Slide.query.order_by(desc(Slide.id)).paginate(page=page, per_page=app_config.POSTS_PER_PAGE, error_out=False)
-    next_url = url_for('app.moderate', page=posts.next_num) \
-        if posts.has_next else None
-    prev_url = url_for('app.moderate', page=posts.prev_num) \
-        if posts.has_prev else None
     return render_template('moderate.html',
                            title='Slide Moderator',
                            name=session.get("user")["name"],
-                           users=posts.items,
-                           filter=['Approved', 'Waiting Review', 'Denied'],
-                           mod_count=mod_counter(),
-                           next_url=next_url,
-                           prev_url=prev_url)
+                           mod_count=mod_counter(),)
 
 
 @app.route('/edit/<slide_id>', methods=['GET'])
@@ -265,23 +219,10 @@ def settings():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
     return render_template('settings.html',
-                           title='Feed Settings',
+                           title='Settings',
                            name=session.get("user")["name"],
                            mod_count=mod_counter(),
                            feeds=Feed.query.all())
-
-
-@app.route('/clients')
-def clients():
-    return render_template('clients.html',
-                           title='Clients',
-                           mod_count=mod_counter(),
-                           clients=session.get('active_clients'))
-
-
-@app.route('/status')
-def status():
-    return render_template('status.html', title='Operational Status', rooms=Room.query.all())
 
 
 @app.route('/feeds/standard/<title>', methods=['GET'])
@@ -291,8 +232,7 @@ def feeds(title):
                            alert_status=alert_status(),
                            messages=json.dumps(get_message()),
                            background=title + '.webp',
-                           weather_key=app_config.WEATHER_KEY
-                           )
+                           weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
 
 
 @app.route('/feeds/vertical/<title>', methods=['GET'])
@@ -303,7 +243,7 @@ def feeds_vertical(title):
                            alert_status=alert_status(),
                            messages=json.dumps(get_message()),
                            background='bg.jpg',
-                           weather_key=app_config.WEATHER_KEY)
+                           weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
 
 
 @app.route('/feeds/video/<title>', methods=['GET'])
@@ -314,4 +254,4 @@ def feeds_video(title):
                            alert_status=alert_status(),
                            messages=json.dumps(get_message()),
                            background=title + '.webp',
-                           weather_key=app_config.WEATHER_KEY)
+                           weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)

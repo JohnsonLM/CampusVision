@@ -24,7 +24,6 @@
 <table id="data" class="table table-striped">
     <thead>
       <tr>
-        <th>ID</th>
         <th>Message</th>
         <th>Start Date</th>
         <th>End Date</th>
@@ -34,7 +33,6 @@
     <tbody>
       {% for message in messages %}
         <tr>
-            <td>{{ message.id }}</td>
             <td>{{ message.text }}</td>
             <td>{{ message.time_start }}</td>
             <td>{{ message.time_end }}</td>

@@ -16,7 +16,7 @@
             },
           { id: 'title', name: 'Title' },
           { id: 'feeds', name: 'Assigned Feeds' },
-          { id: 'slide_path', name: 'Filename' },
+          { id: 'slide_path', name: 'Filename', hidden: true},
           {
             id: 'approval',
             name: 'Status',
@@ -33,16 +33,19 @@
           },
         ],
         server: {
-          url: '/api/slides/{{ name }}/',
+          url: '/api/slides/user/{{ name }}/',
           then: results => results.data,
         },
         search: true,
         sort: true,
         pagination: true,
         style: {
-          table: {
-            width: '100%'
+          td: {
+            padding: '5px'
           },
+          table: {
+            'width': '100%'
+          }
         }
       }).render(document.getElementById('table'));
   </script>

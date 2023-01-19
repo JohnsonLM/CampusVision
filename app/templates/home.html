@@ -7,13 +7,14 @@
         </div>
         <div class="card-body">
             <ul>
-              <li>Slides must be in the 16:9 aspect ratio and landscape orientation.</li>
-              <li>Slides must have dimensions of at least 1920x1080.</li>
-              <li>Slides must be under 16mb in size.</li>
-              <li>Designs must be submitted in either JPG or PNG file format.</li>
-              <li>Slides should follow good design principles (easy to read, sufficient contrast, not too busy, etc.).</li>
-              <li>All slides are subject to approval and redesign by staff based on the above graphic design standards.</li>
-              <li>Signs should be submitted as well in advance as possible to ensure time for approval and possible revision.</li>
+                <li>Slides must be in the 16:9 aspect ratio and landscape orientation.</li>
+                <li>Slides must have dimensions of at least 1920x1080.</li>
+                <li>Slides may not contain QR codes without approval from I.T. Services staff.</li>
+                <li>Slides must be under 16mb in size.</li>
+                <li>Designs must be submitted in either JPG or PNG file format.</li>
+                <li>Slides should follow good design principles (be easy to read, sufficient contrast, not be too busy, etc.).</li>
+                <li>All slides are subject to approval and redesign by staff based on the above graphic design standards.</li
+                <li>Signs should be submitted as well in advance as possible to ensure time for approval and possible revision.</li>
             </ul>
         </div>
     </div>
@@ -21,40 +22,7 @@
         <div class="card-header">
             <strong class="card-title">Feed Previews</strong>
         </div>
-        <ul class="signs" style="display: flex; flex-wrap: wrap; list-style: none; padding: 10px;">
-            {% for feed in feeds %}
-            <li>
-              <a href="/feeds/standard/{{ feed.name }}?weather=True&interval=7000&reload=1800000&fullscreen=False" target="_blank" class="slide-nav btn btn-outline-primary">
-                <i class="fa fa-tv"></i>
-                  {{ feed.name }}
-              </a>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="m-2 card" style="flex-grow: 1">
-        <div class="card-header">
-            <strong class="card-title">Documentation</strong>
-        </div>
-        <div class="card-body">
-            <p>These documents will provide the skills and knowledge needed to make well-designed and effective digital signage.</p>
-            <ul>
-                <li><a href="https://medium.com/@anahatrawal/10-basic-principles-of-graphic-design-b74be0dbdb58" target="_blank">Principles of Design</a></li>
-                <li><a href="https://medium.freecodecamp.org/fundamental-design-principles-for-non-designers-ad34c30caa7" target="_blank">Design Fundamentals</a></li>
-                <li><a href="https://www.youtube.com/watch?v=r0oF81xe440" target="_blank">Layout &amp; Composition: Components of an Image</a></li>
-                <li><a href="https://www.youtube.com/watch?v=fENrhRBFS_I" target="_blank">Layout &amp; Composition: Leading the viewer's eye</a></li>
-                <li><a href="https://blog.thepapermillstore.com/design-principles-alignment/" target="_blank">Layout &amp; Composition: Using Alignment</a></li>
-                <li><a href="https://blog.prototypr.io/importance-of-white-space-in-design-5a40c0e65bfd" target="_blank">Layout &amp; Composition: Using White Space</a></li>
-                <li><a href="https://www.youtube.com/watch?v=IzED6Q59DAY" target="_blank">Color: Basics</a></li>
-                <li><a href="https://www.youtube.com/watch?v=Qj1FK8n7WgY" target="_blank">Color: Understanding Color</a></li>
-                <li><a href="https://www.youtube.com/watch?v=QrNi9FmdlxY" target="">Typography: Basics</a></li>
-                <li><a href="https://material.io/design/typography/understanding-typography.html#" target="_blank">Typography: Understanding Type</a></li>
-                <li><a href="https://www.youtube.com/watch?v=L3dPrrqO5Rg" target="_blank">Typography: Type Setting</a></li>
-                <li><a href="https://www.youtube.com/watch?v=pFyOznL9UvA" target="_blank">Photoshop: Basics</a></li>
-                <li><a href="https://www.youtube.com/watch?v=UqjZR_v37K8" target="_blank">Illustrator: Basics</a></li>
-                <li><a href="https://www.youtube.com/watch?v=UvWfuNnuJkg&amp;list=PL1t9c--IJQQ_eU6QulIVVfpNjJcIZIEtb" target="_blank">Affinity Designer: Basics</a></li>
-            </ul>
-        </div>
+        <ul class="signs" id="feed-links" style="display: flex; flex-wrap: wrap; list-style: none; padding: 10px;"></ul>
     </div>
     <div class="m-3 card" style="flex-grow: 1; min-width: 50vw;">
         <div class="card-header">
@@ -65,9 +33,6 @@
                 <div class="form-group">
                    <label class="form" for="feed">Feed</label>
                     <select class="form-control" id="feed">
-                        {% for feed in feeds %}
-                        <option>{{ feed.name }}</option>
-                        {% endfor %}
                     </select>
                   </div>
                 <div class="form-group">
@@ -106,18 +71,42 @@
     </div>
     <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
-            <strong class="card-title">Active Clients</strong>
+            <strong class="card-title">Clients</strong>
         </div>
         <div class="card-body">
-            {% if clients %}
             {% for client in clients %}
-            <p>{{ client }}</p>
+            <strong>{{ client.name }}</strong>
+            <small>Last check-in was at {{ client.status }}</small>
             <br>
             {% endfor %}
-            {% endif %}
+        </div>
+    </div>
+    <div class="m-2 card" style="flex-grow: 1">
+        <div class="card-header">
+            <strong class="card-title">Documentation</strong>
+        </div>
+        <div class="card-body">
+            <p>These documents will provide the skills and knowledge needed to make well-designed and effective digital signage.</p>
+            <ul>
+                <li><a href="https://medium.com/@anahatrawal/10-basic-principles-of-graphic-design-b74be0dbdb58" target="_blank">Principles of Design</a></li>
+                <li><a href="https://medium.freecodecamp.org/fundamental-design-principles-for-non-designers-ad34c30caa7" target="_blank">Design Fundamentals</a></li>
+                <li><a href="https://www.youtube.com/watch?v=r0oF81xe440" target="_blank">Layout &amp; Composition: Components of an Image</a></li>
+                <li><a href="https://www.youtube.com/watch?v=fENrhRBFS_I" target="_blank">Layout &amp; Composition: Leading the viewer's eye</a></li>
+                <li><a href="https://blog.thepapermillstore.com/design-principles-alignment/" target="_blank">Layout &amp; Composition: Using Alignment</a></li>
+                <li><a href="https://blog.prototypr.io/importance-of-white-space-in-design-5a40c0e65bfd" target="_blank">Layout &amp; Composition: Using White Space</a></li>
+                <li><a href="https://www.youtube.com/watch?v=IzED6Q59DAY" target="_blank">Color: Basics</a></li>
+                <li><a href="https://www.youtube.com/watch?v=Qj1FK8n7WgY" target="_blank">Color: Understanding Color</a></li>
+                <li><a href="https://www.youtube.com/watch?v=QrNi9FmdlxY" target="">Typography: Basics</a></li>
+                <li><a href="https://material.io/design/typography/understanding-typography.html#" target="_blank">Typography: Understanding Type</a></li>
+                <li><a href="https://www.youtube.com/watch?v=L3dPrrqO5Rg" target="_blank">Typography: Type Setting</a></li>
+                <li><a href="https://www.youtube.com/watch?v=pFyOznL9UvA" target="_blank">Photoshop: Basics</a></li>
+                <li><a href="https://www.youtube.com/watch?v=UqjZR_v37K8" target="_blank">Illustrator: Basics</a></li>
+                <li><a href="https://www.youtube.com/watch?v=UvWfuNnuJkg&amp;list=PL1t9c--IJQQ_eU6QulIVVfpNjJcIZIEtb" target="_blank">Affinity Designer: Basics</a></li>
+            </ul>
         </div>
     </div>
 </div>
+<div id="hyperlinks" class="hyperlinks"></div>
 {% endblock %}
 {% block scripts %}
 <script>
@@ -151,5 +140,30 @@ function copyText() {
      var text = document.getElementById("url_field");
      navigator.clipboard.writeText(text.innerText);
 }
+
+async function getapi(url) {
+        const response = await fetch(url);
+        var data = await response.json();
+        var $target = $('#feed-links');
+        data.forEach(function(item, i) {
+            var template = '';
+            template += "<li><a class=\"slide-nav btn btn-outline-primary\" href='/feeds/standard/" + item.replace(/^"|"$/g, '') + "?interval=7000&reload=7380000&fullscreen=False&weather=False'><i class=\"fa fa-tv\"></i> " + item + "</a></li>";
+            $target.append(template);
+        });
+      };
+
+async function getfeeds(url) {
+        const response = await fetch(url);
+        var data = await response.json();
+        var $target = $('#feed');
+        data.forEach(function(item, i) {
+            var template = '';
+            template += "<option>" + item.replace(/^\"|\"$/g, '') + "</option>";
+            $target.append(template);
+        });
+      };
+
+getapi("/api/feeds");
+getfeeds("/api/feeds");
 </script>
 {% endblock %}

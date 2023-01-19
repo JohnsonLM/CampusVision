@@ -3,7 +3,7 @@
 <form action="/api/feeds/add" method="POST" enctype="multipart/form-data">
   <label for="feed_name">New Feed Name</label>
   <input type="text" name="feed_name" id="feed_name">
-  <button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm"><i class="fa fa-plus"></i> Add New Feed</button>
+  <button type="submit" onclick="validateForm()" class="btn btn-dark btn-sm"><i class="fa fa-plus"></i> Add New Feed</button>
 </form>
   <table id="data" class="table table-striped">
     <thead>
@@ -25,4 +25,14 @@
       {% endfor %}
     </tbody>
   </table>
+<hr>
+<h3>API Keys</h3>
+<form action="/api/keys/openweathermap" method="POST" enctype="multipart/form-data">
+  <label for="key">OpenWeatherMap API Key:</label>
+  <br>
+  <input type="text" name="key" id="key">
+  <button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm">Update</button>
+  <br>
+  <small>Obtain a new key from home.openweathermap.org/api_keys</small>
+</form>
 {% endblock %}
