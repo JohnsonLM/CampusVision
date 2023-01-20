@@ -19,7 +19,7 @@ def get_feed_slides(feed):
         end_date = datetime.datetime.strptime(slide.time_end, '%Y-%m-%d').date()
         today_date = datetime.datetime.now().date()
         if (
-            feed in slide.feeds
+            feed in slide.feeds.split(",")
             and slide.approval == 'Approved'
             and start_date <= today_date <= end_date
         ):

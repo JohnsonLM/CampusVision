@@ -34,12 +34,9 @@
             formatter: (_, row) => gridjs.html(
                     `<form action = "/moderate" method = "POST" enctype = "multipart/form-data">` +
                     `<input type="hidden" name="slide_id" value="${row.cells[0].data}"/>` +
-                    '<div><i class="fa fa-thumbs-up fa-lg"></i>' +
-                    '<input type="submit" name="Approve" value="Approve" onclick="validateForm()" class="btn btn-success btn-sm" style="margin: 5px;"></div>' +
-                    '<div><i class="fa fa-thumbs-down fa-lg"></i>' +
-                    '<input type="submit" name="Deny" value="Deny" onclick="validateForm()" class="btn btn-danger btn-sm" style="margin: 5px;"></div>' +
-                    '<div><i class="fa fa-trash fa-lg"></i>' +
-                    '<input type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;"></div>' +
+                    '<button type="submit" name="Approve" value="Approve" onclick="validateForm()" class="btn btn-success btn-sm" style="margin: 5px;"><div><i class="fa fa-thumbs-up fa-lg"></i> Approve</button></div>' +
+                    '<button type="submit" name="Deny" value="Deny" onclick="validateForm()" class="btn btn-danger btn-sm" style="margin: 5px;"><div><i class="fa fa-thumbs-down fa-lg"></i> Deny</button></div>' +
+                    '<button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;"><i class="fa fa-trash fa-lg"></i> Delete</button><div></div>' +
                     '</form>')
           },
          {

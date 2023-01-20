@@ -2,45 +2,31 @@ html {
     font-size: 100%;
     box-sizing: border-box;
 }
-
-.main-body {
-    background: #1a1a1a;
-}
-
 *, *:before, *:after {
     box-sizing: inherit;
 }
-
-.btn-primary, .side-nav {
+.btn-primary {
     color: white;
     background-color: #3e1952;
     border: none;
 }
-
-.btn-primary:hover, .side-nav:hover, nav-link.active {
-    color: white;
-    border: none;
+.btn-primary:hover, .side-nav:hover {
+    color: grey;
 }
-
 .side-nav.active {
     color: black !important;
     background-color: white !important;
     border: none !important;
 }
-
-.nav-pills .nav-link {
+.nav-link, .app-title {
     color: #d4d4d4;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 0.25em;
+    margin-left: 0.25em;
+    padding: 0.5em;
+    margin-bottom: 0;
 }
-
-.app-title {
-    padding: 10px;
-}
-
 .topnav {
     height: 50px;
-    background: #3e1952;
     color: white;
     background: #1a1a1a;
 }
@@ -50,34 +36,31 @@ html {
     padding-top: 0;
     padding-bottom: 0;
 }
-
 .sidebar {
     background: #1a1a1a;
-    width: 280px;
+    width: 14vw;
     min-height: 100vh;
 }
-
 .side-nav i {
     padding: 8px;
 }
-
 .content-box {
     border-radius: 12px 0 0 12px;
     min-height: 95vh;
     background: white;
 }
-
+.btn {
+    margin: 0.2em;
+}
 .btn-outline-primary {
     color: #3e1952;
     border-color: #3e1952;
 }
-
 .btn-outline-primary:hover {
     color: black;
     background-color: #e3bf42;
     border-color: #e3bf42;
 }
-
 .badge-info {
     background-color: grey;
 }
@@ -85,7 +68,6 @@ html {
     margin: auto;
     padding: 3px;
 }
-
 .bottom-nav {
     display: flex;
     margin-left: 10px;
@@ -94,11 +76,9 @@ html {
     padding: 8px;
     color: white;
 }
-
 .preview {
     width: 100%;
 }
-
 @font-face {
     font-family: 'Myriad Pro Light';
     src: url('fonts/MyriadPro-Light.woff2') format('woff2'),
@@ -107,7 +87,6 @@ html {
     font-style: normal;
     font-display: swap;
 }
-
 @font-face {
     font-family: 'Myriad Pro Cond';
     src: url('fonts/MyriadPro-Cond.woff2') format('woff2'),
@@ -116,7 +95,6 @@ html {
     font-style: normal;
     font-display: swap;
 }
-
 @font-face {
     font-family: 'Myriad Pro';
     src: url('fonts/MyriadPro-Regular.woff2') format('woff2'),
@@ -125,7 +103,6 @@ html {
     font-style: normal;
     font-display: swap;
 }
-
 @font-face {
     font-family: 'Myriad Pro Semibold Cond';
     src: url('fonts/MyriadPro-SemiboldCond.woff2') format('woff2'),

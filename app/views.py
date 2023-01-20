@@ -97,7 +97,7 @@ def upload_file_post():
         time_end = request.form["time_end"]
         title = request.form["title"]
         slide_path = secure_filename(file.filename)
-        feed_list = request.form.getlist('feeds')
+        feed_list = ','.join(map(str, request.form.getlist('feeds')))
         add_slide(time_start, time_end, title, slide_path, feed_list, session.get("user")["name"])
         flash('Slide submitted successfully', title)
         return redirect(request.url)
@@ -147,7 +147,7 @@ def edit_post(slide_id):
                  request.form["title_text"],
                  request.form["time_start"],
                  request.form["time_end"],
-                 str(request.form.getlist('feeds')))
+                 ','.join(map(str, request.form.getlist('feeds'))))
     return render_template('edit.html',
                            title='Edit Slide',
                            slide_id=id,
