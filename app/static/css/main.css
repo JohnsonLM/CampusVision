@@ -5,25 +5,45 @@ html {
 *, *:before, *:after {
     box-sizing: inherit;
 }
+.btn {
+    margin: 0.2em;
+}
 .btn-primary {
     color: white;
     background-color: #3e1952;
     border: none;
 }
-.btn-primary:hover, .side-nav:hover {
+.btn-primary:hover, .nav-link:hover {
     color: grey;
 }
-.side-nav.active {
+.btn-outline-primary {
+    color: #3e1952;
+    border-color: #3e1952;
+}
+.btn-outline-primary:hover {
+    color: black;
+    background-color: #e3bf42;
+    border-color: #e3bf42;
+}
+.sidebar {
+    background: #1a1a1a;
+    width: 14vw;
+    min-height: 100vh;
+}
+.nav-link.active {
     color: black !important;
     background-color: white !important;
     border: none !important;
 }
 .nav-link, .app-title {
     color: #d4d4d4;
-    margin-right: 0.25em;
-    margin-left: 0.25em;
     padding: 0.5em;
     margin-bottom: 0;
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+.nav-link i {
+    padding: 8px;
 }
 .topnav {
     height: 50px;
@@ -36,30 +56,10 @@ html {
     padding-top: 0;
     padding-bottom: 0;
 }
-.sidebar {
-    background: #1a1a1a;
-    width: 14vw;
-    min-height: 100vh;
-}
-.side-nav i {
-    padding: 8px;
-}
 .content-box {
     border-radius: 12px 0 0 12px;
     min-height: 95vh;
     background: white;
-}
-.btn {
-    margin: 0.2em;
-}
-.btn-outline-primary {
-    color: #3e1952;
-    border-color: #3e1952;
-}
-.btn-outline-primary:hover {
-    color: black;
-    background-color: #e3bf42;
-    border-color: #e3bf42;
 }
 .badge-info {
     background-color: grey;
@@ -68,45 +68,37 @@ html {
     margin: auto;
     padding: 3px;
 }
-.bottom-nav {
-    display: flex;
-    margin-left: 10px;
-}
-.bottom-nav a {
-    padding: 8px;
-    color: white;
-}
 .preview {
     width: 100%;
 }
 @font-face {
     font-family: 'Myriad Pro Light';
-    src: url('fonts/MyriadPro-Light.woff2') format('woff2'),
-        url('fonts/MyriadPro-Light.woff') format('woff');
+    src: url('../webfonts/MyriadPro-Light.woff2') format('woff2'),
+        url('../webfonts/MyriadPro-Light.woff') format('woff');
     font-weight: 300;
     font-style: normal;
     font-display: swap;
 }
 @font-face {
     font-family: 'Myriad Pro Cond';
-    src: url('fonts/MyriadPro-Cond.woff2') format('woff2'),
-        url('fonts/MyriadPro-Cond.woff') format('woff');
+    src: url('../webfonts/MyriadPro-Cond.woff2') format('woff2'),
+        url('../webfonts/MyriadPro-Cond.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 @font-face {
     font-family: 'Myriad Pro';
-    src: url('fonts/MyriadPro-Regular.woff2') format('woff2'),
-        url('fonts/MyriadPro-Regular.woff') format('woff');
+    src: url('../webfonts/MyriadPro-Regular.woff2') format('woff2'),
+        url('../webfonts/MyriadPro-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
 @font-face {
     font-family: 'Myriad Pro Semibold Cond';
-    src: url('fonts/MyriadPro-SemiboldCond.woff2') format('woff2'),
-        url('fonts/MyriadPro-SemiboldCond.woff') format('woff');
+    src: url('../webfonts/MyriadPro-SemiboldCond.woff2') format('woff2'),
+        url('../webfonts/MyriadPro-SemiboldCond.woff') format('woff');
     font-weight: 600;
     font-style: normal;
     font-display: swap;

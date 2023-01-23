@@ -3,7 +3,7 @@
 <div style="display:flex; flex-wrap: wrap;">
     <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
-            <strong class="card-title">Digital Signage Policies</strong>
+            <strong class="card-title"><i class="fa-solid fa-scale-balanced"></i> Digital Signage Policies</strong>
         </div>
         <div class="card-body">
             <ul>
@@ -20,13 +20,13 @@
     </div>
     <div class="m-2 card" style="flex-grow: 1; max-width: 700px;">
         <div class="card-header">
-            <strong class="card-title">Feed Previews</strong>
+            <strong class="card-title"><i class="fa-solid fa-magnifying-glass"></i> Feed Previews</strong>
         </div>
         <ul class="signs" id="feed-links" style="display: flex; flex-wrap: wrap; list-style: none; padding: 10px;"></ul>
     </div>
     <div class="m-3 card" style="flex-grow: 1; min-width: 50vw;">
         <div class="card-header">
-            <strong class="card-title">Generate a Screen URL</strong>
+            <strong class="card-title"><i class="fa-solid fa-gears"></i> Generate a Screen URL</strong>
         </div>
         <div class="card-body">
             <form onchange="updateInput()">
@@ -71,7 +71,7 @@
     </div>
     <div class="m-2 card" style="flex-grow: 1">
         <div class="card-header">
-            <strong class="card-title">Clients</strong>
+            <strong class="card-title"><i class="fa-solid fa-eye"></i> Clients</strong>
         </div>
         <div class="card-body">
             {% for client in clients %}
@@ -79,30 +79,6 @@
             <small>Last check-in was at {{ client.status }}</small>
             <br>
             {% endfor %}
-        </div>
-    </div>
-    <div class="m-2 card" style="flex-grow: 1">
-        <div class="card-header">
-            <strong class="card-title">Documentation</strong>
-        </div>
-        <div class="card-body">
-            <p>These documents will provide the skills and knowledge needed to make well-designed and effective digital signage.</p>
-            <ul>
-                <li><a href="https://medium.com/@anahatrawal/10-basic-principles-of-graphic-design-b74be0dbdb58" target="_blank">Principles of Design</a></li>
-                <li><a href="https://medium.freecodecamp.org/fundamental-design-principles-for-non-designers-ad34c30caa7" target="_blank">Design Fundamentals</a></li>
-                <li><a href="https://www.youtube.com/watch?v=r0oF81xe440" target="_blank">Layout &amp; Composition: Components of an Image</a></li>
-                <li><a href="https://www.youtube.com/watch?v=fENrhRBFS_I" target="_blank">Layout &amp; Composition: Leading the viewer's eye</a></li>
-                <li><a href="https://blog.thepapermillstore.com/design-principles-alignment/" target="_blank">Layout &amp; Composition: Using Alignment</a></li>
-                <li><a href="https://blog.prototypr.io/importance-of-white-space-in-design-5a40c0e65bfd" target="_blank">Layout &amp; Composition: Using White Space</a></li>
-                <li><a href="https://www.youtube.com/watch?v=IzED6Q59DAY" target="_blank">Color: Basics</a></li>
-                <li><a href="https://www.youtube.com/watch?v=Qj1FK8n7WgY" target="_blank">Color: Understanding Color</a></li>
-                <li><a href="https://www.youtube.com/watch?v=QrNi9FmdlxY" target="">Typography: Basics</a></li>
-                <li><a href="https://material.io/design/typography/understanding-typography.html#" target="_blank">Typography: Understanding Type</a></li>
-                <li><a href="https://www.youtube.com/watch?v=L3dPrrqO5Rg" target="_blank">Typography: Type Setting</a></li>
-                <li><a href="https://www.youtube.com/watch?v=pFyOznL9UvA" target="_blank">Photoshop: Basics</a></li>
-                <li><a href="https://www.youtube.com/watch?v=UqjZR_v37K8" target="_blank">Illustrator: Basics</a></li>
-                <li><a href="https://www.youtube.com/watch?v=UvWfuNnuJkg&amp;list=PL1t9c--IJQQ_eU6QulIVVfpNjJcIZIEtb" target="_blank">Affinity Designer: Basics</a></li>
-            </ul>
         </div>
     </div>
 </div>

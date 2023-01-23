@@ -1,3 +1,6 @@
+"""
+views.py contains the main view routing for the app.
+"""
 import json
 import os
 from flask import render_template, request, Blueprint, flash, url_for, session
@@ -21,6 +24,17 @@ def index():
                            name=session.get("user")["name"],
                            mod_count=mod_counter(),
                            clients=Feed.query.filter_by().all())
+
+
+@app.route('/help')
+def help():
+    """homepage for the app to display info and stats"""
+    if not session.get("user"):
+        return redirect(url_for("auth.login"))
+    return render_template('help.html',
+                           title='Help',
+                           name=session.get("user")["name"],
+                           mod_count=mod_counter())
 
 
 @app.route('/manager')
@@ -255,3 +269,7 @@ def feeds_video(title):
                            messages=json.dumps(get_message()),
                            background=title + '.webp',
                            weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
+
+@app.app_errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html', title='404')

@@ -1,6 +1,3 @@
-"""
-config.py basic configuration
-"""
 import os
 
 # add a secure 256-bit key here using a key generator such as allkeysgenerator.com
@@ -21,15 +18,8 @@ TEMPLATES_AUTO_RELOAD = True
 # Should be set false to prevent warnings.
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-# Insert an OpenWeatherMap API key here.
-WEATHER_KEY = '99ec4e7d956393e48a8cda51317329c5'
-
 # Sets what file types can be uploaded as slides
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'mp4'}
-
-# For pagination of the slide manager
-POSTS_PER_PAGE = 10
-
 
 # Azure AD Config variables.
 b2c_tenant = "testliveasbury.onmicrosoft.com"  # Find the tenant domain in the azure portal

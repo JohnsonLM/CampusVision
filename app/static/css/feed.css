@@ -125,8 +125,8 @@ body {
 
 @font-face {
     font-family: 'Myriad Pro Light';
-    src: url('fonts/MyriadPro-Light.woff2') format('woff2'),
-        url('fonts/MyriadPro-Light.woff') format('woff');
+    src: url('../webfonts/MyriadPro-Light.woff2') format('woff2'),
+        url('../webfonts/MyriadPro-Light.woff') format('woff');
     font-weight: 300;
     font-style: normal;
     font-display: swap;
@@ -134,8 +134,8 @@ body {
 
 @font-face {
     font-family: 'Myriad Pro Cond';
-    src: url('fonts/MyriadPro-Cond.woff2') format('woff2'),
-        url('fonts/MyriadPro-Cond.woff') format('woff');
+    src: url('../webfonts/MyriadPro-Cond.woff2') format('woff2'),
+        url('../webfonts/MyriadPro-Cond.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -143,8 +143,8 @@ body {
 
 @font-face {
     font-family: 'Myriad Pro';
-    src: url('fonts/MyriadPro-Regular.woff2') format('woff2'),
-        url('fonts/MyriadPro-Regular.woff') format('woff');
+    src: url('../webfonts/MyriadPro-Regular.woff2') format('woff2'),
+        url('../webfonts/MyriadPro-Regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
     font-display: swap;
@@ -152,8 +152,8 @@ body {
 
 @font-face {
     font-family: 'Myriad Pro Semibold Cond';
-    src: url('fonts/MyriadPro-SemiboldCond.woff2') format('woff2'),
-        url('fonts/MyriadPro-SemiboldCond.woff') format('woff');
+    src: url('../webfonts/MyriadPro-SemiboldCond.woff2') format('woff2'),
+        url('../webfonts/MyriadPro-SemiboldCond.woff') format('woff');
     font-weight: 600;
     font-style: normal;
     font-display: swap;
