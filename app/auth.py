@@ -14,15 +14,6 @@ def signup():
         return redirect(url_for("auth.login"))
     elif User.query.filter_by(email=session.get("user")["preferred_username"]).first():
         return redirect(url_for("app.index"))
-    elif request.method == 'POST':
-        data = User(
-            email = session.get("user")["preferred_username"], # type: ignore
-            name = session.get("user")["name"], # type: ignore
-            type = "Viewer", # type: ignore
-            eid = int(request.form['eid'])) # type: ignore
-        db.session.add(data)
-        db.session.commit()
-        return redirect(url_for("app.index"))
     else:
         name = session.get("user")["name"]
         return render_template('auth_signup.html', user=name, version=msal.__version__, title='Sign Up')
@@ -34,10 +25,16 @@ def signup_post():
         return redirect(url_for("auth.login"))
     elif User.query.filter_by(email=session.get("user")["preferred_username"]).first():
         return redirect(url_for("app.index"))
+    # make first system user admin by default
+    if not User.query.all():
+        type = "Admin"
+    else:
+        type = "Viewer"
     data = User(
         email = session.get("user")["preferred_username"], # type: ignore
         name = session.get("user")["name"], # type: ignore
-        type = "Viewer", # type: ignore
+        type = type, # type: ignore
+        groups = "Main",  # type: ignore
         eid = int(request.form['eid'])) # type: ignore
     db.session.add(data)
     db.session.commit()
@@ -47,7 +44,6 @@ def signup_post():
 @auth.route("/login")
 def login():
     # Technically we could use empty list [] as scopes to do just sign in,
-    # here we choose to also collect end user consent upfront
     session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
     return render_template("auth_login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
 
@@ -67,6 +63,8 @@ def authorized():
     return redirect(url_for("app.index"))
 
 
+
+# the rest of these routes are for the SSO integration as suggested by Microsoft Graph.
 @auth.route("/logout")
 def logout():
     session.clear()  # Wipe out user and its token cache from session

@@ -1,0 +1,196 @@
+{% block content %}
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>Digital Sign</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css') }}">
+  </head>
+  <body>
+    <div class="wrapper">
+         <div class="datetime d-flex flex-column">
+             <h2 id="date"></h2>
+             <h1 id="time"></h1>
+         </div>
+         <div class="weather-outer">
+             <div class="weather d-inline-flex">
+                 <div id="day1" class="weather-card p-2"></div>
+                 <div id="day2" class="weather-card p-2"></div>
+                 <div id="day3" class="weather-card p-2"></div>
+                 <div id="day4" class="weather-card p-2"></div>
+                 <div id="day5" class="weather-card p-2"></div>
+                 <div id="day6" class="weather-card p-2"></div>
+                 <div id="day7" class="weather-card p-2"></div>
+             </div>
+         </div>
+    </div>
+
+    <div class="wrapper">
+        <div class="flex-column carousel carousel-fade" data-ride="carousel" id="carousel" data-interval="{{ request.args.get('interval') }}">
+            <div class="carousel-inner"></div>
+        </div>
+
+        <div class="flex-column sidebar-directory" style="background: linear-gradient(to right, rgba(62, 25, 82, 0.85), rgba(62, 25, 82, 0.85)), url('{{ url_for('static', filename=background) }}') center;">
+            <table class="table">
+                  <tbody>
+                    <tr>
+                      <th scope="row">Office 100</th>
+                      <td>Mark Doe</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  <tr>
+                      <th scope="row">200</th>
+                      <td>Jacob</td>
+                    </tr>
+                  </tbody>
+                </table>
+        </div>
+    </div>
+
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='/js/boostrap.bundle.min.js') }}"></script>
+    <script>
+        const textList = {{ messages|safe }};
+        let i = 0;
+
+        const cycleText = () => {
+          document.getElementById("message-cycle").innerHTML = textList[i];
+          i = ++i % textList.length;
+        };
+
+        cycleText();
+        setInterval(cycleText, {{ request.args.get('interval') }});
+    </script>
+    {% if request.args.get('weather') == 'True' %}
+    <script>
+        function weatherBalloon() {
+          fetch('https://api.openweathermap.org/data/2.5/onecall?lat=37.86202&lon=-84.6616&exclude=current,minutely,hourly,alerts&appid={{ weather_key }}')
+          .then(function(resp) { return resp.json() })
+          .then(function(data) {
+            drawWeather(data.daily);
+          })
+          .catch(function() {
+          });
+        }
+
+        function drawWeather(d) {
+            for (let day = 0; day < 7; day++) {
+              var celcius = Math.round(parseFloat(d[day].temp.day)-273.15);
+              var fahrenheit = Math.round(((parseFloat(d[day].temp.day)-273.15)*1.8)+32);
+              var dt_txt = new Date(d[day].dt*1000)
+              day_plus = day + 1
+              var element = 'day' + day_plus
+              document.getElementById(element).innerHTML =
+                  '<h3>' + dt_txt.toLocaleDateString('en-us', {day:"numeric", weekday:"short", month:"short"}) + '</h3>' +
+                  '<img src="https://openweathermap.org/img/wn/' + d[day].weather[0].icon + '@2x.png">' +
+                  '<h4>' + fahrenheit + '&deg; f' + '</h4>'
+            }
+        }
+
+        window.onload = function() {
+          weatherBalloon();
+        }
+    </script>
+    {% endif %}
+    <script>
+        function clock() {
+            var dt = new Date();
+            document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+            document.getElementById("date").innerHTML = dt.toLocaleDateString("en-US", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+              hour12: true,
+            });
+        }
+
+        setInterval(function() {
+            clock();
+        }, 1000);
+
+        setTimeout(function() {
+            window.location.reload(true);
+        }, {{ request.args.get('reload') }});
+    </script>
+    <script>
+    async function getapi(url) {
+        const response = await fetch(url);
+        var data = await response.json();
+        var $carousel = $('#carousel');
+        var $carouselInner = $carousel.find('.carousel-inner');
+
+        data.forEach(function(item, i) {
+            var template = '';
+
+            if(i === 0) {
+              template = '<div class="carousel-item active">';
+            }
+            else {
+              template = '<div class="carousel-item">';
+            }
+            if ( item.endsWith('.mp4') ) {
+            template += '<video class="block" id="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 30vw {% else %} width: 100vw {% endif %}" autoplay loop><source src="' + item + '" type="video/webm"></video>';
+            template += '</div>';
+            template += '</div>';
+            } else {
+            template += '<img class="block" src="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 30vw {% else %} width: 100vw {% endif %}">';
+            template += '</div>';
+            template += '</div>';
+            }
+
+            $carouselInner.append(template);
+        })
+      };
+
+    getapi("/api/slides/{{ title }}");
+
+    var SendInfo= { Feed: "{{ title }}"};
+        $.ajax({
+            type: 'post',
+            url: '/api/clients/register',
+            data: JSON.stringify(SendInfo),
+            contentType: "application/json; charset=utf-8",
+            traditional: true,
+            success: function (data) {}
+        });
+    </script>
+  </body>
+</html>
+{% endblock %}

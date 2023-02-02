@@ -1,20 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
-<form action="/api/feeds/add" method="POST" enctype="multipart/form-data">
-  <label for="feed_name">New Feed Name</label>
-  <input type="text" name="feed_name" id="feed_name">
-  <button type="submit" onclick="validateForm()" class="btn btn-dark btn-sm"><i class="fa fa-plus"></i> Add New Feed</button>
+<h3>Feeds</h3>
+<div class="row">
+  <form class="col-4" action="/api/feeds/add" method="POST" enctype="multipart/form-data">
+    <hr>
+    <h5>Create a feed</h5>
+  <div class="form-group">
+    <label for="feed_name">Feed Name</label>
+    <input type="text" name="feed_name" id="feed_name" class="form-control">
+  </div>
+  <div class="form-group">
+    <label for="feed_group">Feed Group Name</label>
+    <input type="text" name="feed_group" id="feed_group" class="form-control">
+  </div>
+  <button type="submit" onclick="validateForm()" class="btn btn-dark form-control" style="margin: 0;"><i class="fa fa-plus"></i> Add New Feed</button>
 </form>
-  <table id="data" class="table table-striped">
+    <div class="col-8">
+    <table class="table table-striped" id="data">
     <thead>
       <tr>
-        <th>Feeds</th>
+        <th>Feed</th>
+        <th>Feed Group</th>
       </tr>
     </thead>
     <tbody>
       {% for feed in feeds %}
         <tr>
           <td>{{ feed.name }}</td>
+          <td>{{ feed.manager_group }}</td>
           <td>
             <form action="/api/feeds/delete" method="POST" enctype="multipart/form-data">
               <input type="hidden" name="feed_id" value="{{ feed.id }}">
@@ -25,6 +38,8 @@
       {% endfor %}
     </tbody>
   </table>
+  </div>
+</div>
 <hr>
 <h3>API Keys</h3>
 <form action="/api/keys/openweathermap" method="POST" enctype="multipart/form-data">
@@ -35,4 +50,9 @@
   <br>
   <small>Obtain a new key from home.openweathermap.org/api_keys</small>
 </form>
+<hr>
+<h3>Feed Backgrounds</h3>
+<p>Feed background must be uploaded to the server directly. As long as the file is in the proper directory with the proper name, the server will automatically apply image to the feed template. </p>
+<p>Images used as feed backgrounds should be 9x16 in .webp format titled exactly as the feed is titled in the system. Use SCP to copy the file over to the server in the static directory.</p>
+<p>For example, to upload a feed background for a feed titled "Art & Design" use the following SCP command: <code>scp 'Art & Design.webp' username@signage-control-01:www/CampusVision/app/static</code></p>
 {% endblock %}

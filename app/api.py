@@ -1,5 +1,5 @@
 import datetime
-from flask import request, Blueprint, session, abort, redirect, url_for, jsonify, Flask
+from flask import request, Blueprint, session, abort, redirect, url_for, jsonify, Flask, flash
 from .models import Slide, Message, User, Feed, Keys
 from .app import db
 
@@ -13,6 +13,7 @@ app.config.from_pyfile('config.py')
 
 @api.route('/slides/<feed>', methods=['GET'])
 def get_feed_slides(feed):
+    """returns all the slides in a given feed that are scheduled to run today"""
     slide_set = []
     for slide in reversed(Slide.query.all()):
         start_date = datetime.datetime.strptime(slide.time_start, '%Y-%m-%d').date()
@@ -29,15 +30,44 @@ def get_feed_slides(feed):
 
 @api.route('/slides/<slide_filter>/', methods=['GET'])
 def get_slides(slide_filter):
+    """returns last 500 slides submitted """
     if slide_filter == "None":
-        data = Slide.query.limit(500)
+        data = Slide.query.order_by(Slide.id.desc()).limit(500)
     else:
-        data = Slide.query.filter_by(approval=slide_filter).limit(500)
+        data = Slide.query.filter_by(approval=slide_filter).order_by(Slide.id.desc()).limit(500)
     return {'data': [item.to_dict() for item in data]}
 
 
+@api.route('/slides/<slide_id>/delete', methods=['POST'])
+def delete_slide(slide_id):
+    """deletes slide by slide id"""
+    data = Slide.query.filter_by(id=slide_id)
+    data.delete()
+    db.session.commit()
+    flash("The slide has been deleted.")
+    return redirect(url_for("app.moderate"))
+
+@api.route('/slides/<slide_id>/approve', methods=['POST'])
+def approve_slide(slide_id):
+    """sets slide as approved by slide id"""
+    data = Slide.query.get(slide_id)
+    data.approval = "Approved"
+    db.session.commit()
+    flash(data.title + " has been approved.")
+    return redirect(url_for("app.moderate"))
+
+@api.route('/slides/<slide_id>/deny', methods=['POST'])
+def deny_slide(slide_id):
+    """sets slide as denied by slide id"""
+    data = Slide.query.get(slide_id)
+    data.approval = "Denied"
+    db.session.commit()
+    flash(data.title + " has been denied.")
+    return redirect(url_for("app.moderate"))
+
 @api.route('/slides/user/<name>/', methods=['GET'])
 def get_user_slides(name):
+    """returns slides submitted by a user by name"""
     data = Slide.query.filter_by(submitted_by=name).limit(500)
     return {'data': [item.to_dict() for item in data]}
 
@@ -68,6 +98,7 @@ def edit_user(email):
     selected_user = User.query.filter_by(email=email).first()
     selected_user.name = request.form["name"]
     selected_user.type = request.form["type"]
+    selected_user.groups = request.form["groups"]
     db.session.commit()
     return redirect(url_for("app.manager_users"))
 
@@ -83,9 +114,13 @@ def feeds():
 def add_feed():
     if not session.get("user"):
         abort(401)
-    data = Feed(name=request.form["feed_name"])
+    data = Feed(
+        name=request.form["feed_name"],
+        manager_group=request.form["feed_group"]
+    )
     db.session.add(data)
     db.session.commit()
+    flash("The feed " + request.form["feed_name"] + " has been created")
     return redirect(url_for("app.settings"))
 
 
@@ -96,6 +131,7 @@ def delete_feed():
     selected = Feed.query.get(request.form["feed_id"])
     db.session.delete(selected)
     db.session.commit()
+    flash("The feed " + selected.name + " has been deleted")
     return redirect(url_for("app.settings"))
 
 

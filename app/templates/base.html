@@ -89,6 +89,15 @@
           </a>
         </nav>
           <div class="content-box" style="padding: 20px;">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="alert alert-info">
+                {% for message in messages %}
+                  <p class="m-0"><i class="fa fa-warning fa-lg"></i> {{ message }}</p>
+                {% endfor %}
+                </div>
+              {% endif %}
+            {% endwith %}
           <h3 style="margin-bottom: 1rem;"><strong>{{ title }}</strong></h3>
           {% block content %}{% endblock %}
           </div>

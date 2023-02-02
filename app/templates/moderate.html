@@ -29,20 +29,21 @@
           { id: 'time_start', name: 'Start' },
           { id: 'time_end', name: 'End' },
           {
-            id: 'appovals',
+            id: 'approvals',
             name: '',
             formatter: (_, row) => gridjs.html(
-                    `<form action = "/moderate" method = "POST" enctype = "multipart/form-data">` +
-                    `<input type="hidden" name="slide_id" value="${row.cells[0].data}"/>` +
-                    '<button type="submit" name="Approve" value="Approve" onclick="validateForm()" class="btn btn-success btn-sm" style="margin: 5px;"><div><i class="fa fa-thumbs-up fa-lg"></i> Approve</button></div>' +
-                    '<button type="submit" name="Deny" value="Deny" onclick="validateForm()" class="btn btn-danger btn-sm" style="margin: 5px;"><div><i class="fa fa-thumbs-down fa-lg"></i> Deny</button></div>' +
-                    '<button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;"><i class="fa fa-trash fa-lg"></i> Delete</button><div></div>' +
-                    '</form>')
+                    `<form action="/api/slides/${row.cells[0].data}/approve" method="POST" enctype="multipart/form-data"><button class="btn btn-success btn-sm"  type="submit" onclick="validateForm()"><i class="fa fa-thumbs-up fa-lg"></i> Approve</button></form>` +
+                    `<form action="/api/slides/${row.cells[0].data}/deny" method="POST" enctype="multipart/form-data"><button class="btn btn-danger btn-sm" type="submit" onclick="validateForm()"><i class="fa fa-thumbs-down fa-lg"></i> Deny</button></form>`),
+            sort: { enabled: false },
           },
          {
             id: 'edit',
             name: '',
-            formatter: (_, row) => gridjs.html(`<a class="btn btn-secondary" href="/edit/${row.cells[0].data}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>`),
+            formatter: (_, row) => gridjs.html(
+                    `<a class="btn btn-secondary" href="/edit/${row.cells[0].data}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>` +
+                    `<form action="/api/slides/${row.cells[0].data}/delete" method="POST" enctype="multipart/form-data">` +
+                    '<button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;"><i class="fa fa-trash fa-lg"></i> Delete</button>' +
+                    '</form>'),
             sort: { enabled: false },
           },
         ],

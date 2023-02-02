@@ -12,6 +12,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(1000))
     type = db.Column(db.String(1000))
     eid = db.Column(db.String(100), unique=True)
+    groups = db.Column(db.String(1000))
 
 
 class Feed(db.Model):
@@ -34,6 +35,7 @@ class Slide(db.Model):
     submitted_by = db.Column(db.String(1000))
     feeds = db.Column(db.String(1000))
 
+    # function to recall the model from the api
     def to_dict(self):
         return {
             'id': self.id,

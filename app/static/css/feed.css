@@ -75,6 +75,22 @@ body {
     width: fill-available;
 }
 
+.sidebar-directory {
+    flex-grow: 0;
+    padding: 20px;
+    background-size: cover !important;
+    width: -moz-available;
+    width: -webkit-fill-available;
+    width: fill-available;
+    font-size: 2vw;
+    color: white;
+}
+
+.sidebar-directory table {
+    color: white;
+    font-size: 1em;
+}
+
 .sidebar h2 {
     text-align:center;
     margin-top: 10vw;
@@ -115,12 +131,20 @@ body {
 .datetime {
     flex-grow: 1;
     background-color:black;
-    padding: 20px;
+    padding: 20px 0 0 20px;
     width: 6vw;
 }
 
 .weather-card img {
     width: 6vw;
+}
+
+.alert-text {
+    text-align: center;
+    width: 100vw;
+    padding-top: 50vh;
+    color: white;
+    font-size: 5em;
 }
 
 @font-face {

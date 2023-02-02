@@ -1,4 +1,5 @@
 {% block content %}
+<!DOCTYPE html>
 <html lang="en">
   <head>
       <meta charset="utf-8">
@@ -10,24 +11,23 @@
   <body>
     <!-- Main Content -->
     <div class="wrapper">
+        {% if alert_status %}
+        <h1 class="alert-text">{{ alert_status }}</h1>
+        {% else %}
+        <!-- Slider -->
         <div class="flex-column carousel carousel-fade" data-ride="carousel" id="carousel" data-interval="{{ request.args.get('interval') }}">
-            {% if not alert_status %}
             <div class="carousel-inner"></div>
-            {% else %}
-            <div class="container">
-                <h1>{{ alert_status }}</h1>
-            </div>
-            {% endif %}
         </div>
+        {% endif %}
         {% if request.args.get('fullscreen') == 'False' %}
-        <!-- messages -->
+        <!-- Sidebar -->
         <div class="flex-column sidebar" style="background: linear-gradient(to right, rgba(62, 25, 82, 0.85), rgba(62, 25, 82, 0.85)), url('{{ url_for('static', filename=background) }}') center;">
             <div class="sidebar-inner">
                 <img src="{{ url_for('static', filename='logo.png') }}" alt="logo">
                 <h2>{{ title }}</h2>
                 <h4 id="message-cycle"></h4>
             </div>
-         </div>
+        </div>
         {% endif %}
     </div>
 
@@ -40,13 +40,13 @@
          </div>
          <div class="weather-outer">
              <div class="weather d-inline-flex">
-                 <div id="day1" class="weather-card p-3"></div>
-                 <div id="day2" class="weather-card p-3"></div>
-                 <div id="day3" class="weather-card p-3"></div>
-                 <div id="day4" class="weather-card p-3"></div>
-                 <div id="day5" class="weather-card p-3"></div>
-                 <div id="day6" class="weather-card p-3"></div>
-                 <div id="day7" class="weather-card p-3"></div>
+                 <div id="day1" class="weather-card p-2"></div>
+                 <div id="day2" class="weather-card p-2"></div>
+                 <div id="day3" class="weather-card p-2"></div>
+                 <div id="day4" class="weather-card p-2"></div>
+                 <div id="day5" class="weather-card p-2"></div>
+                 <div id="day6" class="weather-card p-2"></div>
+                 <div id="day7" class="weather-card p-2"></div>
              </div>
          </div>
     </div>
@@ -55,18 +55,7 @@
     <!-- scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='/js/boostrap.bundle.min.js') }}"></script>
-    <script>
-        const textList = {{ messages|safe }};
-        let i = 0;
-
-        const cycleText = () => {
-          document.getElementById("message-cycle").innerHTML = textList[i];
-          i = ++i % textList.length;
-        };
-
-        cycleText();
-        setInterval(cycleText, {{ request.args.get('interval') }});
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     {% if request.args.get('weather') == 'True' %}
     <script>
         function weatherBalloon() {
@@ -99,58 +88,77 @@
     </script>
     {% endif %}
     <script>
-        function clock() {
-            var dt = new Date();
-            document.getElementById("time").innerHTML = dt.toLocaleTimeString();
-            document.getElementById("date").innerHTML = dt.toLocaleDateString("en-US", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-              hour12: true,
-            });
+        // get messages and change at interval
+        if (document.getElementById("message-cycle")) {
+            var textList = {{ messages|safe }};
+            if (textList == "") {
+                textList = [""];
+            };
+            let i = 0;
+            const cycleText = () => {
+              document.getElementById("message-cycle").innerHTML = textList[i];
+              i = ++i % textList.length;
+            };
+            cycleText();
+            setInterval(cycleText, {{ request.args.get('interval') }});
         }
 
-        setInterval(function() {
-            clock();
-        }, 1000);
+        // set and update data and time
+        if (document.getElementById("time")) {
+            function clock() {
+                var dt = new Date();
+                document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+                document.getElementById("date").innerHTML = dt.toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                    hour12: true,
+                });
+            }
 
+            setInterval(function () {
+                clock();
+            }, 1000);
+        }
+
+        // Reload page on interval
         setTimeout(function() {
             window.location.reload(true);
         }, {{ request.args.get('reload') }});
-    </script>
-    <script>
-    async function getapi(url) {
-        const response = await fetch(url);
-        var data = await response.json();
-        var $carousel = $('#carousel');
-        var $carouselInner = $carousel.find('.carousel-inner');
 
-        data.forEach(function(item, i) {
-            var template = '';
+        // Get slides from api
+        async function getapi(url) {
+            const response = await fetch(url);
+            var data = await response.json();
+            var $carousel = $('#carousel');
+            var $carouselInner = $carousel.find('.carousel-inner');
 
-            if(i === 0) {
-              template = '<div class="carousel-item active">';
-            }
-            else {
-              template = '<div class="carousel-item">';
-            }
-            if ( item.endsWith('.mp4') ) {
-            template += '<video class="block" id="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 80vw {% else %} width: 100vw {% endif %}" autoplay loop><source src="' + item + '" type="video/webm"></video>';
-            template += '</div>';
-            template += '</div>';
-            } else {
-            template += '<img class="block" src="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 80vw {% else %} width: 100vw {% endif %}">';
-            template += '</div>';
-            template += '</div>';
-            }
+            data.forEach(function(item, i) {
+                var template = '';
 
-            $carouselInner.append(template);
-        })
-      };
+                if(i === 0) {
+                  template = '<div class="carousel-item active">';
+                }
+                else {
+                  template = '<div class="carousel-item">';
+                }
+                if ( item.endsWith('.mp4') ) {
+                template += '<video class="block" id="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 80vw {% else %} width: 100vw {% endif %}" autoplay loop><source src="' + item + '" type="video/webm"></video>';
+                template += '</div>';
+                template += '</div>';
+                } else {
+                template += '<img class="block" src="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 80vw {% else %} width: 100vw {% endif %}">';
+                template += '</div>';
+                template += '</div>';
+                }
 
-    getapi("/api/slides/{{ title }}");
+                $carouselInner.append(template);
+            })
+          };
+        getapi("/api/slides/{{ title }}");
 
-    var SendInfo= { Feed: "{{ title }}"};
+        // Send client status to server.
+        var SendInfo= { Feed: "{{ title }}"};
         $.ajax({
             type: 'post',
             url: '/api/clients/register',
