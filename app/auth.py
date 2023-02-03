@@ -16,7 +16,7 @@ def signup():
         return redirect(url_for("app.index"))
     else:
         name = session.get("user")["name"]
-        return render_tempvlate('auth_signup.html', user=name, version=msal.__version__, title='Sign Up')
+        return render_template('auth_signup.html', user=name, version=msal.__version__, title='Sign Up')
 
 
 @auth.route("/signup", methods=['POST'])
