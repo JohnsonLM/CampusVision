@@ -16,7 +16,7 @@ def signup():
         return redirect(url_for("app.index"))
     else:
         name = session.get("user")["name"]
-        return render_template('auth_signup.html', user=name, version=msal.__version__, title='Sign Up')
+        return render_tempvlate('auth_signup.html', user=name, version=msal.__version__, title='Sign Up')
 
 
 @auth.route("/signup", methods=['POST'])
@@ -27,13 +27,13 @@ def signup_post():
         return redirect(url_for("app.index"))
     # make first system user admin by default
     if not User.query.all():
-        type = "Admin"
+        user_type = "Admin"
     else:
-        type = "Viewer"
+        user_type = "Viewer"
     data = User(
         email = session.get("user")["preferred_username"], # type: ignore
         name = session.get("user")["name"], # type: ignore
-        type = type, # type: ignore
+        type = user_type, # type: ignore
         groups = "Main",  # type: ignore
         eid = int(request.form['eid'])) # type: ignore
     db.session.add(data)

@@ -147,6 +147,18 @@ body {
     font-size: 5em;
 }
 
+.upper-third-logo {
+    max-height: 15vh;
+    margin: auto;
+    display: block;
+}
+
+.upper-third {
+    height: 25vh;
+    display: flex;
+    justify-content: center;
+}
+
 @font-face {
     font-family: 'Myriad Pro Light';
     src: url('../webfonts/MyriadPro-Light.woff2') format('woff2'),

@@ -5,8 +5,7 @@ import json
 import os
 from flask import render_template, request, Blueprint, flash, url_for, session
 from werkzeug.utils import secure_filename, redirect
-from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, appr_slide, \
-    remove_slide, update_alert, get_slides, get_message, update_slide, get_video, get_user
+from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, update_alert, get_slides, get_message, update_slide, get_video
 from .models import Message, Slide, User, Feed, Keys
 import instance.config as app_config
 
@@ -21,14 +20,14 @@ def index():
         return redirect(url_for("auth.login"))
     return render_template('home.html',
                            title='Dashboard', # title of the page that appears in browser and heading.
-                           name=session.get("user")["name"], # report the signed in user's name.
+                           name=session.get("user")["name"], # report the signed-in user's name.
                            mod_count=mod_counter(), # report how many slides are pending moderation.
                            clients=Feed.query.filter_by().all() # report the current client statuses from the database.
                            )
 
 
 @app.route('/help')
-def help():
+def help_page():
     """homepage for the app to display info and stats"""
     if not session.get("user"):
         return redirect(url_for("auth.login"))
@@ -112,14 +111,14 @@ def upload_file():
                                )
     elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Contributor":
         groups = User.query.filter_by(email=session.get("user")["preferred_username"]).first().groups.split(",")
-        feeds = []
+        feed_list = []
         for group in groups:
-            feeds += Feed.query.filter_by(manager_group=group).all()
+            feed_list += Feed.query.filter_by(manager_group=group).all()
         return render_template('upload.html',
                                title='Upload a Slide',
                                name=session.get("user")["name"],
                                mod_count=mod_counter(),
-                               feeds=feeds
+                               feeds=feed_list
                                )
     else:
         flash("Sorry! You don't have permission to access that page.")
@@ -339,6 +338,16 @@ def feeds_directory(title):
                            background=title + '.webp',
                            weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
 
+
+@app.route('/feeds/airtame/<title>', methods=['GET'])
+def feeds_airtame(title):
+    return render_template('feed-airtame.html',
+                           title=title,
+                           alert_status=alert_status(),
+                           messages=json.dumps(get_message()),
+                           background=title + '.webp',
+                           weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
+
 @app.app_errorhandler(404)
-def page_not_found(e):
+def page_not_found():
     return render_template('404.html', title='404')
