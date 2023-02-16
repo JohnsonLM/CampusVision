@@ -7,7 +7,7 @@ Flask==2.1.2
 itsdangerous==2.0.1
 Jinja2==3.0.0
 MarkupSafe==2.0.0rc2
-Werkzeug==2.0.3
+Werkzeug==2.2.3
 
 # Flask Packages
 Flask-Login==0.6.1
