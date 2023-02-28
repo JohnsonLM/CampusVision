@@ -15,7 +15,7 @@
             id: 'Preview',
             name: 'Preview',
             formatter: (_, row) => gridjs.html(`<img class="preview" alt="slide preview" src="/static/uploads/${row.cells[4].data}">`),
-            sort: { enabled: false },
+            sort: false,
             },
           { id: 'title', name: 'Title' },
           { id: 'feeds', name: 'Assigned Feeds' },
@@ -34,7 +34,7 @@
             formatter: (_, row) => gridjs.html(
                     `<form action="/api/slides/${row.cells[0].data}/approve" method="POST" enctype="multipart/form-data"><button class="btn btn-success btn-sm"  type="submit" onclick="validateForm()"><i class="fa fa-thumbs-up fa-lg"></i> Approve</button></form>` +
                     `<form action="/api/slides/${row.cells[0].data}/deny" method="POST" enctype="multipart/form-data"><button class="btn btn-danger btn-sm" type="submit" onclick="validateForm()"><i class="fa fa-thumbs-down fa-lg"></i> Deny</button></form>`),
-            sort: { enabled: false },
+            sort: false,
           },
          {
             id: 'edit',
@@ -42,9 +42,9 @@
             formatter: (_, row) => gridjs.html(
                     `<a class="btn btn-secondary" href="/edit/${row.cells[0].data}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>` +
                     `<form action="/api/slides/${row.cells[0].data}/delete" method="POST" enctype="multipart/form-data">` +
-                    '<button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm" style="margin: 5px;"><i class="fa fa-trash fa-lg"></i> Delete</button>' +
+                    '<button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-dark btn-sm"><i class="fa fa-trash fa-lg"></i> Delete</button>' +
                     '</form>'),
-            sort: { enabled: false },
+            sort: false,
           },
         ],
         server: {

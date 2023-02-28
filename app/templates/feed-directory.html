@@ -9,24 +9,6 @@
   </head>
   <body>
     <div class="wrapper">
-         <div class="datetime d-flex flex-column">
-             <h2 id="date"></h2>
-             <h1 id="time"></h1>
-         </div>
-         <div class="weather-outer">
-             <div class="weather d-inline-flex">
-                 <div id="day1" class="weather-card p-2"></div>
-                 <div id="day2" class="weather-card p-2"></div>
-                 <div id="day3" class="weather-card p-2"></div>
-                 <div id="day4" class="weather-card p-2"></div>
-                 <div id="day5" class="weather-card p-2"></div>
-                 <div id="day6" class="weather-card p-2"></div>
-                 <div id="day7" class="weather-card p-2"></div>
-             </div>
-         </div>
-    </div>
-
-    <div class="wrapper">
         <div class="flex-column carousel carousel-fade" data-ride="carousel" id="carousel" data-interval="{{ request.args.get('interval') }}">
             <div class="carousel-inner"></div>
         </div>
@@ -81,6 +63,23 @@
                   </tbody>
                 </table>
         </div>
+    </div>
+    <div class="wrapper">
+         <div class="datetime d-flex flex-column">
+             <h2 id="date"></h2>
+             <h1 id="time"></h1>
+         </div>
+         <div class="weather-outer">
+             <div class="weather d-inline-flex">
+                 <div id="day1" class="weather-card p-2"></div>
+                 <div id="day2" class="weather-card p-2"></div>
+                 <div id="day3" class="weather-card p-2"></div>
+                 <div id="day4" class="weather-card p-2"></div>
+                 <div id="day5" class="weather-card p-2"></div>
+                 <div id="day6" class="weather-card p-2"></div>
+                 <div id="day7" class="weather-card p-2"></div>
+             </div>
+         </div>
     </div>
 
     <!-- scripts -->
@@ -166,11 +165,11 @@
               template = '<div class="carousel-item">';
             }
             if ( item.endsWith('.mp4') ) {
-            template += '<video class="block" id="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 30vw {% else %} width: 100vw {% endif %}" autoplay loop><source src="' + item + '" type="video/webm"></video>';
+            template += '<video class="block" id="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 50vw {% else %} width: 100vw {% endif %}" autoplay loop><source src="' + item + '" type="video/webm"></video>';
             template += '</div>';
             template += '</div>';
             } else {
-            template += '<img class="block" src="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 30vw {% else %} width: 100vw {% endif %}">';
+            template += '<img class="block" src="' + item + '" style="{% if request.args.get("fullscreen") == 'False' %} width: 50vw {% else %} width: 100vw {% endif %}">';
             template += '</div>';
             template += '</div>';
             }

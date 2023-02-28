@@ -6,7 +6,7 @@ html {
     box-sizing: inherit;
 }
 .btn {
-    margin: 0.2em;
+    margin-bottom: 0.5em;
 }
 .btn-primary {
     color: white;
@@ -26,7 +26,7 @@ html {
     border-color: #e3bf42;
 }
 .sidebar {
-    background: #1a1a1a;
+    background: #3e1952;
     width: 14vw;
     min-height: 100vh;
 }
@@ -45,10 +45,16 @@ html {
 .nav-link i {
     padding: 8px;
 }
+.nav-logo {
+    width: 5em;
+    padding: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+}
 .topnav {
     height: 50px;
     color: white;
-    background: #1a1a1a;
+    background: #4b4d4e;
 }
 .topnav a {
     color: white;
@@ -71,6 +77,12 @@ html {
 .preview {
     width: 100%;
 }
+
+.form-group {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
 @font-face {
     font-family: 'Myriad Pro Light';
     src: url('../webfonts/MyriadPro-Light.woff2') format('woff2'),

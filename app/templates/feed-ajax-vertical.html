@@ -1,0 +1,102 @@
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <meta charset="utf-8">
+      <title>Digital Sign</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="{{ url_for('static', filename='/css/bootstrap.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css') }}">
+  </head>
+  <body>
+    <!-- Main Content -->
+    <img class="logo-vertical" src="{{ url_for('static', filename='Asbury-Logo-1-Reversed.png') }}" alt="logo">
+    <div class="wrapper">
+        {% if alert_status %}
+        <h1 class="alert-text">{{ alert_status }}</h1>
+        {% else %}
+        <!-- Slider -->
+        <div class="flex-column carousel carousel-fade" data-ride="carousel" id="carousel" data-interval="{{ request.args.get('interval') }}">
+            <div class="carousel-inner"></div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="datetime" style="width: 100vw">
+        <h2 id="date" style="font-size: 4em"></h2>
+        <h1 id="time" style="font-size: 6em"></h1>
+    </div>
+
+    <!-- scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='/js/boostrap.bundle.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+        // set and update data and time
+        if (document.getElementById("time")) {
+            function clock() {
+                var dt = new Date();
+                document.getElementById("time").innerHTML = dt.toLocaleTimeString();
+                document.getElementById("date").innerHTML = dt.toLocaleDateString("en-US", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                    hour12: true,
+                });
+            }
+
+            setInterval(function () {
+                clock();
+            }, 1000);
+        }
+
+        // Reload page on interval
+        setTimeout(function() {
+            window.location.reload(true);
+        }, {{ request.args.get('reload') }});
+
+        // Get slides from api
+        async function getapi(url) {
+            const response = await fetch(url);
+            var data = await response.json();
+            var $carousel = $('#carousel');
+            var $carouselInner = $carousel.find('.carousel-inner');
+
+            data.forEach(function(item, i) {
+                var template = '';
+
+                if(i === 0) {
+                  template = '<div class="carousel-item active">';
+                }
+                else {
+                  template = '<div class="carousel-item">';
+                }
+                if ( item.endsWith('.mp4') ) {
+                template += '<video class="block" id="' + item + '" style="width: 100vw" autoplay loop><source src="' + item + '" type="video/webm"></video>';
+                template += '</div>';
+                template += '</div>';
+                } else {
+                template += '<img class="block" src="' + item + '" style="width: 100vw">';
+                template += '</div>';
+                template += '</div>';
+                }
+
+                $carouselInner.append(template);
+            })
+          };
+        getapi("/api/slides/{{ title }}");
+
+        // Send client status to server.
+        var SendInfo= { Feed: "{{ title }}"};
+        $.ajax({
+            type: 'post',
+            url: '/api/clients/register',
+            data: JSON.stringify(SendInfo),
+            contentType: "application/json; charset=utf-8",
+            traditional: true,
+            success: function (data) {}
+        });
+    </script>
+  </body>
+</html>
+{% endblock %}

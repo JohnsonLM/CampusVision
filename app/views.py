@@ -309,24 +309,13 @@ def feeds(title):
 
 @app.route('/feeds/vertical/<title>', methods=['GET'])
 def feeds_vertical(title):
-    return render_template('feed_vertical.html',
-                           title=title,
-                           slides=get_slides(title),
-                           alert_status=alert_status(),
-                           messages=json.dumps(get_message()),
-                           background='bg.jpg',
-                           weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
-
-
-@app.route('/feeds/video/<title>', methods=['GET'])
-def feeds_video(title):
-    return render_template('feed-video.html',
-                           title=title,
-                           video=get_video(title),
-                           alert_status=alert_status(),
-                           messages=json.dumps(get_message()),
-                           background=title + '.webp',
-                           weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
+    return render_template('feed-ajax-vertical.html',
+						   title=title,
+						   slides=get_slides(title),
+						   alert_status=alert_status(),
+						   messages=json.dumps(get_message()),
+						   background='bg.jpg',
+						   weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
 
 
 @app.route('/feeds/directory/<title>', methods=['GET'])

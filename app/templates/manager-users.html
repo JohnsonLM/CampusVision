@@ -29,8 +29,7 @@
           </button>
         </td>
         <td>
-          <form action="/usermanager" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="user_id" value="{{ user['id'] }}">
+          <form action="/api/user/{{ user['email'] }}/delete" method="POST" enctype="multipart/form-data">
             <button type="submit" name="Delete" value="Delete" onclick="validateForm()" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</button>
           </form>
         </td>

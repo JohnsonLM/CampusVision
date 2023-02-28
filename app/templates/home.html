@@ -8,13 +8,14 @@
         <div class="card-body">
             <ul>
                 <li>Slides must be in the 16:9 aspect ratio and landscape orientation.</li>
+                <li>Poster slides should be submitted only to poster feeds and should have a 11:17 aspect ratio.</li>
                 <li>Slides must have dimensions of at least 1920x1080.</li>
                 <li>Slides may not contain QR codes without approval from I.T. Services staff.</li>
                 <li>Slides must be under 16mb in size.</li>
                 <li>Designs must be submitted in either JPG or PNG file format.</li>
-                <li>Slides should follow good design principles (be easy to read, sufficient contrast, not be too busy, etc.).</li>
-                <li>All slides are subject to approval and redesign by staff based on the above graphic design standards.</li
-                <li>Signs should be submitted as well in advance as possible to ensure time for approval and possible revision.</li>
+                <li>Slides should follow good design principles (readable, sufficient contrast, not busy, etc.).</li>
+                <li>Slides are subject to approval and redesign by staff based on the above standards.</li>
+                <li>Signs should be submitted at lest 24 hours in advance to ensure time for approval or revision.</li>
             </ul>
         </div>
     </div>
@@ -76,9 +77,10 @@
         </div>
         <div class="card-body">
             {% for client in clients %}
-            <strong>{{ client.name }}</strong>
-            <small>Last check-in was at {{ client.status }}</small>
-            <br>
+            <div class="p-1">
+                <strong>{{ client.name }}</strong>
+                <small class="badge badge-info">Last seen: {{ client.status }}</small>
+            </div>
             {% endfor %}
         </div>
     </div>

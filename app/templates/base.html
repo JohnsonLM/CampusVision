@@ -14,7 +14,7 @@
   <body>
     <main style="max-width: none; display: flex; flex-wrap: nowrap;">
       <div class="sidebar d-flex flex-column flex-shrink-0 text-white">
-        <h4 class="app-title">CampusVision</h4>
+        <img class="nav-logo" src="{{ url_for('static', filename='Asbury-Logo-5.png') }}">
         <ul class="nav nav-pills flex-column mb-auto">
           <li class="nav-item">
             <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}" aria-current="page">
@@ -72,7 +72,7 @@
           <a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="small p-3 text-white">Licence</a>
           <a href="https://github.com/JohnsonLM/CampusVision" class="small p-3 text-white">Github</a>
         </div>
-        <p class="small p-3">Copyright © 2023 Asbury University<br>All Rights Reserved</p>
+        <small class="p-3">Copyright © 2023 Asbury University<br>All Rights Reserved</small>
       </div>
       <div class="main-body d-flex flex-column" style="flex-grow: 1;">
         <nav class="topnav navbar">

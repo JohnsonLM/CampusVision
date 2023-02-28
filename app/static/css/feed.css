@@ -128,6 +128,15 @@ body {
     height: 100%;
 }
 
+.logo-vertical {
+    margin-top: 2.5em;
+    margin-bottom: 2.5em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
 .datetime {
     flex-grow: 1;
     background-color:black;

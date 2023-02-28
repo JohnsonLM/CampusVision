@@ -12,7 +12,7 @@
             id: 'Preview',
             name: 'Preview',
             formatter: (_, row) => gridjs.html(`<img class="preview" src="/static/uploads/${row.cells[4].data}">`),
-            sort: { enabled: false },
+            sort: false,
             },
           { id: 'title', name: 'Title' },
           { id: 'feeds', name: 'Assigned Feeds' },
@@ -29,7 +29,7 @@
             id: 'edit',
             name: '',
             formatter: (_, row) => gridjs.html(`<a class="btn btn-secondary" href="/edit/${row.cells[0].data}"><i class="fa-solid fa-pen-to-square"></i> Edit</a>`),
-            sort: { enabled: false },
+            sort: false,
           },
         ],
         server: {
