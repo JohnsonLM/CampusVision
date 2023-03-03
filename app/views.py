@@ -124,19 +124,21 @@ def upload_file():
 @app.route('/upload', methods=['POST'])
 def upload_file_post():
     # TODO convert to API request.
-    if not session.get("user"): # if the user isn't logged in, send them to the login page.
+    if not session.get("user"):  # if the user isn't logged in, send them to the login page.
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer": # prevent view-only users from accessing the upload page.
+    # prevent view-only users from accessing the upload page.
+    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
         flash("Sorry! You don't have permission to access that page.")
         return redirect(url_for("app.index"))
-    if 'file' not in request.files: # if no file is loaded in the request, flash a warning.
+    if 'file' not in request.files:  # if no file is loaded in the request, flash a warning.
         flash('No file part')
         return redirect(request.url)
     file = request.files['file']
-    if file.filename == '': # if no file is selected, flash a warning.
+    if file.filename == '':  # if no file is selected, flash a warning.
         flash('No selected file')
         return redirect(request.url)
-    if file and allowed_file(file.filename, app_config.ALLOWED_EXTENSIONS): # if the file exists and is an allowed type, save it and flash a success message.
+    # if the file exists and is an allowed type, save it and flash a success message.
+    if file and allowed_file(file.filename, app_config.ALLOWED_EXTENSIONS):
         file.save(os.path.join(app.root_path, 'static/uploads', secure_filename(file.filename)))
         time_start = request.form["time_start"]
         time_end = request.form["time_end"]
@@ -296,12 +298,12 @@ def feeds(title):
 @app.route('/feeds/vertical/<title>', methods=['GET'])
 def feeds_vertical(title):
     return render_template('feed-ajax-vertical.html',
-						   title=title,
-						   slides=get_slides(title),
-						   alert_status=alert_status(),
-						   messages=json.dumps(get_message()),
-						   background='bg.jpg',
-						   weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
+                           title=title,
+                           slides=get_slides(title),
+                           alert_status=alert_status(),
+                           messages=json.dumps(get_message()),
+                           background='bg.jpg',
+                           weather_key=Keys.query.filter_by(name="OpenWeatherMap").first().key)
 
 
 @app.route('/feeds/directory/<title>', methods=['GET'])
