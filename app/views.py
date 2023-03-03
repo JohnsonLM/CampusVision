@@ -1,11 +1,9 @@
-"""
-views.py contains the main view routing for the app.
-"""
+"""views.py contains the main view routing for the app."""
 import json
 import os
 from flask import render_template, request, Blueprint, flash, url_for, session
 from werkzeug.utils import secure_filename, redirect
-from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, update_alert, get_slides, get_message, update_slide, get_video
+from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, update_alert, get_slides, get_message, update_slide
 from .models import Message, Slide, User, Feed, Keys
 import instance.config as app_config
 
@@ -28,7 +26,7 @@ def index():
 
 @app.route('/help')
 def help_page():
-    """homepage for the app to display info and stats"""
+    """help page"""
     if not session.get("user"):
         return redirect(url_for("auth.login"))
     return render_template('help.html',
@@ -49,7 +47,7 @@ def manager():
 def manager_users():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
         users = User.query.all()
         return render_template('manager-users.html',
                                title="User Management",
@@ -65,7 +63,7 @@ def manager_users():
 def editor_user(user_id):
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
         return render_template('editor_user.html',
                                title="Edit User",
                                selected_user=User.query.filter_by(id=user_id).first(),
@@ -79,30 +77,29 @@ def editor_user(user_id):
 def manager_screens():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
         return render_template('screens.html',
                                title="Screen Generator",
                                name=session.get("user")["name"],
                                mod_count=mod_counter())
-    else:
-        flash("Sorry, you are not allowed to view that page.")
-        return redirect(url_for("app.index"))
+    flash("Sorry, you are not allowed to view that page.")
+    return redirect(url_for("app.index"))
 
 @app.route('/profile')
 def profile():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    else:
-        return render_template('profile.html',
-                               name=session.get("user")["name"],
-                               mod_count=mod_counter())
+
+    return render_template('profile.html',
+                           name=session.get("user")["name"],
+                           mod_count=mod_counter())
 
 
 @app.route('/upload', methods=['GET'])
 def upload_file():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
         return render_template('upload.html',
                                title='Upload a Slide',
                                name=session.get("user")["name"],
@@ -120,9 +117,8 @@ def upload_file():
                                mod_count=mod_counter(),
                                feeds=feed_list
                                )
-    else:
-        flash("Sorry! You don't have permission to access that page.")
-        return redirect(url_for("app.index"))
+    flash("Sorry! You don't have permission to access that page.")
+    return redirect(url_for("app.index"))
 
 
 @app.route('/upload', methods=['POST'])
@@ -156,79 +152,73 @@ def upload_file_post():
 def moderate():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
         return render_template('moderate.html', title='Slide Moderator', name=session.get("user")["name"])
-    else:
-        flash("Sorry, you are not allowed to view that page.")
-        return redirect(url_for("app.index"))
+    flash("Sorry, you are not allowed to view that page.")
+    return redirect(url_for("app.index"))
 
 
 @app.route('/moderate', methods=['POST'])
 def moderate_post():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
         return render_template('moderate.html',
                                title='Slide Moderator',
                                name=session.get("user")["name"],
                                mod_count=mod_counter())
-    else:
-        flash("Sorry! You don't have permission to access that page.")
-        return redirect(url_for("app.index"))
+    flash("Sorry! You don't have permission to access that page.")
+    return redirect(url_for("app.index"))
 
 
 @app.route('/edit/<slide_id>', methods=['GET'])
 def edit(slide_id):
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
         flash("Sorry, you are not allowed to view that page.")
         return redirect(url_for("app.index"))
-    else:
-        return render_template('edit.html',
-                               title='Edit Slide',
-                               slide=Slide.query.get(slide_id),
-                               name=session.get("user")["name"],
-                               mod_count=mod_counter(),
-                               feeds=Feed.query.all())
+    return render_template('edit.html',
+                           title='Edit Slide',
+                           slide=Slide.query.get(slide_id),
+                           name=session.get("user")["name"],
+                           mod_count=mod_counter(),
+                           feeds=Feed.query.all())
 
 
 @app.route('/edit/<slide_id>', methods=['POST'])
 def edit_post(slide_id):
-    # TODO convert to API request.
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
         flash("Sorry, you are not allowed to view that page.")
         return redirect(url_for("app.index"))
-    else:
-        update_slide(slide_id,
-                     request.form["title_text"],
-                     request.form["time_start"],
-                     request.form["time_end"],
-                     ','.join(map(str, request.form.getlist('feeds'))))
-        return render_template('edit.html',
-                               title='Edit Slide',
-                               slide_id=id,
-                               slide=Slide.query.get(slide_id),
-                               name=session.get("user")["name"],
-                               mod_count=mod_counter(),
-                               feeds=Feed.query.all())
+    update_slide(slide_id,
+                 request.form["title_text"],
+                 request.form["time_start"],
+                 request.form["time_end"],
+                 ','.join(map(str, request.form.getlist('feeds'))))
+    return render_template('edit.html',
+                           title='Edit Slide',
+                           slide_id=id,
+                           slide=Slide.query.get(slide_id),
+                           name=session.get("user")["name"],
+                           mod_count=mod_counter(),
+                           feeds=Feed.query.all())
 
 
 @app.route('/messages', methods=['GET'])
 def messages():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
         flash("Sorry, you are not allowed to view that page.")
         return redirect(url_for("app.index"))
-    else:
-        return render_template('manager-messages.html',
-                               title='Messages',
-                               name=session.get("user")["name"],
-                               mod_count=mod_counter(),
-                               messages=Message.query.all())
+    return render_template('manager-messages.html',
+                           title='Messages',
+                           name=session.get("user")["name"],
+                           mod_count=mod_counter(),
+                           messages=Message.query.all())
 
 
 @app.route('/messages', methods=['POST'])
@@ -236,40 +226,38 @@ def messages_post():
     # TODO convert to API request.
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
         flash("Sorry, you are not allowed to view that page.")
         return redirect(url_for("app.index"))
-    else:
-        text = request.form["message_text"]
-        start_time = request.form["time_start"]
-        end_time = request.form["time_end"]
-        add_message(text, start_time, end_time)
-        return render_template('manager-messages.html',
-                               title='Messages',
-                               name=session.get("user")["name"],
-                               mod_count=mod_counter(),
-                               messages=Message.query.all())
+    text = request.form["message_text"]
+    start_time = request.form["time_start"]
+    end_time = request.form["time_end"]
+    add_message(text, start_time, end_time)
+    return render_template('manager-messages.html',
+                           title='Messages',
+                           name=session.get("user")["name"],
+                           mod_count=mod_counter(),
+                           messages=Message.query.all())
 
 
 @app.route('/alerts', methods=['GET'])
 def alerts():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
         return render_template('alerts.html',
                                title='Submit an Emergency Alert',
                                name=session.get("user")["name"],
                                mod_count=mod_counter())
-    else:
-        flash("Sorry, you are not allowed to view that page.")
-        return redirect(url_for("app.index"))
+    flash("Sorry, you are not allowed to view that page.")
+    return redirect(url_for("app.index"))
 
 @app.route('/alerts', methods=['POST'])
 def alerts_post():
     # TODO convert to API request.
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
         if request.form["alert_status"] == "Enable":
             update_alert(request.form["alert_text"])
         else:
@@ -278,24 +266,22 @@ def alerts_post():
                                title='Submit an Emergency Alert',
                                name=session.get("user")["name"],
                                mod_count=mod_counter())
-    else:
-        flash("Sorry, you are not allowed to view that page.")
-        return redirect(url_for("app.index"))
+    flash("Sorry, you are not allowed to view that page.")
+    return redirect(url_for("app.index"))
 
 
 @app.route('/settings')
 def settings():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
         return render_template('settings.html',
                                title='Settings',
                                name=session.get("user")["name"],
                                mod_count=mod_counter(),
                                feeds=Feed.query.all())
-    else:
-        flash("Sorry, you are not allowed to view that page.")
-        return redirect(url_for("app.index"))
+    flash("Sorry, you are not allowed to view that page.")
+    return redirect(url_for("app.index"))
 
 @app.route('/feeds/standard/<title>', methods=['GET'])
 def feeds(title):

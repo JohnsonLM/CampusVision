@@ -124,6 +124,7 @@ def delete_messages():
     db.session.commit()
     return redirect(url_for('app.messages'))
 
+
 @api.route('/user/<email>/edit', methods=['POST'])
 def edit_user(email):
     if not session.get("user"):
@@ -150,6 +151,7 @@ def delete_user(email):
         return redirect(url_for("app.manager_users"))
     else:
         abort(401)
+
 
 @api.route('/feeds/', methods=['GET'])
 def feeds():
@@ -201,6 +203,7 @@ def update_weather_api():
         return redirect(url_for("app.settings"))
     else:
         abort(401)
+
 
 @api.route('/clients/register', methods=['POST'])
 def update_clients():
