@@ -1,9 +1,11 @@
 """views.py contains the main view routing for the app."""
 import json
 import os
-from flask import render_template, request, Blueprint, flash, url_for, session
+from flask import render_template, request, Blueprint, flash, \
+    url_for, session
 from werkzeug.utils import secure_filename, redirect
-from .utils import mod_counter, alert_status, add_message, add_slide, allowed_file, update_alert, get_slides, get_message, update_slide
+from .utils import mod_counter, alert_status, add_message, \
+    add_slide, allowed_file, update_alert, get_slides, get_message, update_slide
 from .models import Message, Slide, User, Feed, Keys
 import instance.config as app_config
 
@@ -40,14 +42,19 @@ def manager():
     """slide manager for users to view and edit submitted slides"""
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    return render_template('manager.html', title='Your Slides', name=session.get("user")["name"], mod_count=mod_counter())
+    return render_template('manager.html',
+                           title='Your Slides',
+                           name=session.get("user")["name"],
+                           mod_count=mod_counter())
 
 
 @app.route('/manager/users')
 def manager_users():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         users = User.query.all()
         return render_template('manager-users.html',
                                title="User Management",
@@ -63,10 +70,14 @@ def manager_users():
 def editor_user(user_id):
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         return render_template('editor_user.html',
                                title="Edit User",
-                               selected_user=User.query.filter_by(id=user_id).first(),
+                               selected_user=User.query.filter_by(
+                                   id=user_id
+                               ).first(),
                                name=session.get("user")["name"],
                                mod_count=mod_counter())
     else:
@@ -77,7 +88,9 @@ def editor_user(user_id):
 def manager_screens():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         return render_template('screens.html',
                                title="Screen Generator",
                                name=session.get("user")["name"],
@@ -99,15 +112,21 @@ def profile():
 def upload_file():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         return render_template('upload.html',
                                title='Upload a Slide',
                                name=session.get("user")["name"],
                                mod_count=mod_counter(),
                                feeds=Feed.query.all()
                                )
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Contributor":
-        groups = User.query.filter_by(email=session.get("user")["preferred_username"]).first().groups.split(",")
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Contributor":
+        groups = User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+        ).first().groups.split(",")
         feed_list = []
         for group in groups:
             feed_list += Feed.query.filter_by(manager_group=group).all()
@@ -127,7 +146,9 @@ def upload_file_post():
     if not session.get("user"):  # if the user isn't logged in, send them to the login page.
         return redirect(url_for("auth.login"))
     # prevent view-only users from accessing the upload page.
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Viewer":
         flash("Sorry! You don't have permission to access that page.")
         return redirect(url_for("app.index"))
     if 'file' not in request.files:  # if no file is loaded in the request, flash a warning.
@@ -145,7 +166,14 @@ def upload_file_post():
         title = request.form["title"]
         slide_path = secure_filename(file.filename)
         feed_list = ','.join(map(str, request.form.getlist('feeds')))
-        add_slide(time_start, time_end, title, slide_path, feed_list, session.get("user")["name"])
+        add_slide(
+            time_start,
+            time_end,
+            title,
+            slide_path,
+            feed_list,
+            session.get("user")["name"]
+        )
         flash('Slide submitted successfully', title)
         return redirect(request.url)
 
@@ -154,7 +182,9 @@ def upload_file_post():
 def moderate():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         return render_template('moderate.html', title='Slide Moderator', name=session.get("user")["name"])
     flash("Sorry, you are not allowed to view that page.")
     return redirect(url_for("app.index"))
@@ -164,7 +194,9 @@ def moderate():
 def moderate_post():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         return render_template('moderate.html',
                                title='Slide Moderator',
                                name=session.get("user")["name"],
@@ -177,7 +209,9 @@ def moderate_post():
 def edit(slide_id):
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Viewer":
         flash("Sorry, you are not allowed to view that page.")
         return redirect(url_for("app.index"))
     return render_template('edit.html',
@@ -192,7 +226,9 @@ def edit(slide_id):
 def edit_post(slide_id):
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Viewer":
         flash("Sorry, you are not allowed to view that page.")
         return redirect(url_for("app.index"))
     update_slide(slide_id,
@@ -213,7 +249,9 @@ def edit_post(slide_id):
 def messages():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Viewer":
         flash("Sorry, you are not allowed to view that page.")
         return redirect(url_for("app.index"))
     return render_template('manager-messages.html',
@@ -228,7 +266,9 @@ def messages_post():
     # TODO convert to API request.
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    if User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Viewer":
+    if User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Viewer":
         flash("Sorry, you are not allowed to view that page.")
         return redirect(url_for("app.index"))
     text = request.form["message_text"]

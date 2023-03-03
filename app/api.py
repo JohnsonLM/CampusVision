@@ -1,6 +1,7 @@
 import datetime
 from pathlib import Path
-from flask import request, Blueprint, session, abort, redirect, url_for, jsonify, Flask, flash
+from flask import request, Blueprint, session, abort, \
+    redirect, url_for, jsonify, Flask, flash
 import os
 from .models import Slide, Message, User, Feed, Keys
 from .app import db
@@ -15,7 +16,11 @@ app.config.from_pyfile('config.py')
 
 @api.route('/slides/<feed>', methods=['GET'])
 def get_feed_slides(feed):
-    """returns all the slides in a given feed that are scheduled to run today"""
+    """
+    returns all the slides in a given feed that are scheduled to run on the current date
+    :param feed: string
+    :return: json
+    """
     slide_set = []
     for slide in reversed(Slide.query.all()):
         start_date = datetime.datetime.strptime(slide.time_start, '%Y-%m-%d').date()
@@ -32,22 +37,34 @@ def get_feed_slides(feed):
 
 @api.route('/slides/<slide_filter>/', methods=['GET'])
 def get_slides(slide_filter):
-    """returns last 500 slides submitted """
+    """
+    returns last 500 slides submitted by approval status.
+    :param slide_filter: string
+    :return: json
+    """
     if not session.get("user"):
         abort(401)
     if slide_filter == "None":
         data = Slide.query.order_by(Slide.id.desc()).limit(500)
     else:
-        data = Slide.query.filter_by(approval=slide_filter).order_by(Slide.id.desc()).limit(500)
+        data = Slide.query.filter_by(
+            approval=slide_filter
+        ).order_by(Slide.id.desc()).limit(500)
     return {'data': [item.to_dict() for item in data]}
 
 
 @api.route('/slides/<slide_id>/delete', methods=['POST'])
 def delete_slide(slide_id):
-    """deletes slide by slide id"""
+    """
+    Deletes slide by slide id.
+    :param slide_id: int
+    :return: Moderate view
+    """
     if not session.get("user"):
         abort(401)
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         slide = Slide.query.filter_by(id=slide_id)
         data = Slide.query.get(slide_id)
         data_path = "./static/uploads/" + data.slide_path
@@ -66,10 +83,16 @@ def delete_slide(slide_id):
 
 @api.route('/slides/<slide_id>/approve', methods=['POST'])
 def approve_slide(slide_id):
-    """sets slide as approved by slide id"""
+    """
+    Sets slide as approved by slide id
+    :param slide_id: int
+    :return: Moderate view
+    """
     if not session.get("user"):
         abort(401)
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         data = Slide.query.get(slide_id)
         data.approval = "Approved"
         db.session.commit()
@@ -80,10 +103,16 @@ def approve_slide(slide_id):
 
 @api.route('/slides/<slide_id>/deny', methods=['POST'])
 def deny_slide(slide_id):
-    """sets slide as denied by slide id"""
+    """
+    Sets slide as denied by slide id.
+    :param slide_id: int
+    :return: moderate view
+    """
     if not session.get("user"):
         abort(401)
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         data = Slide.query.get(slide_id)
         data.approval = "Denied"
         db.session.commit()
@@ -94,7 +123,11 @@ def deny_slide(slide_id):
 
 @api.route('/slides/user/<name>/', methods=['GET'])
 def get_user_slides(name):
-    """returns slides submitted by a user by name"""
+    """
+    Returns slides submitted by a user by name.
+    :param name: string
+    :return: json
+    """
     if not session.get("user"):
         abort(401)
     data = Slide.query.filter_by(submitted_by=name).limit(500)
@@ -103,6 +136,10 @@ def get_user_slides(name):
 
 @api.route('/messages', methods=['GET'])
 def messages():
+    """
+    Returns messages for the current date.
+    :return: json
+    """
     if not session.get("user"):
         abort(401)
     message_set = []
@@ -117,6 +154,10 @@ def messages():
 
 @api.route('/messages/delete', methods=['POST'])
 def delete_messages():
+    """
+    Deletes messages by id given in form.
+    :return: messages view
+    """
     if not session.get("user"):
         abort(401)
     data = Message.query.filter_by(id=request.form['message_id'])
@@ -127,9 +168,15 @@ def delete_messages():
 
 @api.route('/user/<email>/edit', methods=['POST'])
 def edit_user(email):
+    """
+    :param email: string
+    :return: user view
+    """
     if not session.get("user"):
         abort(401)
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         selected_user = User.query.filter_by(email=email).first()
         selected_user.name = request.form["name"]
         selected_user.type = request.form["type"]
@@ -142,9 +189,16 @@ def edit_user(email):
 
 @api.route('/user/<email>/delete', methods=['POST'])
 def delete_user(email):
+    """
+    Deletes user by email.
+    :param email: string
+    :return: user view
+    """
     if not session.get("user"):
         abort(401)
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         selected_user = User.query.filter_by(email=email)
         selected_user.delete()
         db.session.commit()
@@ -155,6 +209,10 @@ def delete_user(email):
 
 @api.route('/feeds/', methods=['GET'])
 def feeds():
+    """
+    Get feeds list.
+    :return: json
+    """
     feeds = []
     for feed in Feed.query.all():
         feeds.append(feed.name)
@@ -163,16 +221,23 @@ def feeds():
 
 @api.route('/feeds/add', methods=['POST'])
 def add_feed():
+    """
+    Adds a new feed to the database list.
+    :return: settings view
+    """
     if not session.get("user"):
         abort(401)
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         data = Feed(
             name=request.form["feed_name"],
             manager_group=request.form["feed_group"]
         )
         db.session.add(data)
         db.session.commit()
-        flash("The feed " + request.form["feed_name"] + " has been created")
+        flash(
+            "The feed " + request.form["feed_name"] + " has been created")
         return redirect(url_for("app.settings"))
     else:
         abort(401)
@@ -180,9 +245,15 @@ def add_feed():
 
 @api.route('/feeds/delete', methods=['POST'])
 def delete_feed():
+    """
+    Deletes feed by id provided by form.
+    :return: settings view
+    """
     if not session.get("user"):
         abort(401)
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         selected = Feed.query.get(request.form["feed_id"])
         db.session.delete(selected)
         db.session.commit()
@@ -194,9 +265,15 @@ def delete_feed():
 
 @api.route('/keys/openweathermap', methods=['POST'])
 def update_weather_api():
+    """
+    Updates key in database by key provided in form.
+    :return: settings view
+    """
     if not session.get("user"):
         abort(401)
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         key = Keys.query.filter_by(name="OpenWeatherMap").first()
         key.key = request.form['key']
         db.session.commit()
@@ -207,9 +284,15 @@ def update_weather_api():
 
 @api.route('/clients/register', methods=['POST'])
 def update_clients():
+    """
+
+    :return:
+    """
     if not session.get("user"):
         abort(401)
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first().type == "Admin":
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first().type == "Admin":
         data = request.json
         feed = Feed.query.filter_by(name=data['Feed']).first()
         feed.status = datetime.datetime.now().strftime("%D %H:%M:%S")

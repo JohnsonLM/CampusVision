@@ -16,14 +16,19 @@ def signup():
         return redirect(url_for("app.index"))
     else:
         name = session.get("user")["name"]
-        return render_template('auth_signup.html', user=name, version=msal.__version__, title='Sign Up')
+        return render_template('auth_signup.html',
+                               user=name,
+                               version=msal.__version__,
+                               title='Sign Up')
 
 
 @auth.route("/signup", methods=['POST'])
 def signup_post():
     if not session.get("user"):
         return redirect(url_for("auth.login"))
-    elif User.query.filter_by(email=session.get("user")["preferred_username"]).first():
+    elif User.query.filter_by(
+            email=session.get("user")["preferred_username"]
+    ).first():
         return redirect(url_for("app.index"))
     # make first system user admin by default
     if not User.query.all():
@@ -45,10 +50,12 @@ def signup_post():
 def login():
     # Technically we could use empty list [] as scopes to do just sign in,
     session["flow"] = _build_auth_code_flow(scopes=app_config.SCOPE)
-    return render_template("auth_login.html", auth_url=session["flow"]["auth_uri"], version=msal.__version__)
+    return render_template("auth_login.html",
+                           auth_url=session["flow"]["auth_uri"],
+                           version=msal.__version__)
 
 
-@auth.route(app_config.REDIRECT_PATH)  # Its absolute URL must match your app's redirect_uri set in AAD
+@auth.route(app_config.REDIRECT_PATH)  # Absolute URL must match app's redirect_uri set in AAD
 def authorized():
     try:
         cache = _load_cache()
@@ -64,7 +71,7 @@ def authorized():
 
 
 
-# the rest of these routes are for the SSO integration as suggested by Microsoft Graph.
+# These routes are for the SSO integration as suggested by Microsoft Graph.
 @auth.route("/logout")
 def logout():
     session.clear()  # Wipe out user and its token cache from session
