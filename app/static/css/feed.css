@@ -77,13 +77,16 @@ body {
 
 .sidebar-directory {
     flex-grow: 0;
-    padding: 20px;
     background-size: cover !important;
     width: -moz-available;
     width: -webkit-fill-available;
     width: fill-available;
     font-size: 2vw;
     color: white;
+}
+
+.sidebar-directory img {
+    width: 100%;
 }
 
 .sidebar-directory table {

@@ -8,68 +8,17 @@
       <link rel="stylesheet" href="{{ url_for('static', filename='/css/feed.css') }}">
   </head>
   <body>
-    <div class="wrapper">
-        <div class="flex-column carousel carousel-fade" data-ride="carousel" id="carousel" data-interval="{{ request.args.get('interval') }}">
-            <div class="carousel-inner"></div>
-        </div>
-
-        <div class="flex-column sidebar-directory" style="background: linear-gradient(to right, rgba(62, 25, 82, 0.85), rgba(62, 25, 82, 0.85)), url('{{ url_for('static', filename=background) }}') center;">
-            <table class="table">
-                  <tbody>
-                    <tr>
-                      <th scope="row">Office 100</th>
-                      <td>Mark Doe</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  <tr>
-                      <th scope="row">200</th>
-                      <td>Jacob</td>
-                    </tr>
-                  </tbody>
-                </table>
-        </div>
-    </div>
-    <div class="wrapper">
-         <div class="datetime d-flex flex-column">
-             <h2 id="date"></h2>
-             <h1 id="time"></h1>
-         </div>
-         <div class="weather-outer">
+  <div class="wrapper">
+      <div class="flex-column">
+          <img class="logo-vertical" src="{{ url_for('static', filename='/logos/Asbury-Logo-1-Reversed.png') }}" alt="logo">
+          <div class="carousel carousel-fade" data-ride="carousel" id="carousel" data-interval="{{ request.args.get('interval') }}">
+              <div class="carousel-inner"></div>
+          </div>
+          <div class="datetime d-flex">
+              <h2 id="date"></h2>
+              <h1 id="time"></h1>
+          </div>
+          <div class="weather-outer">
              <div class="weather d-inline-flex">
                  <div id="day1" class="weather-card p-2"></div>
                  <div id="day2" class="weather-card p-2"></div>
@@ -80,7 +29,11 @@
                  <div id="day7" class="weather-card p-2"></div>
              </div>
          </div>
-    </div>
+      </div>
+      <div class="flex-column sidebar-directory">
+          <img src="{{ url_for('static', filename='/maps/student-center.png') }}">
+      </div>
+  </div>
 
     <!-- scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
