@@ -3,7 +3,7 @@
 
 # Flask Framework
 click==8.0.0
-Flask==2.1.2
+Flask==2.3.2
 itsdangerous==2.0.1
 Jinja2==3.0.0
 MarkupSafe==2.0.0rc2
